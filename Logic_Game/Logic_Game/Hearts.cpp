@@ -12,13 +12,19 @@ Hearts::Hearts(Vector2f position) {
 	setHealth(3);
 }
 
-void Hearts::setTexture(string textureFile) {
+void Hearts::loadTexture(string textureFile) {
 	static int n = 0;
 	if (n == 0) {
 		texture = new Texture;
 		n++;
 	}
 	texture->loadFromFile(textureFile);
+}
+
+void Hearts::setTexture() {
+	for (int i = 0; i < 3; i++) {
+		(heart + i)->setTexture(texture);
+	}
 }
 
 void Hearts::setPosition(Vector2f position) {
@@ -36,25 +42,25 @@ void Hearts::setHealth(int health) {
 		(heart + 2)->setTextureRect(IntRect{ 0,0,1,1 });
 		break;
 	case 1:
-		(heart + 0)->setTextureRect(IntRect{ 0,0,80,80 });
+		(heart + 0)->setTextureRect(IntRect{ 0,0,50,50 });
 		(heart + 1)->setTextureRect(IntRect{ 0,0,1,1 });
 		(heart + 2)->setTextureRect(IntRect{ 0,0,1,1 });
 		break;
 	case 2:
-		(heart + 0)->setTextureRect(IntRect{ 0,0,80,80 });
-		(heart + 1)->setTextureRect(IntRect{ 0,0,80,80 });
+		(heart + 0)->setTextureRect(IntRect{ 0,0,50,50 });
+		(heart + 1)->setTextureRect(IntRect{ 0,0,50,50 });
 		(heart + 2)->setTextureRect(IntRect{ 0,0,1,1 });
 		break;
 	case 3:
-		(heart + 0)->setTextureRect(IntRect{ 0,0,80,80 });
-		(heart + 1)->setTextureRect(IntRect{ 0,0,80,80 });
-		(heart + 2)->setTextureRect(IntRect{ 0,0,80,80 });
+		(heart + 0)->setTextureRect(IntRect{ 0,0,50,50 });
+		(heart + 1)->setTextureRect(IntRect{ 0,0,50,50 });
+		(heart + 2)->setTextureRect(IntRect{ 0,0,50,50 });
 		break;
 	default:
 		this->health = 3;
-		(heart + 0)->setTextureRect(IntRect{ 0,0,80,80 });
-		(heart + 1)->setTextureRect(IntRect{ 0,0,80,80 });
-		(heart + 2)->setTextureRect(IntRect{ 0,0,80,80 });
+		(heart + 0)->setTextureRect(IntRect{ 0,0,50,50 });
+		(heart + 1)->setTextureRect(IntRect{ 0,0,50,50 });
+		(heart + 2)->setTextureRect(IntRect{ 0,0,50,50 });
 		break;
 	}
 }
@@ -67,4 +73,12 @@ void Hearts::draw(RenderWindow& window) {
 	for (int i = 0; i < 3; i++) {
 		window.draw(*(heart + i));
 	}
+}
+
+void Hearts::reset() {
+	setHealth(3);
+}
+
+Hearts::~Hearts() {
+	delete [] heart;
 }
