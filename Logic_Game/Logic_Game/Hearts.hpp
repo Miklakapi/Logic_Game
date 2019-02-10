@@ -19,7 +19,9 @@ public:
 
 	Hearts(Vector2f position = Vector2f{ 0,0 });
 
-	static void setTexture(string textureFile = "Img/Hearts.png");
+	static void loadTexture(string textureFile = "Img/Heart.png");
+
+	void setTexture();
 
 	void setPosition(Vector2f position);
 
@@ -28,5 +30,9 @@ public:
 	int getHealth();
 
 	void draw(RenderWindow& window);
+
+	void reset();
+
+	~Hearts();
 };
 
