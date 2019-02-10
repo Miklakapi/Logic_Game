@@ -2,7 +2,7 @@
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
 #include "Map.hpp"
-#include "Hearts.hpp"
+#include "MenuBar.hpp"
 
 using namespace sf;
 
@@ -10,10 +10,9 @@ int main() {
 	RenderWindow app(VideoMode{ 1440,880 }, "Logic_Game", Style::Close);
 	app.setFramerateLimit(60);
 
-	Map map;
-	map.renderLV(1);
-	Hearts::setTexture("Img/Empty.png");
-	Hearts he;
+	Map map;								map.renderLV(1);
+
+	MenuBar menu;
 
 	while (app.isOpen()) {
 
@@ -27,7 +26,7 @@ int main() {
 		}
 		app.clear(Color{64,64,64});
 		map.draw(app);
-		he.draw(app);
+		menu.draw(app);
 		app.display();
 	}
 }
