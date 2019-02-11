@@ -7,7 +7,7 @@
 using namespace sf;
 using namespace std;
 
-class Spikes : RectangleShape{
+class Spikes : public RectangleShape{
 
 	Clock clock;
 
