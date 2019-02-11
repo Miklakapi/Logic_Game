@@ -17,11 +17,7 @@ class Hearts{
 
 public:
 
-	Hearts(Vector2f position = Vector2f{ 0,0 });
-
-	static void loadTexture(string textureFile = "Img/Heart.png");
-
-	void setTexture();
+	Hearts(Vector2f position = Vector2f{ 0,0 }, string textureFile = "Img/Heart.png");
 
 	void setPosition(Vector2f position);
 
