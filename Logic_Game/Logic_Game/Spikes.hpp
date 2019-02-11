@@ -19,6 +19,10 @@ class Spikes : RectangleShape{
 
 	int stage;
 
+	bool lock;
+
+	int delay;
+
 	enum Direction {
 		Up,
 		Down
