@@ -34,6 +34,8 @@ public:
 
 	Spikes(Vector2f position = Vector2f{ 0,0 }, string textureFile = "Img/Spikes.png");
 	
+	void setDelay(int delay);
+
 	bool getDmg();
 
 	void draw(RenderWindow& window);
