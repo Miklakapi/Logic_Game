@@ -1,8 +1,6 @@
 #include "MenuBar.hpp"
 
 MenuBar::MenuBar() : hearts(Vector2f{20,15}), lvInfo(Vector2f{ 600,0 }), timer(Vector2f{ 1280,0 }) {
-	Hearts::loadTexture();
-	hearts.setTexture();
 }
 
 Data MenuBar::getData() {
