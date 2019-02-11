@@ -56,7 +56,7 @@ void Spikes::draw(RenderWindow& window) {
 			}
 		}
 		else if (direction == Direction::Down) {
-			if (stage > 0 && stage < 4 && clock.getElapsedTime().asSeconds() >= 0.2) {
+			if (stage > 0 && stage < 4 && clock.getElapsedTime().asSeconds() >= 0.15) {
 				clock.restart();
 				stage--;
 				setTextureRect(*(rect + stage));
