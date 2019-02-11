@@ -28,36 +28,41 @@ bool Spikes::getDmg() {
 }
 
 void Spikes::draw(RenderWindow& window) {
-	if (direction == Direction::Up) {
-		if (stage > 0 && stage < 4 && clock.getElapsedTime().asSeconds() >= 0.08) {
-			clock.restart();
-			stage++;
-			setTextureRect(*(rect + stage));
-		}
-		else if (clock.getElapsedTime().asSeconds() >= 2.5 && stage == 0) {
-			clock.restart();
-			stage++;
-			setTextureRect(*(rect + stage));
-			dmg = true;
-		}
-		else if (stage == 4 && clock.getElapsedTime().asSeconds() >= 0.5) {
-			direction = Direction::Down;
-		}
+	if (lock && ) {
+
 	}
-	else if (direction == Direction::Down) {
-		if (stage > 0 && stage < 4 && clock.getElapsedTime().asSeconds() >= 0.2) {
-			clock.restart();
-			stage--;
-			setTextureRect(*(rect + stage));
+	else if(!lock){
+		if (direction == Direction::Up) {
+			if (stage > 0 && stage < 4 && clock.getElapsedTime().asSeconds() >= 0.08) {
+				clock.restart();
+				stage++;
+				setTextureRect(*(rect + stage));
+			}
+			else if (clock.getElapsedTime().asSeconds() >= 2.5 && stage == 0) {
+				clock.restart();
+				stage++;
+				setTextureRect(*(rect + stage));
+				dmg = true;
+			}
+			else if (stage == 4 && clock.getElapsedTime().asSeconds() >= 0.5) {
+				direction = Direction::Down;
+			}
 		}
-		else if (stage == 4) {
-			clock.restart();
-			stage--;
-			setTextureRect(*(rect + stage));
-		}
-		else if (stage == 0) {
-			direction = Direction::Up;
-			dmg = false;
+		else if (direction == Direction::Down) {
+			if (stage > 0 && stage < 4 && clock.getElapsedTime().asSeconds() >= 0.2) {
+				clock.restart();
+				stage--;
+				setTextureRect(*(rect + stage));
+			}
+			else if (stage == 4) {
+				clock.restart();
+				stage--;
+				setTextureRect(*(rect + stage));
+			}
+			else if (stage == 0) {
+				direction = Direction::Up;
+				dmg = false;
+			}
 		}
 	}
 	window.draw(*this);
