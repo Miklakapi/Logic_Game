@@ -23,13 +23,20 @@ Spikes::Spikes(Vector2f position, string textureFile) {
 	reset();
 }
 
+void Spikes::setDelay(int delay) {
+	lock = true;
+	this->delay = delay;
+	clock.restart();
+}
+
 bool Spikes::getDmg() {
 	return dmg;
 }
 
 void Spikes::draw(RenderWindow& window) {
-	if (lock && ) {
-
+	if (lock && clock.getElapsedTime().asSeconds() >= delay) {
+		lock = false;
+		clock.restart();
 	}
 	else if(!lock){
 		if (direction == Direction::Up) {
@@ -73,5 +80,7 @@ void Spikes::reset() {
 	dmg = false;
 	stage = 0;
 	direction = Direction::Up;
+	lock = true;
+	delay = 0;
 	clock.restart();
 }
