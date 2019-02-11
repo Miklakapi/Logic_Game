@@ -33,6 +33,7 @@ int main() {
 
 	SlidingBlock block;
 
+
 	while (app.isOpen()) {
 
 		Event event;
@@ -41,21 +42,6 @@ int main() {
 			case Event::Closed:
 				app.close();
 				break;
-			case Event::KeyPressed:
-				switch (event.key.code) {
-				case Keyboard::W:
-					block.push(Direction::Up);
-					break;
-				case Keyboard::A:
-					block.push(Direction::Left);
-					break;
-				case Keyboard::S:
-					block.push(Direction::Down);
-					break;
-				case Keyboard::D:
-					block.push(Direction::Right);
-					break;
-				}
 			}
 		}
 		app.clear(Color::White);
