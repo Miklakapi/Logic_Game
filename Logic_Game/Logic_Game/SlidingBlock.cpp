@@ -10,6 +10,7 @@ SlidingBlock::SlidingBlock(Vector2f position, string textureFile){
 		a++;
 	}
 	setSize(Vector2f{ 80,80 });
+	setTexture(texture);
 	setTextureRect(IntRect{ 0,0,80,80 });
 	setPosition(position);
 	reset();
@@ -51,9 +52,10 @@ void SlidingBlock::draw(RenderWindow& window) {
 		}
 		moveNr++;
 	}
-	else if (!exist) {
-		if (clock.getElapsedTime().asSeconds() >= 0.2) {
+	else if (!exist && moveNr != -1) {
+		if (clock.getElapsedTime().asSeconds() >= 0.5) {
 			setTextureRect(IntRect{ 160,0,1,1 });
+			moveNr = -1;
 		}
 	}
 	window.draw(*this);
