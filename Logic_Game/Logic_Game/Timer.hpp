@@ -29,6 +29,8 @@ public:
 
 	int getSeconds();
 
+	void refresh();
+
 	void draw(RenderWindow& window);
 
 	void resetTime();
