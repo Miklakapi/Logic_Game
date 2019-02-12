@@ -19,7 +19,7 @@ int main() {
 	MenuBar menuBar;
 	Spikes spikes[12];
 	Spikes* spike = spikes;
-	(spike + 0)->setPosition(VectorConverter::convert(6,1).asVector2f());
+	(spike + 0)->setPosition(VectorConverter::convert(6, 1).asVector2f());
 	(spike + 1)->setPosition(VectorConverter::convert(6, 2).asVector2f());
 	(spike + 2)->setPosition(VectorConverter::convert(6, 3).asVector2f());
 	(spike + 3)->setPosition(VectorConverter::convert(8, 1).asVector2f());
@@ -33,7 +33,7 @@ int main() {
 	(spike + 11)->setPosition(VectorConverter::convert(11, 3).asVector2f());
 
 	SlidingBlock block;
-	block.setPosition(VectorConverter::convert(19).asVector2f());
+	block.setPosition(VectorConverter::convert(2,2).asVector2f());
 
 	while (app.isOpen()) {
 
@@ -45,6 +45,35 @@ int main() {
 				break;
 			}
 		}
+
+		if (Keyboard::isKeyPressed(Keyboard::W)) {
+			block.push(Direction::Up);
+		}
+		else if (Keyboard::isKeyPressed(Keyboard::A)) {
+			block.push(Direction::Left);
+		}
+		else if (Keyboard::isKeyPressed(Keyboard::S)) {
+			block.push(Direction::Down);
+		}
+		else if (Keyboard::isKeyPressed(Keyboard::D)) {
+			block.push(Direction::Right);
+		}
+
+		if (block.getExist()) {
+			for (int i = 0; i < 12; i++) {
+				if (!(spike + i)->getDmg()) continue;
+				if (block.getPosition().x + 80 > (spike + i)->getPosition().x &&
+					block.getPosition().x < (spike + i)->getPosition().x + 80 &&
+					block.getPosition().y + 80 > (spike + i)->getPosition().y &&
+					block.getPosition().y < (spike + i)->getPosition().y + 80) {
+					block.destroy();
+				}
+			}
+		}
+
+		block.run();
+		menuBar.run();
+
 		app.clear(Color::White);
 		map.draw(app);
 		menuBar.draw(app);
