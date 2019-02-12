@@ -5,6 +5,7 @@
 #include "Map.hpp"
 #include "MenuBar.hpp"
 #include "SlidingBlock.hpp"
+#include "VectorConverter.hpp"
 
 using namespace sf;
 
@@ -18,21 +19,21 @@ int main() {
 	MenuBar menuBar;
 	Spikes spikes[12];
 	Spikes* spike = spikes;
-	(spike + 0)->setPosition(Vector2f{ 480,160 });
-	(spike + 1)->setPosition(Vector2f{ 480,80 });
-	(spike + 2)->setPosition(Vector2f{ 480,240 });
-	(spike + 3)->setPosition(Vector2f{ 640,80 });
-	(spike + 4)->setPosition(Vector2f{ 640,160 });
-	(spike + 5)->setPosition(Vector2f{ 640,240 });
-	(spike + 6)->setPosition(Vector2f{ 720,80 });
-	(spike + 7)->setPosition(Vector2f{ 720,160 });
-	(spike + 8)->setPosition(Vector2f{ 720,240 });
-	(spike + 9)->setPosition(Vector2f{ 880,80 });
-	(spike + 10)->setPosition(Vector2f{ 880,160 });
-	(spike + 11)->setPosition(Vector2f{ 880,240 });
+	(spike + 0)->setPosition(VectorConverter::convert(6,1).asVector2f());
+	(spike + 1)->setPosition(VectorConverter::convert(6, 2).asVector2f());
+	(spike + 2)->setPosition(VectorConverter::convert(6, 3).asVector2f());
+	(spike + 3)->setPosition(VectorConverter::convert(8, 1).asVector2f());
+	(spike + 4)->setPosition(VectorConverter::convert(8, 2).asVector2f());
+	(spike + 5)->setPosition(VectorConverter::convert(8, 3).asVector2f());
+	(spike + 6)->setPosition(VectorConverter::convert(9, 1).asVector2f());
+	(spike + 7)->setPosition(VectorConverter::convert(9, 2).asVector2f());
+	(spike + 8)->setPosition(VectorConverter::convert(9, 3).asVector2f());
+	(spike + 9)->setPosition(VectorConverter::convert(11, 1).asVector2f());
+	(spike + 10)->setPosition(VectorConverter::convert(11, 2).asVector2f());
+	(spike + 11)->setPosition(VectorConverter::convert(11, 3).asVector2f());
 
 	SlidingBlock block;
-
+	block.setPosition(VectorConverter::convert(19).asVector2f());
 
 	while (app.isOpen()) {
 
