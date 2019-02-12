@@ -6,6 +6,7 @@
 #include "MenuBar.hpp"
 #include "SlidingBlock.hpp"
 #include "VectorConverter.hpp"
+#include "Plate.hpp"
 
 using namespace sf;
 
@@ -35,6 +36,8 @@ int main() {
 	SlidingBlock block;
 	block.setPosition(VectorConverter::convert(2,2).asVector2f());
 
+	Plate plate(VectorConverter::convert(1, 1).asVector2f());
+
 	while (app.isOpen()) {
 
 		Event event;
@@ -43,6 +46,10 @@ int main() {
 			case Event::Closed:
 				app.close();
 				break;
+			case Event::KeyPressed:
+				if (event.key.code == Keyboard::Space) {
+					plate.setPressure(!plate.isPressed());
+				}
 			}
 		}
 
@@ -64,10 +71,19 @@ int main() {
 				if (!(spike + i)->getDmg()) continue;
 				if (block.getPosition().x + 80 > (spike + i)->getPosition().x &&
 					block.getPosition().x < (spike + i)->getPosition().x + 80 &&
-					block.getPosition().y + 80 > (spike + i)->getPosition().y &&
+					block.getPosition().y + 80 >(spike + i)->getPosition().y &&
 					block.getPosition().y < (spike + i)->getPosition().y + 80) {
 					block.destroy();
 				}
+			}
+			if(block.getPosition().x + 80 > plate.getPosition().x &&
+				block.getPosition().x < plate.getPosition().x + 80 &&
+				block.getPosition().y + 80 >plate.getPosition().y &&
+				block.getPosition().y < plate.getPosition().y + 80) {
+				plate.setPressure(true);
+			}
+			else {
+				plate.setPressure(false);
 			}
 		}
 
@@ -80,6 +96,7 @@ int main() {
 		for (int i = 0; i < 12; i++) {
 			(spike + i)->draw(app);
 		}
+		plate.draw(app);
 		block.draw(app);
 		app.display();
 	}
