@@ -7,6 +7,7 @@
 #include "SlidingBlock.hpp"
 #include "VectorConverter.hpp"
 #include "Plate.hpp"
+#include "Door.hpp"
 
 using namespace sf;
 
@@ -38,6 +39,8 @@ int main() {
 
 	Plate plate(VectorConverter::convert(1, 1).asVector2f());
 
+	Door door(VectorConverter::convert(3, 3).asVector2f());
+
 	while (app.isOpen()) {
 
 		Event event;
@@ -46,10 +49,6 @@ int main() {
 			case Event::Closed:
 				app.close();
 				break;
-			case Event::KeyPressed:
-				if (event.key.code == Keyboard::Space) {
-					plate.setPressure(!plate.isPressed());
-				}
 			}
 		}
 
@@ -76,7 +75,7 @@ int main() {
 					block.destroy();
 				}
 			}
-			if(block.getPosition().x + 80 > plate.getPosition().x &&
+			if (block.getPosition().x + 80 > plate.getPosition().x &&
 				block.getPosition().x < plate.getPosition().x + 80 &&
 				block.getPosition().y + 80 >plate.getPosition().y &&
 				block.getPosition().y < plate.getPosition().y + 80) {
@@ -85,6 +84,7 @@ int main() {
 			else {
 				plate.setPressure(false);
 			}
+			door.setOpen(plate.isPressed());
 		}
 
 		block.run();
@@ -97,6 +97,7 @@ int main() {
 			(spike + i)->draw(app);
 		}
 		plate.draw(app);
+		door.draw(app);
 		block.draw(app);
 		app.display();
 	}
