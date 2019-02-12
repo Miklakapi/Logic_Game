@@ -17,12 +17,16 @@ class Door : public RectangleShape{
 
 	static Texture* texture;
 
+	Clock clock;
+
 public:
 
 	Door(Vector2f position = Vector2f{ 0,0 }, Color color = Color::Red, string textureFile = "Img/Door.png");
 
 	bool isOpen();
 	
+	void setOpen(bool open);
+
 	void draw(RenderWindow& window);
 
 	void reset();
