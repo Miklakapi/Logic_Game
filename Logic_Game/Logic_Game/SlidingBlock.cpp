@@ -33,8 +33,8 @@ bool SlidingBlock::getExist() {
 	return exist;
 }
 
-void SlidingBlock::draw(RenderWindow& window) {
-	if (clock.getElapsedTime().asSeconds() >= 0.07 && moveNr < 10 && exist) {
+void SlidingBlock::run() {
+	if (clock.getElapsedTime().asSeconds() >= 0.06 && moveNr < 10 && exist) {
 		clock.restart();
 		switch (direction) {
 		case Direction::Up:
@@ -58,6 +58,9 @@ void SlidingBlock::draw(RenderWindow& window) {
 			moveNr = -1;
 		}
 	}
+}
+
+void SlidingBlock::draw(RenderWindow& window) {
 	window.draw(*this);
 }
 
