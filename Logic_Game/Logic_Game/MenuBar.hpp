@@ -28,6 +28,8 @@ public:
 
 	void setLV(int lv);
 
+	void run();
+
 	void draw(RenderWindow& window);
 
 	void reset();
