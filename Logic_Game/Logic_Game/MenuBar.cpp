@@ -20,6 +20,10 @@ void MenuBar::setLV(int lv) {
 	lvInfo.setLV(lv);
 }
 
+void MenuBar::run() {
+	timer.refresh();
+}
+
 void MenuBar::draw(RenderWindow& window) {
 	hearts.draw(window);
 	window.draw(lvInfo);
