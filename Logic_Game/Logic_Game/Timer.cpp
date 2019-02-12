@@ -22,7 +22,7 @@ int Timer::getSeconds() {
 	return seconds;
 }
 
-void Timer::draw(RenderWindow& window) {
+void Timer::refresh() {
 	if (clock.getElapsedTime().asSeconds() >= 0.5) {
 		clock.restart();
 		string str1, str2;
@@ -37,6 +37,9 @@ void Timer::draw(RenderWindow& window) {
 		else str = "60:00";
 		text.setString(str);
 	}
+}
+
+void Timer::draw(RenderWindow& window) {
 	window.draw(text);
 }
 
