@@ -37,6 +37,8 @@ public:
 
 	bool getExist();
 
+	void run();
+
 	void draw(RenderWindow& window);
 
 	void reset();
