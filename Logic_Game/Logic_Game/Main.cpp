@@ -7,6 +7,7 @@
 #include "SlidingBlock.hpp"
 #include "VectorConverter.hpp"
 #include "Plate.hpp"
+#include "TeleportField.hpp"
 #include "Door.hpp"
 
 using namespace sf;
@@ -40,6 +41,9 @@ int main() {
 	Plate plate(VectorConverter::convert(1, 1).asVector2f());
 
 	Door door(VectorConverter::convert(3, 3).asVector2f());
+
+	TeleportField teleport(VectorConverter::convert(4, 4).asVector2f());
+	teleport.setOpen(true);
 
 	while (app.isOpen()) {
 
@@ -85,6 +89,11 @@ int main() {
 				plate.setPressure(false);
 			}
 			door.setOpen(plate.isPressed());
+
+			if (block.getPosition().x == teleport.getPosition().x &&
+				block.getPosition().y == teleport.getPosition().y) {
+				block.setPosition(VectorConverter::convert(15, 5).asVector2f());
+			}
 		}
 
 		block.run();
@@ -98,6 +107,7 @@ int main() {
 		}
 		plate.draw(app);
 		door.draw(app);
+		teleport.draw(app);
 		block.draw(app);
 		app.display();
 	}
