@@ -57,16 +57,16 @@ int main() {
 		}
 
 		if (Keyboard::isKeyPressed(Keyboard::W)) {
-			block.push(Direction::Up);
+			block.push(SlidingBlock::Direction::Up);
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::A)) {
-			block.push(Direction::Left);
+			block.push(SlidingBlock::Direction::Left);
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::S)) {
-			block.push(Direction::Down);
+			block.push(SlidingBlock::Direction::Down);
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::D)) {
-			block.push(Direction::Right);
+			block.push(SlidingBlock::Direction::Right);
 		}
 
 		if (block.getExist()) {
