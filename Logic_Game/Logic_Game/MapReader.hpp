@@ -11,7 +11,7 @@ using namespace sf;
 
 class MapReader{
 
-	Type* type;
+	Square::Type* type;
 
 	int actualLv;
 
