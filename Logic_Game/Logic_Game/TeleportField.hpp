@@ -17,10 +17,16 @@ class TeleportField : public RectangleShape{
 
 	static Texture* texture;
 
+	Vector2f teleportPlace;
+
 public:
 
 	TeleportField(Vector2f position = Vector2f{ 0,0 }, Color color = Color::Red, string textureFile = "Img/Teleport.png");
 	
+	void setTeleportPlace(Vector2f position);
+
+	Vector2f getTeleportPlace();
+
 	bool isOpen();
 
 	void setOpen(bool open);
