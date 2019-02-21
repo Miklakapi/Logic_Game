@@ -4,8 +4,8 @@ Texture* Square::texture;
 
 Square::Square() {
 	setSize(Vector2f{ 80,80 });
-	setType(Type::Empty);
 	setTexture(texture);
+	setType(Type::Empty);
 }
 
 void Square::setTextureFile(string textureFile) {
@@ -17,7 +17,7 @@ void Square::setTextureFile(string textureFile) {
 	texture->loadFromFile(textureFile);
 }
 
-void Square::setType(Type type) {
+void Square::setType(Square::Type type) {
 	this->type = type;
 	switch (type) {
 	case Type::Wall:
@@ -34,5 +34,5 @@ Square::Type Square::getType() {
 }
 
 void Square::reset() {
-	setType(Type::Empty);
+	setType(Square::Type::Empty);
 }
