@@ -12,11 +12,11 @@ Map::Map(string textureFile){
 	}
 }
 
-void Map::setType(int number, Type type) {
+void Map::setType(int number, Square::Type type) {
 	(square + number)->setType(type);
 }
 
-Type Map::getType(int nr) {
+Square::Type Map::getType(int nr) {
 	return (square + nr)->getType();
 }
 

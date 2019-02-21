@@ -7,14 +7,18 @@
 using namespace sf;
 using namespace std;
 
-enum Type {
-	Wall,
-	Empty
-};
-
 class Square : public RectangleShape{
 
-	Type type;
+public:
+
+	enum Type {
+		Wall,
+		Empty
+	};
+
+private:
+
+	Square::Type type;
 
 	static Texture* texture;
 
@@ -26,7 +30,7 @@ public:
 
 	void setType(Type type);
 
-	Type getType();
+	Square::Type getType();
 
 	void reset();
 };

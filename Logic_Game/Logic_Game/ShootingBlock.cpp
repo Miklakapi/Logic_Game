@@ -1,5 +1,5 @@
 #include "ShootingBlock.hpp"
 
-ShootingBlock::ShootingBlock(){
+ShootingBlock::ShootingBlock(Vector2f position, Direction direction){
 
 }

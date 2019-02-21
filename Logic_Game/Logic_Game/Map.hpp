@@ -19,9 +19,9 @@ public:
 
 	Map(string fileName = "Img/Square.png");
 
-	void setType(int number, Type type);
+	void setType(int number, Square::Type type);
 
-	Type getType(int number);
+	Square::Type getType(int number);
 
 	void loadLV(int lv);
 

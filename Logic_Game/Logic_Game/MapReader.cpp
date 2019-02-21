@@ -1,7 +1,7 @@
 #include "MapReader.hpp"
 
 MapReader::MapReader(){
-	type = new Type[198];
+	type = new Square::Type[198];
 }
 
 void MapReader::loadLV(int lv) {
@@ -21,10 +21,10 @@ void MapReader::loadLV(int lv) {
 		for (int x = 0; x < 18; x++) {
 			switch (line.at(x)) {
 			case '#':
-				*(type + nr) = Type::Wall;
+				*(type + nr) = Square::Type::Wall;
 				break;
 			case '-':
-				*(type + nr) = Type::Empty;
+				*(type + nr) = Square::Type::Empty;
 				break;
 			default:
 				fstream error("error.txt", ios::out);

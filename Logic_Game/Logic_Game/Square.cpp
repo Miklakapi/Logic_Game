@@ -11,7 +11,7 @@ Square::Square() {
 void Square::setTextureFile(string textureFile) {
 	static int a = 0;
 	if (a == 0) {
-		texture = new Texture();
+		texture = new Texture;
 		a++;
 	}
 	texture->loadFromFile(textureFile);
@@ -29,7 +29,7 @@ void Square::setType(Type type) {
 	}
 }
 
-Type Square::getType() {
+Square::Type Square::getType() {
 	return type;
 }
 

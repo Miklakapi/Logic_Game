@@ -3,14 +3,22 @@
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
 
-class ShootingBlock{
+using namespace sf;
+using namespace std;
 
+class ShootingBlock : public RectangleShape{
+
+	RectangleShape arrow;
+
+	enum Direction {
+		Up,
+		Down,
+		Left,
+		Right
+	};
 
 public:
 	
-	ShootingBlock();
-
-
-
+	ShootingBlock(Vector2f position, Direction direction);
 };
 

@@ -7,15 +7,19 @@
 using namespace sf;
 using namespace std;
 
-enum Direction {
-	Up,
-	Down,
-	Left,
-	Right,
-	None
-};
-
 class SlidingBlock : public RectangleShape{
+
+public:
+
+	enum Direction {
+		Up,
+		Down,
+		Left,
+		Right,
+		None
+	};
+
+private:
 
 	static Texture* texture;
 
