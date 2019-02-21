@@ -46,4 +46,6 @@ void Timer::draw(RenderWindow& window) {
 void Timer::resetTime() {
 	restart();
 	clock.restart();
+	minutes = 0;
+	seconds = 0;
 }
