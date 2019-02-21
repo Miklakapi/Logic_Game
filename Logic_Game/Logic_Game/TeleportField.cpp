@@ -22,6 +22,14 @@ TeleportField::TeleportField(Vector2f position, Color color, string textureFile)
 	reset();
 }
 
+void TeleportField::setTeleportPlace(Vector2f place) {
+	teleportPlace = place;
+}
+
+Vector2f TeleportField::getTeleportPlace() {
+	return teleportPlace;
+}
+
 bool TeleportField::isOpen() {
 	return open;
 }
