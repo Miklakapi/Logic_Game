@@ -28,7 +28,7 @@ public:
 
 	static void setTextureFile(string textureFile = "Square.png");
 
-	void setType(Type type);
+	void setType(Square::Type type);
 
 	Square::Type getType();
 
