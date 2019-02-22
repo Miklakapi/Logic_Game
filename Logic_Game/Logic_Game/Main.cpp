@@ -2,6 +2,7 @@
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
 #include "Map.hpp"
+#include "MenuBar.hpp"
 #include "Plate.hpp"
 #include "VectorConverter.hpp"
 #include "Door.hpp"
@@ -13,7 +14,13 @@ int main() {
 	RenderWindow app(VideoMode{ 1440,880 }, "Logic_Game", Style::Close);
 	app.setFramerateLimit(60);
 	//-------
+	Map::setSquareTexture();
+
 	Map map;
+	//-------
+
+
+	MenuBar menu;
 	//-------
 	Plate::setPlateTexture();
 
@@ -49,6 +56,7 @@ int main() {
 
 		//-------
 		spikes.run();
+		menu.run();
 		//-------
 
 		app.clear();
@@ -57,6 +65,7 @@ int main() {
 		(plate + 1)->draw(app);
 		door.draw(app);
 		spikes.draw(app);
+		menu.draw(app);
 		app.display();
 	}
 }
