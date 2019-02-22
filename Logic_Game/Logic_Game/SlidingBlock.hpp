@@ -8,7 +8,6 @@
 #include "Door.hpp"
 #include "ShootingBlock.hpp"
 #include "LaserMachine.hpp"
-#include "Mirror.hpp"
 
 using namespace sf;
 using namespace std;
@@ -48,7 +47,9 @@ public:
 	bool getExist();
 
 	bool push(Direction direction, Map& map, ShootingBlock* blockS, int number, Door* door, int number2,
-		LaserMachine* machine, int number3, Mirror* mirror, int number4);
+		LaserMachine* machine, int number3);
+
+	void push(Direction direction);
 
 	void run(Door* door, int number);
 
