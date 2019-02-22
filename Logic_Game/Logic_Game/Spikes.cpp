@@ -23,64 +23,59 @@ Spikes::Spikes(Vector2f position, string textureFile) {
 	reset();
 }
 
-void Spikes::setDelay(int delay) {
-	lock = true;
-	this->delay = delay;
-	clock.restart();
+void Spikes::setOn(bool on) {
+	this->on = on;
+	if (!on) direction = Direction::Down;
 }
 
-bool Spikes::getDmg() {
-	return dmg;
+bool Spikes::isOn() {
+	return on;
+}
+
+void Spikes::run() {
+	if (direction == Direction::Up && on) {
+		if (stage > 0 && stage < 4 && clock.getElapsedTime().asSeconds() >= 0.08) {
+			clock.restart();
+			stage++;
+			setTextureRect(*(rect + stage));
+		}
+		else if (clock.getElapsedTime().asSeconds() >= 2.5 && stage == 0) {
+			clock.restart();
+			stage++;
+			setTextureRect(*(rect + stage));
+			dmg = true;
+		}
+		else if (stage == 4 && clock.getElapsedTime().asSeconds() >= 0.5) {
+			direction = Direction::Down;
+		}
+	}
+	else if (direction == Direction::Down) {
+		if (stage > 0 && stage < 4 && clock.getElapsedTime().asSeconds() >= 0.15) {
+			clock.restart();
+			stage--;
+			setTextureRect(*(rect + stage));
+		}
+		else if (stage == 4) {
+			clock.restart();
+			stage--;
+			setTextureRect(*(rect + stage));
+		}
+		else if (stage == 0) {
+			direction = Direction::Up;
+			dmg = false;
+		}
+	}
 }
 
 void Spikes::draw(RenderWindow& window) {
-	if (lock && clock.getElapsedTime().asSeconds() >= delay) {
-		lock = false;
-		clock.restart();
-	}
-	else if(!lock){
-		if (direction == Direction::Up) {
-			if (stage > 0 && stage < 4 && clock.getElapsedTime().asSeconds() >= 0.08) {
-				clock.restart();
-				stage++;
-				setTextureRect(*(rect + stage));
-			}
-			else if (clock.getElapsedTime().asSeconds() >= 2.5 && stage == 0) {
-				clock.restart();
-				stage++;
-				setTextureRect(*(rect + stage));
-				dmg = true;
-			}
-			else if (stage == 4 && clock.getElapsedTime().asSeconds() >= 0.5) {
-				direction = Direction::Down;
-			}
-		}
-		else if (direction == Direction::Down) {
-			if (stage > 0 && stage < 4 && clock.getElapsedTime().asSeconds() >= 0.15) {
-				clock.restart();
-				stage--;
-				setTextureRect(*(rect + stage));
-			}
-			else if (stage == 4) {
-				clock.restart();
-				stage--;
-				setTextureRect(*(rect + stage));
-			}
-			else if (stage == 0) {
-				direction = Direction::Up;
-				dmg = false;
-			}
-		}
-	}
 	window.draw(*this);
 }
 
 void Spikes::reset() {
 	setTextureRect(*rect);
 	dmg = false;
+	on = false;
 	stage = 0;
 	direction = Direction::Up;
-	lock = true;
-	delay = 0;
 	clock.restart();
 }
