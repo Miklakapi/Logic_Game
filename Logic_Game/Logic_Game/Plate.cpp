@@ -51,40 +51,29 @@ void Plate::draw(RenderWindow& window) {
 	window.draw(*this);
 }
 
-bool Plate::run(Player& player) {
+void Plate::run(Player& player, SlidingBlock* block, int number, Mirror* mirror, int number2) {
 	setPressure(false);
 	if (player.getPosition().x < getPosition().x + 80 && player.getPosition().x + 80 > getPosition().x &&
 		player.getPosition().y < getPosition().y + 80 && player.getPosition().y + 80 > getPosition().y) {
 		setPressure(true);
-		return true;
+		return;
 	}
-	return false;
-}
-
-bool Plate::run(SlidingBlock* block, int number) {
-	setPressure(false);
 	for (int i = 0; i < number; i++) {
 		if (!(block + i)->getExist()) continue;
 		if ((block + i)->getPosition().x < getPosition().x + 80 && (block + i)->getPosition().x + 80 > getPosition().x &&
 			(block + i)->getPosition().y < getPosition().y + 80 && (block + i)->getPosition().y + 80 > getPosition().y) {
 			setPressure(true);
-			return true;
+			return;
 		}
 	}
-	return false;
-}
-
-bool Plate::run(Mirror* mirror, int number) {
-	setPressure(false);
 	for (int i = 0; i < number; i++) {
 		if (!(mirror + i)->getExist()) continue;
 		if ((mirror + i)->getPosition().x < getPosition().x + 80 && (mirror + i)->getPosition().x + 80 > getPosition().x &&
 			(mirror + i)->getPosition().y < getPosition().y + 80 && (mirror + i)->getPosition().y + 80 > getPosition().y) {
 			setPressure(true);
-			return true;
+			return;
 		}
 	}
-	return false;
 }
 
 void Plate::reset() {
