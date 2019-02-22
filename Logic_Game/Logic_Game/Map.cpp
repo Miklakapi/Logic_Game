@@ -1,7 +1,6 @@
 #include "Map.hpp"
 
-Map::Map(string textureFile){
-	Square::setTextureFile(textureFile);
+Map::Map(){
 	square = new Square[198];
 	int nr(0);
 	for (int y = 0; y < 11; y++) {
@@ -11,6 +10,10 @@ Map::Map(string textureFile){
 		}
 	}
 	reset();
+}
+
+void Map::setSquareTexture(string textureFile) {
+	Square::setTextureFile(textureFile);
 }
 
 void Map::setType(int number, Square::Type type) {
