@@ -2,24 +2,31 @@
 
 Texture* Door::texture;
 
-Door::Door(Vector2f position, Color color, string textureFile) {
+Door::Door() {
+	setDoorPosition(Vector2f{ 0,0 });
+	setDoorSize(Vector2f{ 80,80 });
+	setTexture(texture);
+	background.setFillColor(Color::Red);
+	reset();
+}
+
+void Door::setDoorTexture(string textureFile) {
 	static int a = 0;
 	if (a == 0) {
 		texture = new Texture;
-		texture->loadFromFile(textureFile);
 		a++;
 	}
-	setSize(Vector2f{ 80,80 });
+	texture->loadFromFile(textureFile);
+}
+
+void Door::setDoorPosition(Vector2f position) {
 	setPosition(position);
-	setTexture(texture);
-
-	background.setSize(Vector2f{ 80,80 });
 	background.setPosition(position);
-	background.setFillColor(color);
+}
 
-	this->color = color;
-
-	reset();
+void Door::setDoorSize(Vector2f size) {
+	setSize(size);
+	background.setSize(size);
 }
 
 bool Door::isOpen() {
@@ -32,7 +39,7 @@ void Door::setOpen(bool open) {
 		clock.restart();
 	}
 	else if ((!open) && open != this->open) {
-		background.setFillColor(color);
+		background.setFillColor(Color::Red);
 	}
 	else {
 		return;
