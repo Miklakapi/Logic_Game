@@ -2,6 +2,7 @@
 #include <SFML\Window.hpp>
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
+#include <string>
 #include "Hearts.hpp"
 #include "LvInfo.hpp"
 #include "Timer.hpp"
@@ -20,6 +21,18 @@ class MenuBar{
 public:
 
 	MenuBar();
+
+	void setHeartsTexture(string textureFile);
+
+	void setInfoFont(string fontFile);
+
+	void setTimerFont(string fontFile);
+
+	void setHeartsPosition(Vector2f position);
+
+	void setInfoPosition(Vector2f position);
+
+	void setTimerPosition(Vector2f position);
 
 	Data getData();
 
