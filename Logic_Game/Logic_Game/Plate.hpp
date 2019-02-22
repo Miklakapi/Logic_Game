@@ -34,11 +34,7 @@ public:
 
 	void draw(RenderWindow& window);
 
-	bool run(Player& player);
-
-	bool run(SlidingBlock* block, int number);
-	
-	bool run(Mirror* mirror, int number);
+	void run(Player& player, SlidingBlock* block, int number, Mirror* mirror, int number2);
 
 	void reset();
 };
