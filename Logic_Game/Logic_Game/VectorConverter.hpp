@@ -31,6 +31,12 @@ public:
 
 	static VectorConverter convert(int x, int y);
 
+	static VectorConverter convert(Vector2f vector);
+
+	static VectorConverter convert(Vector2i vector);
+
+	static VectorConverter convert(Vector2u vector);
+
 	int asNumber();
 
 	Vector2i asXY();
