@@ -10,6 +10,7 @@ Map::Map(string textureFile){
 			nr++;
 		}
 	}
+	reset();
 }
 
 void Map::setType(int number, Square::Type type) {
@@ -46,7 +47,7 @@ void Map::reset() {
 	for (int i = 0; i < 198; i++) {
 		(square + i)->reset();
 	}
-	reader.renderLV(square);
+	reader.renderLV(1, square);
 }
 
 Map::~Map(){
