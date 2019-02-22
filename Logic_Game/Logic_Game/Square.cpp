@@ -4,6 +4,7 @@ Texture* Square::texture;
 
 Square::Square() {
 	setSize(Vector2f{ 80,80 });
+	setPosition(Vector2f{ 0,0 });
 	setTexture(texture);
 	setType(Type::Empty);
 }
