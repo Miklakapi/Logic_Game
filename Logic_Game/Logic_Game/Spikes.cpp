@@ -36,7 +36,7 @@ bool Spikes::isOn() {
 	return on;
 }
 
-void Spikes::run() {
+void Spikes::run(Player& player, SlidingBlock* block, int number, Mirror* mirror, int number2) {
 	if (direction == Direction::Up && on) {
 		if (stage > 0 && stage < 4 && clock.getElapsedTime().asSeconds() >= 0.08) {
 			clock.restart();
@@ -67,22 +67,11 @@ void Spikes::run() {
 			direction = Direction::Up;
 		}
 	}
-}
-
-void Spikes::draw(RenderWindow& window) {
-	window.draw(*this);
-}
-
-void Spikes::run(Player& player) {
 	if (stage == 0) return;
 	if (player.getPosition().x < getPosition().x + 80 && player.getPosition().x + 80 > getPosition().x &&
 		player.getPosition().y < getPosition().y + 80 && player.getPosition().y + 80 > getPosition().y) {
 		player.setLive(false);
 	}
-}
-
-void Spikes::run(SlidingBlock* block, int number) {
-	if (stage == 0) return;
 	for (int i = 0; i < number; i++) {
 		if (!(block + i)->getExist()) continue;
 		if ((block + i)->getPosition().x < getPosition().x + 80 && (block + i)->getPosition().x + 80 > getPosition().x &&
@@ -90,10 +79,6 @@ void Spikes::run(SlidingBlock* block, int number) {
 			(block + i)->destroy();
 		}
 	}
-}
-
-void Spikes::run(Mirror* mirror, int number) {
-	if (stage == 0) return;
 	for (int i = 0; i < number; i++) {
 		if (!(mirror + i)->getExist()) continue;
 		if ((mirror + i)->getPosition().x < getPosition().x + 80 && (mirror + i)->getPosition().x + 80 > getPosition().x &&
@@ -101,6 +86,10 @@ void Spikes::run(Mirror* mirror, int number) {
 			(mirror + i)->destroy();
 		}
 	}
+}
+
+void Spikes::draw(RenderWindow& window) {
+	window.draw(*this);
 }
 
 void Spikes::reset() {
