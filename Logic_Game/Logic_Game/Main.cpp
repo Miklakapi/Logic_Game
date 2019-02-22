@@ -27,8 +27,10 @@ int main() {
 	Door door;
 	door.setDoorPosition(VectorConverter::convert(1, 2).asVector2f());
 	//-------
-	Spikes spikes;
+	Spikes::loadSpikesTexture();
 
+	Spikes spikes;
+	spikes.setOn(false);
 	//-------
 
 	while (app.isOpen()) {
@@ -38,6 +40,9 @@ int main() {
 			switch (event.type) {
 			case Event::Closed:
 				app.close();
+				break;
+			case Event::KeyPressed:
+				spikes.setOn(true);
 				break;
 			}
 		}
