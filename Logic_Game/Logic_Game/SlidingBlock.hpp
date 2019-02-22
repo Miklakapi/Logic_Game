@@ -3,6 +3,12 @@
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
 #include <string>
+#include "VectorConverter.hpp"
+#include "Map.hpp"
+#include "Door.hpp"
+#include "ShootingBlock.hpp"
+#include "LaserMachine.hpp"
+#include "Mirror.hpp"
 
 using namespace sf;
 using namespace std;
@@ -23,25 +29,28 @@ private:
 
 	static Texture* texture;
 
-	Direction direction;
+	int moveNr;
 
 	Clock clock;
 
-	int moveNr;
+	Direction direction;
 
 	bool exist;
 
 public:
 
-	SlidingBlock(Vector2f position = Vector2f{ 0,0 }, string textureFile = "Img/SlidingBlock.png");
+	SlidingBlock();
+
+	static void setBlockTexture(string textureFile = "Img/SlidingBlock.png");
 
 	void destroy();
 
-	void push(Direction direction);
-
 	bool getExist();
 
-	void run();
+	bool push(Direction direction, Map& map, ShootingBlock* blockS, int number, Door* door, int number2,
+		LaserMachine* machine, int number3, Mirror* mirror, int number4);
+
+	void run(Door* door, int number);
 
 	void draw(RenderWindow& window);
 
