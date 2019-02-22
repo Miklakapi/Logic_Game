@@ -30,7 +30,7 @@ bool SlidingBlock::getExist() {
 }
 
 bool SlidingBlock::push(Direction direction, Map& map, ShootingBlock* blockS, int number, Door* door, int number2,
-	LaserMachine* machine, int number3, Mirror* mirror, int number4) {
+	LaserMachine* machine, int number3) {
 
 	if (moveNr != 10) return false;
 	if (direction == Direction::None) {
@@ -52,10 +52,6 @@ bool SlidingBlock::push(Direction direction, Map& map, ShootingBlock* blockS, in
 		for (int i = 0; i < number3; i++) {
 			if ((machine + i)->getPosition() == VectorConverter::convert(convert.asXY().x, convert.asXY().y - 1).asVector2f()) return false;
 		}
-		for (int i = 0; i < number4; i++) {
-			if ((mirror + i)->getExist() == false) continue;
-			if ((mirror + i)->getPosition() == VectorConverter::convert(convert.asXY().x, convert.asXY().y - 1).asVector2f()) return false;
-		}
 		break;
 	case Down:
 		if (map.getType(convert.asNumber() + 18) == Square::Type::Wall) return false;
@@ -68,10 +64,6 @@ bool SlidingBlock::push(Direction direction, Map& map, ShootingBlock* blockS, in
 		}
 		for (int i = 0; i < number3; i++) {
 			if ((machine + i)->getPosition() == VectorConverter::convert(convert.asXY().x, convert.asXY().y + 1).asVector2f()) return false;
-		}
-		for (int i = 0; i < number4; i++) {
-			if ((mirror + i)->getExist() == false) continue;
-			if ((mirror + i)->getPosition() == VectorConverter::convert(convert.asXY().x, convert.asXY().y + 1).asVector2f()) return false;
 		}
 		break;
 	case Left:
@@ -86,10 +78,6 @@ bool SlidingBlock::push(Direction direction, Map& map, ShootingBlock* blockS, in
 		for (int i = 0; i < number3; i++) {
 			if ((machine + i)->getPosition() == VectorConverter::convert(convert.asXY().x - 1, convert.asXY().y).asVector2f()) return false;
 		}
-		for (int i = 0; i < number4; i++) {
-			if ((mirror + i)->getExist() == false) continue;
-			if ((mirror + i)->getPosition() == VectorConverter::convert(convert.asXY().x - 1, convert.asXY().y).asVector2f()) return false;
-		}
 		break;
 	case Right:
 		if (map.getType(convert.asNumber() + 1) == Square::Type::Wall) return false;
@@ -103,15 +91,14 @@ bool SlidingBlock::push(Direction direction, Map& map, ShootingBlock* blockS, in
 		for (int i = 0; i < number3; i++) {
 			if ((machine + i)->getPosition() == VectorConverter::convert(convert.asXY().x + 1, convert.asXY().y).asVector2f()) return false;
 		}
-		for (int i = 0; i < number4; i++) {
-			if ((mirror + i)->getExist() == false) continue;
-			if ((mirror + i)->getPosition() == VectorConverter::convert(convert.asXY().x + 1, convert.asXY().y).asVector2f()) return false;
-		}
 		break;
 	}
+	return true;
+}
+
+void SlidingBlock::push(Direction direction) {
 	this->direction = direction;
 	moveNr = 0;
-	return true;
 }
 
 void SlidingBlock::run(Door* door, int number) {
