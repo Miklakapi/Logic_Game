@@ -46,10 +46,69 @@ bool Player::getLive() {
 	return live;
 }
 
-void Player::movePlayer(Direction direction) {
+void Player::movePlayer(Direction direction, Map& map, ShootingBlock* blockS, int number, Door* door, int number2,
+	LaserMachine* machine, int number3, SlidingBlock* block, int number4, Mirror* mirror, int number5) {
+
 	if (moveNr != 10) return;
+	if (direction == Direction::None) {
+		this->direction = direction;
+		return;
+	}
+	Vector2f vec = getPosition();
+	VectorConverter convert = VectorConverter::convert(vec);
+	switch (direction) {
+	case Up:
+		if (map.getType(convert.asNumber() - 18) == Square::Type::Wall) return;
+		for (int i = 0; i < number; i++) {
+			if ((blockS + i)->getPosition() == VectorConverter::convert(convert.asXY().x, convert.asXY().y - 1).asVector2f()) return;
+		}
+		for (int i = 0; i < number2; i++) {
+			if ((door + i)->isOpen()) continue;
+			if ((door + i)->getPosition() == VectorConverter::convert(convert.asXY().x, convert.asXY().y - 1).asVector2f()) return;
+		}
+
+		break;
+	case Down:
+		if (map.getType(convert.asNumber() + 18) == Square::Type::Wall) return;
+		for (int i = 0; i < number; i++) {
+			if ((blockS + i)->getPosition() == VectorConverter::convert(convert.asXY().x, convert.asXY().y + 18).asVector2f());
+		}
+		for (int i = 0; i < number2; i++) {
+			if ((door + i)->isOpen()) continue;
+			if ((door + i)->getPosition() == VectorConverter::convert(convert.asXY().x, convert.asXY().y + 1).asVector2f()) return;
+		}
+
+		break;
+	case Left:
+		if (map.getType(convert.asNumber() - 1) == Square::Type::Wall) return;
+		for (int i = 0; i < number; i++) {
+			if ((blockS + i)->getPosition() == VectorConverter::convert(convert.asXY().x, convert.asXY().y - 1).asVector2f());
+		}
+		for (int i = 0; i < number2; i++) {
+			if ((door + i)->isOpen()) continue;
+			if ((door + i)->getPosition() == VectorConverter::convert(convert.asXY().x - 1, convert.asXY().y).asVector2f()) return;
+		}
+
+		break;
+	case Right:
+		if (map.getType(convert.asNumber() + 1) == Square::Type::Wall) return;
+		for (int i = 0; i < number; i++) {
+			if ((blockS + i)->getPosition() == VectorConverter::convert(convert.asXY().x + 1, convert.asXY().y).asVector2f());
+		}
+
+		break;
+	}
+
+
+
+
+
+
+
+
+
+	
 	this->direction = direction;
-	if (direction == Direction::None) return;
 	moveNr = 0;
 }
 
