@@ -18,8 +18,6 @@ class Spikes : public RectangleShape{
 
 	static IntRect* rect;
 
-	bool dmg;
-
 	int stage;
 
 	enum Direction {
@@ -33,7 +31,9 @@ class Spikes : public RectangleShape{
 
 public:
 
-	Spikes(Vector2f position = Vector2f{ 0,0 }, string textureFile = "Img/Spikes.png");
+	Spikes();
+
+	static void loadSpikesTexture(string textureFile = "Img/Spikes.png");
 
 	void setOn(bool on);
 
@@ -43,11 +43,11 @@ public:
 
 	void draw(RenderWindow& window);
 
-	bool run(Player& player);
+	void run(Player& player);
 	
-	bool run(SlidingBlock* block, int number);
+	void run(SlidingBlock* block, int number);
 
-	bool run(Mirror* mirror, int number);
+	void run(Mirror* mirror, int number);
 
 	void reset();
 };
