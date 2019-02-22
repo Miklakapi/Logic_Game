@@ -45,6 +45,7 @@ void Door::setOpen(bool open) {
 		return;
 	}
 	this->open = open;
+	return;
 }
 
 void Door::draw(RenderWindow& window) {
