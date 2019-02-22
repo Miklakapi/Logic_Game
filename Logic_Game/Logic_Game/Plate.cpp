@@ -66,7 +66,7 @@ void Plate::run(Player& player, SlidingBlock* block, int number, Mirror* mirror,
 			return;
 		}
 	}
-	for (int i = 0; i < number; i++) {
+	for (int i = 0; i < number2; i++) {
 		if (!(mirror + i)->getExist()) continue;
 		if ((mirror + i)->getPosition().x < getPosition().x + 80 && (mirror + i)->getPosition().x + 80 > getPosition().x &&
 			(mirror + i)->getPosition().y < getPosition().y + 80 && (mirror + i)->getPosition().y + 80 > getPosition().y) {
