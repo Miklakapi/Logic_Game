@@ -2,12 +2,17 @@
 
 Timer::Timer(Vector2f position, string fontFile) {
 	text.setCharacterSize(60);
-	font.loadFromFile(fontFile);
-	text.setFont(font);
+	setTimerFont(fontFile);
 	text.setFillColor(Color::White);
 	text.setLetterSpacing(1);
 	text.setStyle(Text::Bold);
 	setPosition(position);
+	resetTime();
+}
+
+void Timer::setTimerFont(string fontFile) {
+	font.loadFromFile(fontFile);
+	text.setFont(font);
 }
 
 void Timer::setPosition(Vector2f position) {
