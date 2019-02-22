@@ -10,12 +10,14 @@
 #include "Player.hpp"
 #include "Mirror.hpp"
 #include "SlidingBLock.hpp"
+#include "FPS.hpp"
+
 
 using namespace sf;
 
 int main() {
 	RenderWindow app(VideoMode{ 1440,880 }, "Logic_Game", Style::Close);
-	app.setFramerateLimit(60);
+	app.setFramerateLimit(144);
 	//-------
 	Map::setSquareTexture();
 
@@ -58,7 +60,11 @@ int main() {
 	Mirror* mirror = NULL;
 
 	//-------
+	FPS fps;
+
 	while (app.isOpen()) {
+
+		fps.run();
 
 		Event event;
 		while (app.pollEvent(event)) {
@@ -84,7 +90,11 @@ int main() {
 		block[0].run(&door, 1);
 		block[1].run(&door, 1);
 		//-------
-		door.setOpen(plate->isPressed());
+
+		if (plate->isPressed()) door.setOpen(true);
+		else if((plate + 1)->isPressed()) door.setOpen(true);
+		else door.setOpen(false);
+		
 		//-------
 
 		app.clear();
@@ -97,6 +107,7 @@ int main() {
 		block[0].draw(app);
 		block[1].draw(app);
 		player.draw(app);
+		app.draw(fps);
 		app.display();
 	}
 }
