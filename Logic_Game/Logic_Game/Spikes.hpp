@@ -3,6 +3,9 @@
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
 #include <string>
+#include "Player.hpp"
+#include "SlidingBlock.hpp"
+#include "Mirror.hpp"
 
 using namespace sf;
 using namespace std;
@@ -19,10 +22,6 @@ class Spikes : public RectangleShape{
 
 	int stage;
 
-	bool lock;
-
-	int delay;
-
 	enum Direction {
 		Up,
 		Down
@@ -30,15 +29,25 @@ class Spikes : public RectangleShape{
 
 	Direction direction;
 
+	bool on;
+
 public:
 
 	Spikes(Vector2f position = Vector2f{ 0,0 }, string textureFile = "Img/Spikes.png");
-	
-	void setDelay(int delay);
 
-	bool getDmg();
+	void setOn(bool on);
+
+	bool isOn();
+
+	void run();
 
 	void draw(RenderWindow& window);
+
+	bool run(Player& player);
+	
+	bool run(SlidingBlock* block, int number);
+
+	bool run(Mirror* mirror, int number);
 
 	void reset();
 };
