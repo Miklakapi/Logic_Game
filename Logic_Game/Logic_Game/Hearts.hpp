@@ -13,11 +13,13 @@ class Hearts{
 
 	RectangleShape* heart;
 
-	static Texture* texture;
+	Texture* texture;
 
 public:
 
 	Hearts(Vector2f position = Vector2f{ 0,0 }, string textureFile = "Img/Heart.png");
+
+	void setHeartsTexture(string textureFile = "Img/Heart.png");
 
 	void setPosition(Vector2f position);
 
