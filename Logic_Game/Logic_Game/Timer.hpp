@@ -23,6 +23,8 @@ public:
 
 	Timer(Vector2f position = Vector2f{ 0,0 }, string fontFile = "Fonts/IndieFlower.ttf" );
 
+	void setTimerFont(string fontFile);
+
 	void setPosition(Vector2f position);
 
 	int getMinutes();
