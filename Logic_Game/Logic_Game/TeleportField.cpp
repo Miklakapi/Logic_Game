@@ -2,24 +2,31 @@
 
 Texture* TeleportField::texture;
 
-TeleportField::TeleportField(Vector2f position, Color color, string textureFile){
+TeleportField::TeleportField(Vector2f position){
+	setTeleportPosition(Vector2f{ 0,0 });
+	setTeleportSize(Vector2f{ 80,80 });
+	setTexture(texture);
+	background.setFillColor(Color::Red);
+	reset();
+}
+
+void TeleportField::setTeleportTexture(string textureFile) {
 	static int a = 0;
 	if (a == 0) {
 		texture = new Texture;
-		texture->loadFromFile(textureFile);
 		a++;
 	}
-	setSize(Vector2f{ 80,80 });
+	texture->loadFromFile(textureFile);
+}
+
+void TeleportField::setTeleportPosition(Vector2f position) {
 	setPosition(position);
-	setTexture(texture);
-
-	background.setSize(Vector2f{ 80,80 });
 	background.setPosition(position);
-	background.setFillColor(color);
+}
 
-	this->color = color;
-
-	reset();
+void TeleportField::setTeleportSize(Vector2f size) {
+	setSize(size);
+	background.setSize(size);
 }
 
 void TeleportField::setTeleportPlace(Vector2f place) {
@@ -30,16 +37,12 @@ Vector2f TeleportField::getTeleportPlace() {
 	return teleportPlace;
 }
 
-bool TeleportField::isOpen() {
-	return open;
-}
-
 void TeleportField::setOpen(bool open) {
 	if (open && open != this->open) {
 		background.setFillColor(Color::Green);
 	}
 	else if ((!open) && open != this->open) {
-		background.setFillColor(color);
+		background.setFillColor(Color::Red);
 	}
 	else {
 		return;
@@ -52,6 +55,21 @@ void TeleportField::draw(RenderWindow& window) {
 	window.draw(*this);
 }
 
+void TeleportField::run(Player& player, SlidingBlock* block, int number, Mirror* mirror, int number2) {
+	for (int i = 0; i < number; i++) {
+		if (!(block + i)->getExist()) continue;
+		if ((block + i)->getPosition() == teleportPlace) return;
+	}
+	for (int i = 0; i < number2; i++) {
+		if (!(mirror + i)->getExist()) continue;
+		if ((mirror + i)->getPosition() == teleportPlace) return;
+	}
+	if (open && getPosition() == player.getPosition()) {
+		player.setPosition(teleportPlace);
+	}
+}
+
 void TeleportField::reset() {
 	setOpen(false);
+	teleportPlace = { 0,0 };
 }
