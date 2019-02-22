@@ -1,9 +1,13 @@
 #include "Mirror.hpp"
 
 Mirror::Mirror(){
-	a = 1;
+	
 }
 
-void Mirror::set() {
-	a = 2;
+void Mirror::destroy() {
+
+}
+
+bool Mirror::getExist() {
+	return exist;
 }
