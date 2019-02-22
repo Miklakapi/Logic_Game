@@ -7,12 +7,14 @@ using namespace sf;
 
 class Mirror : public RectangleShape{
 
-	int a;
+	bool exist;
 
 public:
 
 	Mirror();
-
-	void set();
 	
+	void destroy();
+
+	bool getExist();
+
 };
