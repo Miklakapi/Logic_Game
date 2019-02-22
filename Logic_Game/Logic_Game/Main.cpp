@@ -8,6 +8,8 @@
 #include "Door.hpp"
 #include "Spikes.hpp"
 #include "Player.hpp"
+#include "Mirror.hpp"
+#include "SlidingBLock.hpp"
 
 using namespace sf;
 
@@ -44,6 +46,12 @@ int main() {
 	Player player;
 	player.setPosition(VectorConverter::convert(2, 1).asVector2f());
 	//-------
+	SlidingBlock *block = NULL;
+	ShootingBlock* blockS = NULL;
+	LaserMachine* machine = NULL;
+	Mirror* mirror = NULL;
+
+	//-------
 	while (app.isOpen()) {
 
 		Event event;
@@ -55,19 +63,18 @@ int main() {
 			}
 		}
 
-		if (Keyboard::isKeyPressed(Keyboard::W)) player.movePlayer(Player::Up);
-		else if (Keyboard::isKeyPressed(Keyboard::A)) player.movePlayer(Player::Left);
-		else if (Keyboard::isKeyPressed(Keyboard::S)) player.movePlayer(Player::Down);
-		else if (Keyboard::isKeyPressed(Keyboard::D)) player.movePlayer(Player::Right);
+		if (Keyboard::isKeyPressed(Keyboard::W)) player.movePlayer(Player::Up, map, blockS, 0, &door, 1, machine, 0, block, 0, mirror, 0);
+		else if (Keyboard::isKeyPressed(Keyboard::A)) player.movePlayer(Player::Left, map, blockS, 0, &door, 1, machine, 0, block, 0, mirror, 0);
+		else if (Keyboard::isKeyPressed(Keyboard::S)) player.movePlayer(Player::Down, map, blockS, 0, &door, 1, machine, 0, block, 0, mirror, 0);
+		else if (Keyboard::isKeyPressed(Keyboard::D)) player.movePlayer(Player::Right, map, blockS, 0, &door, 1, machine, 0, block, 0, mirror, 0);
 
 		//-------
-		spikes.run();
 		menu.run();
 		player.run();
 		//-------
-		spikes.run(player);
-		(plate + 0)->run(player);
-		(plate + 1)->run(player);
+		spikes.run(player, block, 0, mirror, 0);
+		(plate + 0)->run(player, block, 0, mirror, 0);
+		(plate + 1)->run(player, block, 0, mirror, 0);
 		//-------
 
 		app.clear();
