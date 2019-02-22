@@ -27,8 +27,12 @@ bool Mirror::getExist() {
 }
 
 bool Mirror::push(Direction direction, Map& map, ShootingBlock* blockS, int number, Door* door, int number2,
-	LaserMachine* machine, int number3){// , SlidingBlock* block, int number4) {
+	LaserMachine* machine, int number3){
 	return false;
+}
+
+void Mirror::push(Direction direction) {
+
 }
 
 void Mirror::run(Door* door, int number) {
