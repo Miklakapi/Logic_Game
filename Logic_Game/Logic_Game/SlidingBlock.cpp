@@ -2,18 +2,21 @@
 
 Texture* SlidingBlock::texture;
 
-SlidingBlock::SlidingBlock(Vector2f position, string textureFile){
-	static int a = 0;
-	if (a == 0) {
-		texture = new Texture;
-		texture->loadFromFile(textureFile);
-		a++;
-	}
+SlidingBlock::SlidingBlock(){
 	setSize(Vector2f{ 80,80 });
 	setTexture(texture);
 	setTextureRect(IntRect{ 0,0,80,80 });
-	setPosition(position);
+	setPosition(Vector2f{ 0,0 });
 	reset();
+}
+
+void SlidingBlock::setBlockTexture(string textureFile) {
+	static int a = 0;
+	if (a == 0) {
+		texture = new Texture;
+		a++;
+	}
+	texture->loadFromFile(textureFile);
 }
 
 void SlidingBlock::destroy() {
@@ -22,18 +25,96 @@ void SlidingBlock::destroy() {
 	setTextureRect(IntRect{ 80,0,80,80 });
 }
 
-void SlidingBlock::push(Direction direction) {
-	if (moveNr != 10) return;
-	this->direction = direction;
-	if (direction == Direction::None) return;
-	moveNr = 0;
-}
-
 bool SlidingBlock::getExist() {
 	return exist;
 }
 
-void SlidingBlock::run() {
+bool SlidingBlock::push(Direction direction, Map& map, ShootingBlock* blockS, int number, Door* door, int number2,
+	LaserMachine* machine, int number3, Mirror* mirror, int number4) {
+
+	if (moveNr != 10) return false;
+	if (direction == Direction::None) {
+		this->direction = direction;
+		return false;
+	}
+	Vector2f vec = getPosition();
+	VectorConverter convert = VectorConverter::convert(vec);
+	switch (direction) {
+	case Up:
+		if (map.getType(convert.asNumber() - 18) == Square::Type::Wall) return false;
+		for (int i = 0; i < number; i++) {
+			if ((blockS + i)->getPosition() == VectorConverter::convert(convert.asXY().x, convert.asXY().y - 1).asVector2f()) return false;
+		}
+		for (int i = 0; i < number2; i++) {
+			if ((door + i)->isOpen()) continue;
+			if ((door + i)->getPosition() == VectorConverter::convert(convert.asXY().x, convert.asXY().y - 1).asVector2f()) return false;
+		}
+		for (int i = 0; i < number3; i++) {
+			if ((machine + i)->getPosition() == VectorConverter::convert(convert.asXY().x, convert.asXY().y - 1).asVector2f()) return false;
+		}
+		for (int i = 0; i < number4; i++) {
+			if ((mirror + i)->getExist() == false) continue;
+			if ((mirror + i)->getPosition() == VectorConverter::convert(convert.asXY().x, convert.asXY().y - 1).asVector2f()) return false;
+		}
+		break;
+	case Down:
+		if (map.getType(convert.asNumber() + 18) == Square::Type::Wall) return false;
+		for (int i = 0; i < number; i++) {
+			if ((blockS + i)->getPosition() == VectorConverter::convert(convert.asXY().x, convert.asXY().y + 1).asVector2f()) return false;
+		}
+		for (int i = 0; i < number2; i++) {
+			if ((door + i)->isOpen()) continue;
+			if ((door + i)->getPosition() == VectorConverter::convert(convert.asXY().x, convert.asXY().y + 1).asVector2f()) return false;
+		}
+		for (int i = 0; i < number3; i++) {
+			if ((machine + i)->getPosition() == VectorConverter::convert(convert.asXY().x, convert.asXY().y + 1).asVector2f()) return false;
+		}
+		for (int i = 0; i < number4; i++) {
+			if ((mirror + i)->getExist() == false) continue;
+			if ((mirror + i)->getPosition() == VectorConverter::convert(convert.asXY().x, convert.asXY().y + 1).asVector2f()) return false;
+		}
+		break;
+	case Left:
+		if (map.getType(convert.asNumber() - 1) == Square::Type::Wall) return false;
+		for (int i = 0; i < number; i++) {
+			if ((blockS + i)->getPosition() == VectorConverter::convert(convert.asXY().x - 1, convert.asXY().y).asVector2f()) return false;
+		}
+		for (int i = 0; i < number2; i++) {
+			if ((door + i)->isOpen()) continue;
+			if ((door + i)->getPosition() == VectorConverter::convert(convert.asXY().x - 1, convert.asXY().y).asVector2f()) return false;
+		}
+		for (int i = 0; i < number3; i++) {
+			if ((machine + i)->getPosition() == VectorConverter::convert(convert.asXY().x - 1, convert.asXY().y).asVector2f()) return false;
+		}
+		for (int i = 0; i < number4; i++) {
+			if ((mirror + i)->getExist() == false) continue;
+			if ((mirror + i)->getPosition() == VectorConverter::convert(convert.asXY().x - 1, convert.asXY().y).asVector2f()) return false;
+		}
+		break;
+	case Right:
+		if (map.getType(convert.asNumber() + 1) == Square::Type::Wall) return false;
+		for (int i = 0; i < number; i++) {
+			if ((blockS + i)->getPosition() == VectorConverter::convert(convert.asXY().x + 1, convert.asXY().y).asVector2f()) return false;
+		}
+		for (int i = 0; i < number2; i++) {
+			if ((door + i)->isOpen()) continue;
+			if ((door + i)->getPosition() == VectorConverter::convert(convert.asXY().x + 1, convert.asXY().y).asVector2f()) return false;
+		}
+		for (int i = 0; i < number3; i++) {
+			if ((machine + i)->getPosition() == VectorConverter::convert(convert.asXY().x + 1, convert.asXY().y).asVector2f()) return false;
+		}
+		for (int i = 0; i < number4; i++) {
+			if ((mirror + i)->getExist() == false) continue;
+			if ((mirror + i)->getPosition() == VectorConverter::convert(convert.asXY().x + 1, convert.asXY().y).asVector2f()) return false;
+		}
+		break;
+	}
+	this->direction = direction;
+	moveNr = 0;
+	return true;
+}
+
+void SlidingBlock::run(Door* door, int number) {
 	if (clock.getElapsedTime().asSeconds() >= 0.06 && moveNr < 10 && exist) {
 		clock.restart();
 		switch (direction) {
@@ -56,6 +137,15 @@ void SlidingBlock::run() {
 		if (clock.getElapsedTime().asSeconds() >= 0.5) {
 			setTextureRect(IntRect{ 160,0,1,1 });
 			moveNr = -1;
+		}
+	}
+	if (exist) {
+		for (int i = 0; i < number; i++) {
+			if ((door + i)->isOpen() == false &&
+				(door + i)->getPosition().x < getPosition().x + 80 && (door + i)->getPosition().x + 80 > getPosition().x &&
+				(door + i)->getPosition().y < getPosition().y + 80 && (door + i)->getPosition().y + 80 > getPosition().y) {
+				destroy();
+			}
 		}
 	}
 }
