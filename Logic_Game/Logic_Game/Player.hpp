@@ -11,7 +11,6 @@
 #include "LaserMachine.hpp"
 #include "Mirror.hpp"
 
-
 using namespace sf;
 using namespace std;
 
@@ -60,7 +59,7 @@ public:
 	void movePlayer(Direction direction, Map& map, ShootingBlock* blockS, int number, Door* door, int number2,
 		LaserMachine* machine, int number3, SlidingBlock* block, int number4, Mirror* mirror, int number5);
 
-	void run();
+	void run(Door* door, int number);
 
 	void draw(RenderWindow& window);
 
