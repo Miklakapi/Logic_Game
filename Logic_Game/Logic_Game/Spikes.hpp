@@ -39,15 +39,9 @@ public:
 
 	bool isOn();
 
-	void run();
+	void run(Player& player, SlidingBlock* block, int number, Mirror* mirror, int number2);
 
 	void draw(RenderWindow& window);
-
-	void run(Player& player);
-	
-	void run(SlidingBlock* block, int number);
-
-	void run(Mirror* mirror, int number);
 
 	void reset();
 };
