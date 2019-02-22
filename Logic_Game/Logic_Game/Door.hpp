@@ -17,6 +17,7 @@ class Door : public RectangleShape{
 
 	Clock clock;
 
+
 public:
 
 	Door();
@@ -32,6 +33,8 @@ public:
 	void setOpen(bool open);
 
 	void draw(RenderWindow& window);
+
+	
 
 	void reset();
 };
