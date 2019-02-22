@@ -3,12 +3,9 @@
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
 #include <string>
-#include "Map.hpp"
 #include "VectorConverter.hpp"
 #include "Map.hpp"
-#include "Plate.hpp"
 #include "Door.hpp"
-#include "Spikes.hpp"
 #include "ShootingBlock.hpp"
 #include "SlidingBlock.hpp"
 #include "LaserMachine.hpp"
@@ -60,7 +57,8 @@ public:
 
 	bool getLive();
 
-	void movePlayer(Direction direction);
+	void movePlayer(Direction direction, Map& map, ShootingBlock* blockS, int number, Door* door, int number2,
+		LaserMachine* machine, int number3, SlidingBlock* block, int number4, Mirror* mirror, int number5);
 
 	void run();
 
