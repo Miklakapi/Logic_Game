@@ -17,6 +17,8 @@ public:
 
 	LvInfo(Vector2f position = Vector2f{ 0,0 }, string fontFile = "Fonts/IndieFlower.ttf");
 
+	void setInfoFont(string fontFile);
+
 	void setLV(int lv);
 
 	int getLV();
