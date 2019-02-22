@@ -7,6 +7,7 @@
 #include "VectorConverter.hpp"
 #include "Door.hpp"
 #include "Spikes.hpp"
+#include "Player.hpp"
 
 using namespace sf;
 
@@ -21,7 +22,7 @@ int main() {
 
 
 	MenuBar menu;
-	//-------
+	//-------	
 	Plate::setPlateTexture();
 
 	Plate plate[2];
@@ -37,9 +38,12 @@ int main() {
 	Spikes::loadSpikesTexture();
 
 	Spikes spikes;
-	spikes.setOn(false);
+	spikes.setPosition(VectorConverter::convert(1, 3).asVector2f());
+	spikes.setOn(true);
 	//-------
-
+	Player player;
+	player.setPosition(VectorConverter::convert(2, 1).asVector2f());
+	//-------
 	while (app.isOpen()) {
 
 		Event event;
@@ -48,15 +52,22 @@ int main() {
 			case Event::Closed:
 				app.close();
 				break;
-			case Event::KeyPressed:
-				spikes.setOn(true);
-				break;
 			}
 		}
+
+		if (Keyboard::isKeyPressed(Keyboard::W)) player.movePlayer(Player::Up);
+		else if (Keyboard::isKeyPressed(Keyboard::A)) player.movePlayer(Player::Left);
+		else if (Keyboard::isKeyPressed(Keyboard::S)) player.movePlayer(Player::Down);
+		else if (Keyboard::isKeyPressed(Keyboard::D)) player.movePlayer(Player::Right);
 
 		//-------
 		spikes.run();
 		menu.run();
+		player.run();
+		//-------
+		spikes.run(player);
+		(plate + 0)->run(player);
+		(plate + 1)->run(player);
 		//-------
 
 		app.clear();
@@ -66,6 +77,7 @@ int main() {
 		door.draw(app);
 		spikes.draw(app);
 		menu.draw(app);
+		player.draw(app);
 		app.display();
 	}
 }
