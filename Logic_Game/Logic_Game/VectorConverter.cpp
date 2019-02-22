@@ -43,6 +43,18 @@ VectorConverter VectorConverter::convert(int x, int y) {
 	return VectorConverter(x, y);
 }
 
+VectorConverter VectorConverter::convert(Vector2f vector) {
+	return VectorConverter(vector);
+}
+
+VectorConverter VectorConverter::convert(Vector2i vector) {
+	return VectorConverter(vector);
+}
+
+VectorConverter VectorConverter::convert(Vector2u vector) {
+	return VectorConverter(vector);
+}
+
 int VectorConverter::asNumber() {
 	return number;
 }
