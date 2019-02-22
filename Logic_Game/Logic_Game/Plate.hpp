@@ -3,7 +3,9 @@
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
 #include <string>
-#include <iostream>
+#include "Player.hpp"
+#include "SlidingBlock.hpp"
+#include "Mirror.hpp"
 
 using namespace sf;
 using namespace std;
@@ -14,21 +16,29 @@ class Plate : public RectangleShape{
 
 	bool pressed;
 
-	Color color;
-
 	static Texture* texture;
 
 public:
 
-	Plate(Vector2f position = Vector2f{ 0,0 }, Color color = Color::Red, string textureFile = "Img/Plate.png");
+	Plate();
 	
+	static void setPlateTexture(string textureFile = "Img/Plate.png");
+
+	void setPlatePosition(Vector2f position);
+
+	void setPlateSize(Vector2f size);
+
 	bool isPressed();
 
 	void setPressure(bool pressed);
 
-	void setColor(Color color);
-
 	void draw(RenderWindow& window);
+
+	bool run(Player& player);
+
+	bool run(SlidingBlock* block, int number);
+	
+	bool run(Mirror* mirror, int number);
 
 	void reset();
 };
