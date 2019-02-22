@@ -13,15 +13,19 @@ class Door : public RectangleShape{
 
 	bool open;
 
-	Color color;
-
 	static Texture* texture;
 
 	Clock clock;
 
 public:
 
-	Door(Vector2f position = Vector2f{ 0,0 }, Color color = Color::Red, string textureFile = "Img/Door.png");
+	Door();
+
+	static void setDoorTexture(string textureFile = "Img/Door.png");
+
+	void setDoorPosition(Vector2f position);
+
+	void setDoorSize(Vector2f size);
 
 	bool isOpen();
 	
