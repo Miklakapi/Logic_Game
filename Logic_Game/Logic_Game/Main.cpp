@@ -46,7 +46,12 @@ int main() {
 	Player player;
 	player.setPosition(VectorConverter::convert(2, 1).asVector2f());
 	//-------
-	SlidingBlock *block = NULL;
+	SlidingBlock::setBlockTexture();
+
+	SlidingBlock block;
+	block.setPosition(VectorConverter::convert(5, 5).asVector2f());
+
+	//-------
 	ShootingBlock* blockS = NULL;
 	LaserMachine* machine = NULL;
 	Mirror* mirror = NULL;
@@ -63,18 +68,21 @@ int main() {
 			}
 		}
 
-		if (Keyboard::isKeyPressed(Keyboard::W)) player.movePlayer(Player::Up, map, blockS, 0, &door, 1, machine, 0, block, 0, mirror, 0);
-		else if (Keyboard::isKeyPressed(Keyboard::A)) player.movePlayer(Player::Left, map, blockS, 0, &door, 1, machine, 0, block, 0, mirror, 0);
-		else if (Keyboard::isKeyPressed(Keyboard::S)) player.movePlayer(Player::Down, map, blockS, 0, &door, 1, machine, 0, block, 0, mirror, 0);
-		else if (Keyboard::isKeyPressed(Keyboard::D)) player.movePlayer(Player::Right, map, blockS, 0, &door, 1, machine, 0, block, 0, mirror, 0);
+		if (Keyboard::isKeyPressed(Keyboard::W)) player.movePlayer(Player::Up, map, blockS, 0, &door, 1, machine, 0, &block, 1, mirror, 0);
+		else if (Keyboard::isKeyPressed(Keyboard::A)) player.movePlayer(Player::Left, map, blockS, 0, &door, 1, machine, 0, &block, 1, mirror, 0);
+		else if (Keyboard::isKeyPressed(Keyboard::S)) player.movePlayer(Player::Down, map, blockS, 0, &door, 1, machine, 0, &block, 1, mirror, 0);
+		else if (Keyboard::isKeyPressed(Keyboard::D)) player.movePlayer(Player::Right, map, blockS, 0, &door, 1, machine, 0, &block, 1, mirror, 0);
 
 		//-------
 		menu.run();
-		player.run();
+		player.run(&door,1);
 		//-------
-		spikes.run(player, block, 0, mirror, 0);
-		(plate + 0)->run(player, block, 0, mirror, 0);
-		(plate + 1)->run(player, block, 0, mirror, 0);
+		spikes.run(player, &block, 1, mirror, 0);
+		(plate + 0)->run(player, &block, 1, mirror, 0);
+		(plate + 1)->run(player, &block, 1, mirror, 0);
+		block.run(&door, 1);
+		//-------
+		door.setOpen(plate->isPressed());
 		//-------
 
 		app.clear();
@@ -84,6 +92,7 @@ int main() {
 		door.draw(app);
 		spikes.draw(app);
 		menu.draw(app);
+		block.draw(app);
 		player.draw(app);
 		app.display();
 	}
