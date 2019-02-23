@@ -5,10 +5,11 @@ Texture* ShootingBlock::texture;
 IntRect* ShootingBlock::rect;
 
 ShootingBlock::ShootingBlock(){
+	mine = new Mine[1];
+	type = Type::A1;
 	setBlockPosition(Vector2f{ 0,0 });
 	setBlockSize(Vector2f{ 80,80 });
 	setTexture(texture);
-	mine = new Mine[1];
 	setType(Type::A1);
 	background.setFillColor(Color::Red);
 	setDelay(0);
@@ -43,6 +44,7 @@ void ShootingBlock::setBlockTexture(string textureFile) {
 void ShootingBlock::setBlockPosition(Vector2f position) {
 	setPosition(position);
 	background.setPosition(position);
+	setType(type);
 }
 
 void ShootingBlock::setBlockSize(Vector2f size) {
@@ -64,7 +66,7 @@ void ShootingBlock::setType(Type type) {
 	this->type = type;
 	Vector2f pos = getPosition();
 	if (type >= 0 && type < 4) {
-		mine = new Mine;
+		mine = new Mine[1];
 		switch (type) {
 		case A1:
 			mine->setMinePosition(Vector2f{ pos.x + 34,pos.y - 12 });
@@ -199,6 +201,22 @@ bool ShootingBlock::isOn() {
 void ShootingBlock::draw(RenderWindow& window) {
 	window.draw(background);
 	window.draw(*this);
+	if (type < 4) window.draw(*mine);
+	else if (type >= 4 && type < 10) {
+		window.draw(*(mine + 0));
+		window.draw(*(mine + 1));
+	}
+	else if (type >= 10 && type < 14) {
+		window.draw(*(mine + 0));
+		window.draw(*(mine + 1));
+		window.draw(*(mine + 2));
+	}
+	else if (type == 14) {
+		window.draw(*(mine + 0));
+		window.draw(*(mine + 1));
+		window.draw(*(mine + 2));
+		window.draw(*(mine + 3));
+	}
 }
 
 void ShootingBlock::run(Map& map, Door* door, int number) {
