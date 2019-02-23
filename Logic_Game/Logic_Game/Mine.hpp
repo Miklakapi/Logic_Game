@@ -29,12 +29,17 @@ private:
 
 	Clock clock;
 
+	bool exist;
+
 public:
 	
 	Mine();
 	
+	static void setMineTexture(string textureFile = "Img/Mine.png");
+
 	void setMinePosition(Vector2f position);
 
 	void setDirection(Direction direction);
 
+	void reset();
 };
