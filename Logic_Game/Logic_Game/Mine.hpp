@@ -5,6 +5,7 @@
 #include "VectorConverter.hpp"
 #include "Map.hpp"
 #include "Door.hpp"
+#include <iostream>
 
 using namespace sf;
 using namespace std;
@@ -54,7 +55,7 @@ public:
 
 	void draw(bool on, RenderWindow& window);
 
-	void run(bool on, Map& map, Door* door, int number);
+	int run(bool on, Map& map, Door* door, int number);
 
 	void reset();
 };
