@@ -53,7 +53,7 @@ void Plate::draw(RenderWindow& window) {
 
 void Plate::run(Player& player, SlidingBlock* block, int number, Mirror* mirror, int number2) {
 	setPressure(false);
-	if (player.getPosition().x < getPosition().x + 80 && player.getPosition().x + 80 > getPosition().x &&
+	if (player.getLive() && player.getPosition().x < getPosition().x + 80 && player.getPosition().x + 80 > getPosition().x &&
 		player.getPosition().y < getPosition().y + 80 && player.getPosition().y + 80 > getPosition().y) {
 		setPressure(true);
 		return;
