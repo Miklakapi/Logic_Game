@@ -68,7 +68,7 @@ void Spikes::run(Player& player, SlidingBlock* block, int number, Mirror* mirror
 		}
 	}
 	if (stage == 0) return;
-	if (player.getPosition().x < getPosition().x + 80 && player.getPosition().x + 80 > getPosition().x &&
+	if (player.getLive() && player.getPosition().x < getPosition().x + 80 && player.getPosition().x + 80 > getPosition().x &&
 		player.getPosition().y < getPosition().y + 80 && player.getPosition().y + 80 > getPosition().y) {
 		player.setLive(false);
 	}
