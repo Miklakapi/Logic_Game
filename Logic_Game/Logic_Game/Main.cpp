@@ -11,6 +11,7 @@
 #include "Mirror.hpp"
 #include "SlidingBLock.hpp"
 #include "FPS.hpp"
+#include "TeleportField.hpp"
 
 
 using namespace sf;
@@ -32,7 +33,7 @@ int main() {
 	Plate plate[2];
 	Plate* pl = plate;
 	(pl + 0)->setPlatePosition(VectorConverter::convert(1, 1).asVector2f());
-	(pl + 1)->setPlatePosition(VectorConverter::convert(2, 2).asVector2f());
+	(pl + 1)->setPlatePosition(VectorConverter::convert(2, 3).asVector2f());
 	//-------
 	Door::setDoorTexture();
 
@@ -66,6 +67,12 @@ int main() {
 	Mirror* mirror = NULL;
 
 	//-------
+	TeleportField::setTeleportTexture();
+	TeleportField teleport;
+	teleport.setTeleportPosition(VectorConverter::convert(2, 4).asVector2f());
+	teleport.setTeleportPlace(VectorConverter::convert(10, 3).asVector2f());
+
+	//-------
 	FPS fps;
 
 	while (app.isOpen()) {
@@ -96,11 +103,14 @@ int main() {
 		block[0].run(&door, 1);
 		block[1].run(&door, 1);
 		blockS.run(map, &door, 1);
+		teleport.run(player, block, 2, mirror, 0);
 		//-------
 
 		if (plate->isPressed()) door.setOpen(true);
 		else if((plate + 1)->isPressed()) door.setOpen(true);
 		else door.setOpen(false);
+
+		teleport.setOpen(plate->isPressed());
 		
 		//-------
 
@@ -111,6 +121,7 @@ int main() {
 		door.draw(app);
 		spikes.draw(app);
 		menu.draw(app);
+		teleport.draw(app);
 		block[0].draw(app);
 		block[1].draw(app);
 		blockS.draw(app);
