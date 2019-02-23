@@ -7,6 +7,8 @@ IntRect* ShootingBlock::rect;
 ShootingBlock::ShootingBlock(){
 	mine = new Mine[1];
 	type = Type::A1;
+	clock = new Clock[1];
+	delay = 0;
 	setBlockPosition(Vector2f{ 0,0 });
 	setBlockSize(Vector2f{ 80,80 });
 	setTexture(texture);
@@ -61,12 +63,14 @@ int ShootingBlock::getDelay() {
 }
 
 void ShootingBlock::setType(Type type) {
+	delete [] clock;
 	delete [] mine;
 	setTextureRect(*(rect + type));
 	this->type = type;
 	Vector2f pos = getPosition();
 	if (type >= 0 && type < 4) {
 		mine = new Mine[1];
+		clock = new Clock[1];
 		switch (type) {
 		case A1:
 			mine->setStartPosition(Vector2f{ pos.x + 34,pos.y - 12 });
@@ -89,6 +93,7 @@ void ShootingBlock::setType(Type type) {
 	}
 	else if (type > 3 && type < 10) {
 		mine = new Mine[2];
+		clock = new Clock[2];
 		switch (type) {
 		case B1:
 			(mine + 0)->setStartPosition(Vector2f{ pos.x + 34,pos.y - 12 });
@@ -131,6 +136,7 @@ void ShootingBlock::setType(Type type) {
 	}
 	else if (type > 9 && type < 14) {
 		mine = new Mine[3];
+		clock = new Clock[3];
 		switch (type) {
 		case C1:
 			(mine + 0)->setStartPosition(Vector2f{ pos.x - 12,pos.y + 34 });
@@ -169,6 +175,7 @@ void ShootingBlock::setType(Type type) {
 	}
 	else if (type == 14) {
 		mine = new Mine[4];
+		clock = new Clock[4];
 		switch (type) {
 		case D1:
 			(mine + 0)->setStartPosition(Vector2f{ pos.x + 34,pos.y - 12 });
@@ -202,6 +209,10 @@ bool ShootingBlock::isOn() {
 	return on;
 }
 
+Mine* ShootingBlock::getMine() {
+	return mine;
+}
+
 void ShootingBlock::draw(RenderWindow& window) {
 	window.draw(background);
 	window.draw(*this);
@@ -225,10 +236,43 @@ void ShootingBlock::draw(RenderWindow& window) {
 
 void ShootingBlock::run(Map& map, Door* door, int number, ShootingBlock* block, int number2) {
 	for (int i = 0; i < mineNr; i++) {
-		(mine + i)->run(on, map, door, number);
+		if (on && !(mine + i)->getExist() && (clock + i)->getElapsedTime().asSeconds() < delay) {
+			continue;
+		}
+		if (on)(clock + i)->restart();
+		int nr = (mine + i)->run(on, map, door, number);
+		if (nr == 8) {
+			VectorConverter vec((mine + i)->getPosition());
+			Mine::Direction direction = (mine + i)->getDirection();
+			switch (direction) {
+			case Mine::Up:
+				for (int j = 0; j < number2; j++) {
+					if ((block + j)->getPosition() == VectorConverter::convert(vec.asXY().x, vec.asXY().y - 1).asVector2f()) (mine + i)->reset();
+				}
+				break;
+			case Mine::Down:
+				for (int j = 0; j < number2; j++) {
+					if ((block + j)->getPosition() == VectorConverter::convert(vec.asXY().x, vec.asXY().y + 1).asVector2f()) (mine + i)->reset();
+				}
+				break;
+			case Mine::Left:
+				for (int j = 0; j < number2; j++) {
+					if ((block + j)->getPosition() == VectorConverter::convert(vec.asXY().x - 1, vec.asXY().y).asVector2f()) (mine + i)->reset();
+				}
+				break;
+			case Mine::Right:
+				for (int j = 0; j < number2; j++) {
+					if ((block + j)->getPosition() == VectorConverter::convert(vec.asXY().x + 1, vec.asXY().y).asVector2f()) (mine + i)->reset();
+				}
+				break;
+			}
+		}
 	}
 }
 
 void ShootingBlock::reset() {
 	setOn(false);
+	for (int i = 0; i < mineNr; i++) {
+		(clock + i)->restart();
+	}
 }
