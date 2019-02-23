@@ -10,6 +10,7 @@
 #include "SlidingBlock.hpp"
 #include "LaserMachine.hpp"
 #include "Mirror.hpp"
+#include <iostream>
 
 using namespace sf;
 using namespace std;
