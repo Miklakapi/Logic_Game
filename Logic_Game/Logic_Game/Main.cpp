@@ -60,7 +60,7 @@ int main() {
 	ShootingBlock::setBlockTexture();
 
 	ShootingBlock blockS;
-	blockS.setBlockPosition(VectorConverter::convert(7, 9).asVector2f());
+	blockS.setBlockPosition(VectorConverter::convert(1, 9).asVector2f());
 
 	//-------
 	LaserMachine* machine = NULL;
@@ -102,8 +102,9 @@ int main() {
 		(plate + 1)->run(player, block, 2, mirror, 0);
 		block[0].run(&door, 1);
 		block[1].run(&door, 1);
-		blockS.run(map, &door, 1);
+		blockS.run(map, &door, 1, &blockS, 1);
 		teleport.run(player, block, 2, mirror, 0);
+		blockS.run(map, &door, 1, &blockS, 1);
 		//-------
 
 		if (plate->isPressed()) door.setOpen(true);
@@ -111,6 +112,7 @@ int main() {
 		else door.setOpen(false);
 
 		teleport.setOpen(plate->isPressed());
+		blockS.setOn(plate->isPressed());
 		
 		//-------
 
