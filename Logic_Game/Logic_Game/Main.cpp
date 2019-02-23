@@ -55,6 +55,7 @@ int main() {
 	block[1].setPosition(VectorConverter::convert(5, 6).asVector2f());
 
 	//-------
+	Mine::setMineTexture();
 	ShootingBlock::setBlockTexture();
 
 	ShootingBlock blockS;
