@@ -58,7 +58,7 @@ int Mine::run(bool on, Map& map, Door* door, int number) {
 		if (map.getType(vec.asNumber()) == Square::Wall) return -1;
 		exist = true;
 	}
-	if (clock.getElapsedTime().asSeconds() < 0.03) return -1;
+	if (clock.getElapsedTime().asSeconds() < 0.03 || exist == false) return -1;
 	clock.restart();
 	VectorConverter vec(getPosition());
 	for (int i = 0; i < number; i++) {
