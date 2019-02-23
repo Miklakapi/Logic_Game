@@ -2,6 +2,9 @@
 #include <SFML\Window.hpp>
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
+#include "VectorConverter.hpp"
+#include "Map.hpp"
+#include "Door.hpp"
 
 using namespace sf;
 using namespace std;
@@ -37,9 +40,21 @@ public:
 	
 	static void setMineTexture(string textureFile = "Img/Mine.png");
 
-	void setMinePosition(Vector2f position);
+	void setStartPosition(Vector2f position);
+
+	Vector2f getStartPosition();
 
 	void setDirection(Direction direction);
+
+	Direction getDirection();
+
+	void setExist(bool exist);
+
+	bool getExist();
+
+	void draw(bool on, RenderWindow& window);
+
+	void run(bool on, Map& map, Door* door, int number);
 
 	void reset();
 };
