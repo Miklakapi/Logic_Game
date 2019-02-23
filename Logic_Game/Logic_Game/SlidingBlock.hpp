@@ -51,7 +51,7 @@ public:
 
 	void push(Direction direction);
 
-	void run(Door* door, int number);
+	void run(Door* door, int number, ShootingBlock* block, int number2);
 
 	void draw(RenderWindow& window);
 
