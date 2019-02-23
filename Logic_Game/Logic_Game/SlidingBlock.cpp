@@ -101,7 +101,7 @@ void SlidingBlock::push(Direction direction) {
 	moveNr = 0;
 }
 
-void SlidingBlock::run(Door* door, int number) {
+void SlidingBlock::run(Door* door, int number, ShootingBlock* block, int number2) {
 	if (clock.getElapsedTime().asSeconds() >= 0.06 && moveNr < 10 && exist) {
 		clock.restart();
 		switch (direction) {
@@ -132,6 +132,23 @@ void SlidingBlock::run(Door* door, int number) {
 				(door + i)->getPosition().x < getPosition().x + 80 && (door + i)->getPosition().x + 80 > getPosition().x &&
 				(door + i)->getPosition().y < getPosition().y + 80 && (door + i)->getPosition().y + 80 > getPosition().y) {
 				destroy();
+			}
+		}
+		for (int i = 0; i < number2; i++) {
+			ShootingBlock::Type type = (block + i)->getType();
+			int nr(0);
+			if (type < 4) nr = 1;
+			else if (type < 10 && type > 3) nr = 2;
+			else if (type < 14 && type > 9) nr = 3;
+			else if (type == 14) nr = 4;
+			for (int j = 0; j < nr; j++) {
+				if (((block + i)->getMine() + j)->getExist()) {
+					Vector2f pos = ((block + i)->getMine() + j)->getPosition();
+					if (pos.x < getPosition().x + 80 && pos.x + 12 > getPosition().x &&
+						pos.y < getPosition().y + 80 && pos.y + 12 > getPosition().y) {
+						((block + i)->getMine() + j)->reset();
+					}
+				}
 			}
 		}
 	}
