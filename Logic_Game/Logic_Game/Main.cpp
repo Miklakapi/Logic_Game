@@ -61,7 +61,7 @@ int main() {
 
 	ShootingBlock blockS[2];
 	blockS[0].setBlockPosition(VectorConverter::convert(1, 9).asVector2f());
-	blockS[0].setType(ShootingBlock::D1);
+	blockS[0].setType(ShootingBlock::B1);
 	blockS[0].setDelay(2);
 	blockS[1].setBlockPosition(VectorConverter::convert(1, 5).asVector2f());
 
@@ -99,7 +99,7 @@ int main() {
 
 		//-------
 		menu.run();
-		player.run(&door,1);
+		player.run(&door,1, blockS, 2);
 		//-------
 		spikes.run(player, block, 2, mirror, 0);
 		(plate + 0)->run(player, block, 2, mirror, 0);
