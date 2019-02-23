@@ -36,6 +36,8 @@ private:
 
 	Mine* mine;
 
+	int mineNr;
+
 	static Texture* texture;
 
 	static IntRect* rect;
@@ -74,7 +76,7 @@ public:
 
 	void draw(RenderWindow& window);
 
-	void run(Map& map, Door* door, int number);
+	void run(Map& map, Door* door, int number, ShootingBlock* block, int number2);
 
 	void reset();
 };
