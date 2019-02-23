@@ -55,7 +55,12 @@ int main() {
 	block[1].setPosition(VectorConverter::convert(5, 6).asVector2f());
 
 	//-------
-	ShootingBlock* blockS = NULL;
+	ShootingBlock::setBlockTexture();
+
+	ShootingBlock blockS;
+	blockS.setBlockPosition(VectorConverter::convert(7, 9).asVector2f());
+
+	//-------
 	LaserMachine* machine = NULL;
 	Mirror* mirror = NULL;
 
@@ -75,10 +80,10 @@ int main() {
 			}
 		}
 
-		if (Keyboard::isKeyPressed(Keyboard::W)) player.movePlayer(Player::Up, map, blockS, 0, &door, 1, machine, 0, block, 2, mirror, 0);
-		else if (Keyboard::isKeyPressed(Keyboard::A)) player.movePlayer(Player::Left, map, blockS, 0, &door, 1, machine, 0, block, 2, mirror, 0);
-		else if (Keyboard::isKeyPressed(Keyboard::S)) player.movePlayer(Player::Down, map, blockS, 0, &door, 1, machine, 0, block, 2, mirror, 0);
-		else if (Keyboard::isKeyPressed(Keyboard::D)) player.movePlayer(Player::Right, map, blockS, 0, &door, 1, machine, 0, block, 2, mirror, 0);
+		if (Keyboard::isKeyPressed(Keyboard::W)) player.movePlayer(Player::Up, map, &blockS, 1, &door, 1, machine, 0, block, 2, mirror, 0);
+		else if (Keyboard::isKeyPressed(Keyboard::A)) player.movePlayer(Player::Left, map, &blockS, 1, &door, 1, machine, 0, block, 2, mirror, 0);
+		else if (Keyboard::isKeyPressed(Keyboard::S)) player.movePlayer(Player::Down, map, &blockS, 1, &door, 1, machine, 0, block, 2, mirror, 0);
+		else if (Keyboard::isKeyPressed(Keyboard::D)) player.movePlayer(Player::Right, map, &blockS, 1, &door, 1, machine, 0, block, 2, mirror, 0);
 
 		//-------
 		menu.run();
@@ -89,6 +94,7 @@ int main() {
 		(plate + 1)->run(player, block, 2, mirror, 0);
 		block[0].run(&door, 1);
 		block[1].run(&door, 1);
+		blockS.run(map, &door, 1);
 		//-------
 
 		if (plate->isPressed()) door.setOpen(true);
@@ -106,6 +112,7 @@ int main() {
 		menu.draw(app);
 		block[0].draw(app);
 		block[1].draw(app);
+		blockS.draw(app);
 		player.draw(app);
 		app.draw(fps);
 		app.display();
