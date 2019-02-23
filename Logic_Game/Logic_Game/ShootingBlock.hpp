@@ -50,7 +50,7 @@ private:
 
 	int delay;
 
-	Clock clock;
+	Clock* clock;
 
 public:
 	
@@ -73,6 +73,8 @@ public:
 	void setOn(bool on);
 
 	bool isOn();
+
+	Mine* getMine();
 
 	void draw(RenderWindow& window);
 
