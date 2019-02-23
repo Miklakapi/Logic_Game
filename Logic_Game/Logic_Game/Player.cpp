@@ -235,7 +235,7 @@ void Player::movePlayer(Direction direction, Map& map, ShootingBlock* blockS, in
 	moveNr = 0;
 }
 
-void Player::run(Door* door, int number) {
+void Player::run(Door* door, int number, ShootingBlock* block, int number2) {
 	if (live && clockStage.getElapsedTime().asSeconds() >= 0.05) {
 		clockStage.restart();
 		setStage(++stage);
@@ -270,6 +270,12 @@ void Player::run(Door* door, int number) {
 				(door + i)->getPosition().x < getPosition().x + 80 && (door + i)->getPosition().x + 80 > getPosition().x &&
 				(door + i)->getPosition().y < getPosition().y + 80 && (door + i)->getPosition().y + 80 > getPosition().y) {
 				setLive(false);
+			}
+		}
+		for (int i = 0; i < number2; i++) {
+			ShootingBlock::Type type = (block + i)->getType();
+			switch (type) {
+
 			}
 		}
 	}
