@@ -59,8 +59,11 @@ int main() {
 	Mine::setMineTexture();
 	ShootingBlock::setBlockTexture();
 
-	ShootingBlock blockS;
-	blockS.setBlockPosition(VectorConverter::convert(1, 9).asVector2f());
+	ShootingBlock blockS[2];
+	blockS[0].setBlockPosition(VectorConverter::convert(1, 9).asVector2f());
+	blockS[0].setType(ShootingBlock::D1);
+	blockS[0].setDelay(2);
+	blockS[1].setBlockPosition(VectorConverter::convert(1, 5).asVector2f());
 
 	//-------
 	LaserMachine* machine = NULL;
@@ -74,6 +77,7 @@ int main() {
 
 	//-------
 	FPS fps;
+	fps.setOn(true);
 
 	while (app.isOpen()) {
 
@@ -88,10 +92,10 @@ int main() {
 			}
 		}
 
-		if (Keyboard::isKeyPressed(Keyboard::W)) player.movePlayer(Player::Up, map, &blockS, 1, &door, 1, machine, 0, block, 2, mirror, 0);
-		else if (Keyboard::isKeyPressed(Keyboard::A)) player.movePlayer(Player::Left, map, &blockS, 1, &door, 1, machine, 0, block, 2, mirror, 0);
-		else if (Keyboard::isKeyPressed(Keyboard::S)) player.movePlayer(Player::Down, map, &blockS, 1, &door, 1, machine, 0, block, 2, mirror, 0);
-		else if (Keyboard::isKeyPressed(Keyboard::D)) player.movePlayer(Player::Right, map, &blockS, 1, &door, 1, machine, 0, block, 2, mirror, 0);
+		if (Keyboard::isKeyPressed(Keyboard::W)) player.movePlayer(Player::Up, map, blockS, 2, &door, 1, machine, 0, block, 2, mirror, 0);
+		else if (Keyboard::isKeyPressed(Keyboard::A)) player.movePlayer(Player::Left, map, blockS, 2, &door, 1, machine, 0, block, 2, mirror, 0);
+		else if (Keyboard::isKeyPressed(Keyboard::S)) player.movePlayer(Player::Down, map, blockS, 2, &door, 1, machine, 0, block, 2, mirror, 0);
+		else if (Keyboard::isKeyPressed(Keyboard::D)) player.movePlayer(Player::Right, map, blockS, 2, &door, 1, machine, 0, block, 2, mirror, 0);
 
 		//-------
 		menu.run();
@@ -102,9 +106,9 @@ int main() {
 		(plate + 1)->run(player, block, 2, mirror, 0);
 		block[0].run(&door, 1);
 		block[1].run(&door, 1);
-		blockS.run(map, &door, 1, &blockS, 1);
+		blockS[0].run(map, &door, 1, blockS, 2);
+		blockS[1].run(map, &door, 1, blockS, 2);
 		teleport.run(player, block, 2, mirror, 0);
-		blockS.run(map, &door, 1, &blockS, 1);
 		//-------
 
 		if (plate->isPressed()) door.setOpen(true);
@@ -112,7 +116,8 @@ int main() {
 		else door.setOpen(false);
 
 		teleport.setOpen(plate->isPressed());
-		blockS.setOn(plate->isPressed());
+		blockS[0].setOn(plate->isPressed());
+		blockS[1].setOn(plate->isPressed());
 		
 		//-------
 
@@ -126,7 +131,8 @@ int main() {
 		teleport.draw(app);
 		block[0].draw(app);
 		block[1].draw(app);
-		blockS.draw(app);
+		blockS[0].draw(app);
+		blockS[1].draw(app);
 		player.draw(app);
 		app.draw(fps);
 		app.display();
