@@ -274,8 +274,47 @@ void Player::run(Door* door, int number, ShootingBlock* block, int number2) {
 		}
 		for (int i = 0; i < number2; i++) {
 			ShootingBlock::Type type = (block + i)->getType();
-			switch (type) {
-
+			if (type < 4) {
+				if ((block + i)->getMine()->getExist()) {
+					Vector2f pos = (block + i)->getMine()->getPosition();
+					if (pos.x < getPosition().x + 80 && pos.x + 12 > getPosition().x &&
+						pos.y < getPosition().y + 80 && pos.y + 12 > getPosition().y) {
+						setLive(false);
+					}
+				}
+			}
+			else if (type > 3 && type < 10) {
+				if ((block + i)->getMine()->getExist()) {
+					for (int j = 0; j < 2; j++) {
+						Vector2f pos = ((block + i)->getMine() + j)->getPosition();
+						if (pos.x < getPosition().x + 80 && pos.x + 12 > getPosition().x &&
+							pos.y < getPosition().y + 80 && pos.y + 12 > getPosition().y) {
+							setLive(false);
+						}
+					}
+				}
+			}
+			else if (type > 9 && type < 14) {
+				if ((block + i)->getMine()->getExist()) {
+					for (int j = 0; j < 3; j++) {
+						Vector2f pos = ((block + i)->getMine() + j)->getPosition();
+						if (pos.x < getPosition().x + 80 && pos.x + 12 > getPosition().x &&
+							pos.y < getPosition().y + 80 && pos.y + 12 > getPosition().y) {
+							setLive(false);
+						}
+					}
+				}
+			}
+			else if (type > 3 && type < 10) {
+				if ((block + i)->getMine()->getExist()) {
+					for (int j = 0; j < 4; j++) {
+						Vector2f pos = ((block + i)->getMine() + j)->getPosition();
+						if (pos.x < getPosition().x + 80 && pos.x + 12 > getPosition().x &&
+							pos.y < getPosition().y + 80 && pos.y + 12 > getPosition().y) {
+							setLive(false);
+						}
+					}
+				}
 			}
 		}
 	}
