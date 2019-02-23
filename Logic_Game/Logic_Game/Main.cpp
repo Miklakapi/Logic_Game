@@ -62,6 +62,7 @@ int main() {
 	ShootingBlock blockS[2];
 	blockS[0].setBlockPosition(VectorConverter::convert(1, 9).asVector2f());
 	blockS[0].setType(ShootingBlock::B1);
+	blockS[0].setOn(true);
 	blockS[0].setDelay(2);
 	blockS[1].setBlockPosition(VectorConverter::convert(1, 5).asVector2f());
 
@@ -89,6 +90,13 @@ int main() {
 			case Event::Closed:
 				app.close();
 				break;
+			case Event::KeyPressed:
+				switch (event.key.code) {
+				case Keyboard::R:
+					player.reset();
+					break;
+				}
+				break;
 			}
 		}
 
@@ -104,8 +112,8 @@ int main() {
 		spikes.run(player, block, 2, mirror, 0);
 		(plate + 0)->run(player, block, 2, mirror, 0);
 		(plate + 1)->run(player, block, 2, mirror, 0);
-		block[0].run(&door, 1);
-		block[1].run(&door, 1);
+		block[0].run(&door, 1, blockS, 2);
+		block[1].run(&door, 1, blockS, 2);
 		blockS[0].run(map, &door, 1, blockS, 2);
 		blockS[1].run(map, &door, 1, blockS, 2);
 		teleport.run(player, block, 2, mirror, 0);
@@ -129,10 +137,10 @@ int main() {
 		spikes.draw(app);
 		menu.draw(app);
 		teleport.draw(app);
-		block[0].draw(app);
-		block[1].draw(app);
 		blockS[0].draw(app);
 		blockS[1].draw(app);
+		block[0].draw(app);
+		block[1].draw(app);
 		player.draw(app);
 		app.draw(fps);
 		app.display();
