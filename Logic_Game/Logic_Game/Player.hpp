@@ -59,7 +59,7 @@ public:
 	void movePlayer(Direction direction, Map& map, ShootingBlock* blockS, int number, Door* door, int number2,
 		LaserMachine* machine, int number3, SlidingBlock* block, int number4, Mirror* mirror, int number5);
 
-	void run(Door* door, int number, ShootingBLock block, int number2);
+	void run(Door* door, int number, ShootingBlock* block, int number2);
 
 	void draw(RenderWindow& window);
 
