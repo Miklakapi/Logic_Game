@@ -13,7 +13,6 @@
 #include "FPS.hpp"
 #include "TeleportField.hpp"
 
-
 using namespace sf;
 
 int main() {
