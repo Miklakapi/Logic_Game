@@ -37,6 +37,10 @@ Vector2f TeleportField::getTeleportPlace() {
 	return teleportPlace;
 }
 
+bool TeleportField::isOpen() {
+	return open;
+}
+
 void TeleportField::setOpen(bool open) {
 	if (open && open != this->open) {
 		background.setFillColor(Color::Green);
@@ -53,20 +57,6 @@ void TeleportField::setOpen(bool open) {
 void TeleportField::draw(RenderWindow& window) {
 	window.draw(background);
 	window.draw(*this);
-}
-
-void TeleportField::run(Player& player, SlidingBlock* block, int number, Mirror* mirror, int number2) {
-	for (int i = 0; i < number; i++) {
-		if (!(block + i)->getExist()) continue;
-		if ((block + i)->getPosition() == teleportPlace) return;
-	}
-	for (int i = 0; i < number2; i++) {
-		if (!(mirror + i)->getExist()) continue;
-		if ((mirror + i)->getPosition() == teleportPlace) return;
-	}
-	if (open && getPosition() == player.getPosition()) {
-		player.setPosition(teleportPlace);
-	}
 }
 
 void TeleportField::reset() {
