@@ -29,6 +29,10 @@ public:
 
 	void setPressure(int number, bool pressed);
 
+	Plate* getPlate();
+
+	int getNumber();
+
 	void draw(RenderWindow& window);
 
 	void run(Player& player, SlidingBlock* block, int number, Mirror* mirror, int number2);
