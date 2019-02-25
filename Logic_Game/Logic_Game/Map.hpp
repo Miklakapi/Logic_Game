@@ -6,8 +6,8 @@
 #include "Square.hpp"
 #include "MapReader.hpp"
 
-using namespace std;
 using namespace sf;
+using namespace std;
 
 class Map{
 
