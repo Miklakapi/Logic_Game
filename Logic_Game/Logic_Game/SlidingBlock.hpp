@@ -42,16 +42,15 @@ public:
 
 	static void setBlockTexture(string textureFile = "Img/SlidingBlock.png");
 
+	int getMoveNumber();
+
 	void destroy();
 
 	bool getExist();
 
-	bool push(Direction direction, Map& map, ShootingBlock* blockS, int number, Door* door, int number2,
-		LaserMachine* machine, int number3);
-
 	void push(Direction direction);
 
-	void run(Door* door, int number, ShootingBlock* block, int number2);
+	void run();
 
 	void draw(RenderWindow& window);
 
