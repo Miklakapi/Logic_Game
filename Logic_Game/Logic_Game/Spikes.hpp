@@ -35,11 +35,13 @@ public:
 
 	static void loadSpikesTexture(string textureFile = "Img/Spikes.png");
 
+	int getStage();
+
 	void setOn(bool on);
 
 	bool isOn();
 
-	void run(Player& player, SlidingBlock* block, int number, Mirror* mirror, int number2);
+	void run();
 
 	void draw(RenderWindow& window);
 
