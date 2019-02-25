@@ -14,7 +14,7 @@ Hearts::Hearts(Vector2f position, string textureFile) {
 void Hearts::setHeartsTexture(string textureFile) {
 	static int n = 0;
 	if (n == 0) {
-		texture = new Texture;
+		texture = new Texture[1];
 		n++;
 	}
 	texture->loadFromFile(textureFile);
@@ -74,4 +74,5 @@ void Hearts::reset() {
 
 Hearts::~Hearts() {
 	delete [] heart;
+	delete [] texture;
 }
