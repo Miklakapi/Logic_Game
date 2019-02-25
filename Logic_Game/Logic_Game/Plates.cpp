@@ -22,6 +22,14 @@ void Plates::setPressure(int number, bool pressed) {
 	(plate + number)->setPressure(pressed);
 }
 
+Plate* Plates::getPlate() {
+	return plate;
+}
+
+int Plates::getNumber() {
+	return number;
+}
+
 void Plates::draw(RenderWindow& window) {
 	for (int i = 0; i < number; i++) {
 		(plate + i)->draw(window);
