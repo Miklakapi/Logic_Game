@@ -6,11 +6,10 @@
 #include "VectorConverter.hpp"
 #include "Map.hpp"
 #include "Door.hpp"
-#include "ShootingBlock.hpp"
 #include "SlidingBlock.hpp"
-#include "LaserMachine.hpp"
 #include "Mirror.hpp"
-#include <iostream>
+#include "ShootingBlock.hpp"
+#include "LaserMachine.hpp"
 
 using namespace sf;
 using namespace std;
@@ -57,10 +56,10 @@ public:
 
 	bool getLive();
 
-	void movePlayer(Direction direction, Map& map, ShootingBlock* blockS, int number, Door* door, int number2,
-		LaserMachine* machine, int number3, SlidingBlock* block, int number4, Mirror* mirror, int number5);
+	bool movePlayer(Direction direction, Map& map, SlidingBlock* block, int number, Mirror* mirror, int number2, Door* door, int number3,
+		ShootingBlock* blockS, int number4, LaserMachine* machine, int number5);
 
-	void run(Door* door, int number, ShootingBlock* block, int number2);
+	void run(ShootingBlock* block, int number);
 
 	void draw(RenderWindow& window);
 
