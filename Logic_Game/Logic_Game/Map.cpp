@@ -10,10 +10,7 @@ Map::Map(){
 		}
 	}
 	reset();
-}
-
-void Map::setSquareTexture(string textureFile) {
-	Square::setTextureFile(textureFile);
+	reader.renderLV(1, square);
 }
 
 void Map::setType(int number, Square::Type type) {
@@ -50,7 +47,6 @@ void Map::reset() {
 	for (int i = 0; i < 198; i++) {
 		(square + i)->reset();
 	}
-	reader.renderLV(1, square);
 }
 
 Map::~Map(){
