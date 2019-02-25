@@ -7,8 +7,8 @@
 #include "Plates.hpp"
 #include "Doors.hpp"
 #include "TeleportFields.hpp"
+#include "Traps.hpp"
 
-#include "Spikes.hpp"
 #include "Player.hpp"
 #include "Mirror.hpp"
 #include "SlidingBLock.hpp"
@@ -35,11 +35,9 @@ int main() {
 	doors.setDoorPosition(0, VectorConverter::convert(1, 2).asVector2f());
 	doors.setDoorPosition(1, VectorConverter::convert(2, 2).asVector2f());
 	//-------
-	Spikes::loadSpikesTexture();
-
-	Spikes spikes;
-	spikes.setPosition(VectorConverter::convert(1, 3).asVector2f());
-	spikes.setOn(true);
+	Traps traps(1);
+	traps.setSpikesPosition(0, VectorConverter::convert(1, 3).asVector2f());
+	traps.setOn(0, true);
 	//-------
 	Player player;
 	player.setPosition(VectorConverter::convert(2, 1).asVector2f());
@@ -106,7 +104,7 @@ int main() {
 		menu.run();
 		player.run(doors.getDoor(),doors.getNumber(), blockS, 2);
 		//-------
-		spikes.run(player, block, 2, mirror, 0);
+		traps.run(player, block, 2, mirror, 0);
 		plates.run(player, block, 2, mirror, 0);
 		block[0].run(doors.getDoor(), doors.getNumber(), blockS, 2);
 		block[1].run(doors.getDoor(), doors.getNumber(), blockS, 2);
@@ -129,7 +127,7 @@ int main() {
 		map.draw(app);
 		plates.draw(app);
 		doors.draw(app);
-		spikes.draw(app);
+		traps.draw(app);
 		menu.draw(app);
 		teleports.draw(app);
 		blockS[0].draw(app);
