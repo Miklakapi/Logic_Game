@@ -19,8 +19,6 @@ public:
 
 	Map();
 
-	static void setSquareTexture(string textureFile = "Img/Square.png");
-
 	void setType(int number, Square::Type type);
 
 	Square::Type getType(int number);
