@@ -26,6 +26,10 @@ void Spikes::loadSpikesTexture(string textureFile) {
 	texture->loadFromFile(textureFile);
 }
 
+int Spikes::getStage() {
+	return stage;
+}
+
 void Spikes::setOn(bool on) {
 	if (!on && this->on != on) direction = Direction::Down;
 	else if (on && this->on != on) clock.restart();
@@ -36,7 +40,7 @@ bool Spikes::isOn() {
 	return on;
 }
 
-void Spikes::run(Player& player, SlidingBlock* block, int number, Mirror* mirror, int number2) {
+void Spikes::run() {
 	if (direction == Direction::Up && on) {
 		if (stage > 0 && stage < 4 && clock.getElapsedTime().asSeconds() >= 0.08) {
 			clock.restart();
@@ -65,25 +69,6 @@ void Spikes::run(Player& player, SlidingBlock* block, int number, Mirror* mirror
 		}
 		else if (stage == 0) {
 			direction = Direction::Up;
-		}
-	}
-	if (stage == 0) return;
-	if (player.getLive() && player.getPosition().x < getPosition().x + 80 && player.getPosition().x + 80 > getPosition().x &&
-		player.getPosition().y < getPosition().y + 80 && player.getPosition().y + 80 > getPosition().y) {
-		player.setLive(false);
-	}
-	for (int i = 0; i < number; i++) {
-		if (!(block + i)->getExist()) continue;
-		if ((block + i)->getPosition().x < getPosition().x + 80 && (block + i)->getPosition().x + 80 > getPosition().x &&
-			(block + i)->getPosition().y < getPosition().y + 80 && (block + i)->getPosition().y + 80 > getPosition().y) {
-			(block + i)->destroy();
-		}
-	}
-	for (int i = 0; i < number2; i++) {
-		if (!(mirror + i)->getExist()) continue;
-		if ((mirror + i)->getPosition().x < getPosition().x + 80 && (mirror + i)->getPosition().x + 80 > getPosition().x &&
-			(mirror + i)->getPosition().y < getPosition().y + 80 && (mirror + i)->getPosition().y + 80 > getPosition().y) {
-			(mirror + i)->destroy();
 		}
 	}
 }
