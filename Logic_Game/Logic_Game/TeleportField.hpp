@@ -3,9 +3,6 @@
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
 #include <string>
-#include "Player.hpp"
-#include "SlidingBlock.hpp"
-#include "Mirror.hpp"
 
 using namespace sf;
 using namespace std;
@@ -34,11 +31,11 @@ public:
 
 	Vector2f getTeleportPlace();
 
+	bool isOpen();
+
 	void setOpen(bool open);
 
 	void draw(RenderWindow& window);
-
-	void run(Player& player, SlidingBlock* block, int number, Mirror* mirror, int number2);
 
 	void reset();
 };
