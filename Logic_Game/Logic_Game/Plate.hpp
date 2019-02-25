@@ -34,8 +34,6 @@ public:
 
 	void draw(RenderWindow& window);
 
-	void run(Player& player, SlidingBlock* block, int number, Mirror* mirror, int number2);
-
 	void reset();
 };
 
