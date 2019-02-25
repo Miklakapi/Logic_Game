@@ -4,10 +4,10 @@
 #include "Map.hpp"
 #include "MenuBar.hpp"
 #include "VectorConverter.hpp"
+#include "Plates.hpp"
 #include "Doors.hpp"
 #include "TeleportFields.hpp"
 
-#include "Plate.hpp"
 #include "Spikes.hpp"
 #include "Player.hpp"
 #include "Mirror.hpp"
@@ -27,12 +27,9 @@ int main() {
 	//-------
 	MenuBar menu;
 	//-------	
-	Plate::setPlateTexture();
-
-	Plate plate[2];
-	Plate* pl = plate;
-	(pl + 0)->setPlatePosition(VectorConverter::convert(1, 1).asVector2f());
-	(pl + 1)->setPlatePosition(VectorConverter::convert(2, 3).asVector2f());
+	Plates plates(2);
+	plates.setPlatePosition(0, VectorConverter::convert(1, 1).asVector2f());
+	plates.setPlatePosition(1, VectorConverter::convert(2, 3).asVector2f());
 	//-------
 	Doors doors(2);
 	doors.setDoorPosition(0, VectorConverter::convert(1, 2).asVector2f());
@@ -110,8 +107,7 @@ int main() {
 		player.run(doors.getDoor(),doors.getNumber(), blockS, 2);
 		//-------
 		spikes.run(player, block, 2, mirror, 0);
-		(plate + 0)->run(player, block, 2, mirror, 0);
-		(plate + 1)->run(player, block, 2, mirror, 0);
+		plates.run(player, block, 2, mirror, 0);
 		block[0].run(doors.getDoor(), doors.getNumber(), blockS, 2);
 		block[1].run(doors.getDoor(), doors.getNumber(), blockS, 2);
 		blockS[0].run(map, doors.getDoor(), doors.getNumber(), blockS, 2);
@@ -119,20 +115,19 @@ int main() {
 		teleports.run(player, block, 2, mirror, 0);
 		//-------
 
-		if (plate->isPressed()) doors.setOpen(0, true, player, block, 2, mirror, 0);
-		else if ((plate + 1)->isPressed()) doors.setOpen(0, true, player, block, 2, mirror, 0);
+		if (plates.isPressed(0)) doors.setOpen(0, true, player, block, 2, mirror, 0);
+		else if (plates.isPressed(1)) doors.setOpen(0, true, player, block, 2, mirror, 0);
 		else doors.setOpen(0, false, player, block, 2, mirror, 0);
 
-		teleports.setOpen(0, plate->isPressed());
-		blockS[0].setOn(plate->isPressed());
-		blockS[1].setOn(plate->isPressed());
+		teleports.setOpen(0, plates.isPressed(0));
+		blockS[0].setOn(plates.isPressed(0));
+		blockS[1].setOn(plates.isPressed(0));
 		
 		//-------
 
 		app.clear();
 		map.draw(app);
-		(plate + 0)->draw(app);
-		(plate + 1)->draw(app);
+		plates.draw(app);
 		doors.draw(app);
 		spikes.draw(app);
 		menu.draw(app);
