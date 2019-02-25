@@ -50,30 +50,28 @@ void Laser::setPosition(Vector2f position, Direction direction, int laserNr) {
 	this->laserNr = laserNr;
 	delete [] laser;
 	laser = new SimpleLaser[laserNr];
+	int a = 1;
 	switch (direction) {
 	case Up:
-		int a = 1;
+		
 		for (int i = 0; i < laserNr; i++) {
 			(laser + i)->setPosition(VectorConverter::convert(vec.asXY().x, vec.asXY().y - a).asVector2f());
 			a++;
 		}
 		break;
 	case Down:
-		int a = 1;
 		for (int i = 0; i < laserNr; i++) {
 			(laser + i)->setPosition(VectorConverter::convert(vec.asXY().x, vec.asXY().y + a).asVector2f());
 			a++;
 		}
 		break;
 	case Left:
-		int a = 1;
 		for (int i = 0; i < laserNr; i++) {
 			(laser + i)->setPosition(VectorConverter::convert(vec.asXY().x - a, vec.asXY().y).asVector2f());
 			a++;
 		}
 		break;
 	case Right:
-		int a = 1;
 		for (int i = 0; i < laserNr; i++) {
 			(laser + i)->setPosition(VectorConverter::convert(vec.asXY().x + a, vec.asXY().y).asVector2f());
 			a++;
