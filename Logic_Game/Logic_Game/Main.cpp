@@ -8,11 +8,14 @@
 #include "Doors.hpp"
 #include "TeleportFields.hpp"
 #include "Traps.hpp"
+#include "SlidingBLocks.hpp"
+#include "FPS.hpp"
+
 
 #include "Player.hpp"
 #include "Mirror.hpp"
-#include "SlidingBLock.hpp"
-#include "FPS.hpp"
+
+
 
 
 using namespace sf;
@@ -42,11 +45,9 @@ int main() {
 	Player player;
 	player.setPosition(VectorConverter::convert(2, 1).asVector2f());
 	//-------
-	SlidingBlock::setBlockTexture();
-
-	SlidingBlock block[2];
-	block[0].setPosition(VectorConverter::convert(5, 5).asVector2f());
-	block[1].setPosition(VectorConverter::convert(5, 6).asVector2f());
+	SlidingBlocks blocks(2);
+	blocks.setBlockPosition(0, VectorConverter::convert(5, 5).asVector2f());
+	blocks.setBlockPosition(1, VectorConverter::convert(5, 6).asVector2f());
 
 	//-------
 	Mine::setMineTexture();
@@ -71,7 +72,7 @@ int main() {
 	//-------
 	FPS fps;
 	fps.setOn(true);
-	doors.setOpen(1, true, player, block, 2, mirror, 0);
+	doors.setOpen(1, true, player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
 	while (app.isOpen()) {
 
 		fps.run();
@@ -88,34 +89,38 @@ int main() {
 					player.reset();
 					break;
 				case Keyboard::Space:
-					doors.setOpen(1, !doors.isOpen(1), player, block, 2, mirror, 0);
+					doors.setOpen(1, !doors.isOpen(1), player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
 					break;
 				}
 				break;
 			}
 		}
 
-		if (Keyboard::isKeyPressed(Keyboard::W)) player.movePlayer(Player::Up, map, blockS, 2, doors.getDoor(), doors.getNumber(), machine, 0, block, 2, mirror, 0);
-		else if (Keyboard::isKeyPressed(Keyboard::A)) player.movePlayer(Player::Left, map, blockS, 2, doors.getDoor(), doors.getNumber(), machine, 0, block, 2, mirror, 0);
-		else if (Keyboard::isKeyPressed(Keyboard::S)) player.movePlayer(Player::Down, map, blockS, 2, doors.getDoor(), doors.getNumber(), machine, 0, block, 2, mirror, 0);
-		else if (Keyboard::isKeyPressed(Keyboard::D)) player.movePlayer(Player::Right, map, blockS, 2, doors.getDoor(), doors.getNumber(), machine, 0, block, 2, mirror, 0);
+		if (Keyboard::isKeyPressed(Keyboard::W)) player.movePlayer(Player::Up, map, blocks.getBlock(), blocks.getNumber(), mirror, 0, doors.getDoor(), doors.getNumber(), blockS, 2, machine, 0);
+		else if (Keyboard::isKeyPressed(Keyboard::A)) player.movePlayer(Player::Left, map, blocks.getBlock(), blocks.getNumber(), mirror, 0, doors.getDoor(), doors.getNumber(), blockS, 2, machine, 0);
+		else if (Keyboard::isKeyPressed(Keyboard::S)) player.movePlayer(Player::Down, map, blocks.getBlock(), blocks.getNumber(), mirror, 0, doors.getDoor(), doors.getNumber(), blockS, 2, machine, 0);
+		else if (Keyboard::isKeyPressed(Keyboard::D)) player.movePlayer(Player::Right, map, blocks.getBlock(), blocks.getNumber(), mirror, 0, doors.getDoor(), doors.getNumber(), blockS, 2, machine, 0);
+
+		if (Keyboard::isKeyPressed(Keyboard::W)) blocks.push(0, SlidingBlock::Up, map, mirror, 0, doors.getDoor(), doors.getNumber(), blockS, 2, machine, 0);
+		else if (Keyboard::isKeyPressed(Keyboard::A)) blocks.push(0, SlidingBlock::Left, map, mirror, 0, doors.getDoor(), doors.getNumber(), blockS, 2, machine, 0);
+		else if (Keyboard::isKeyPressed(Keyboard::S)) blocks.push(0, SlidingBlock::Down, map, mirror, 0, doors.getDoor(), doors.getNumber(), blockS, 2, machine, 0);
+		else if (Keyboard::isKeyPressed(Keyboard::D)) blocks.push(0, SlidingBlock::Right, map, mirror, 0, doors.getDoor(), doors.getNumber(), blockS, 2, machine, 0);
 
 		//-------
 		menu.run();
-		player.run(doors.getDoor(),doors.getNumber(), blockS, 2);
+		player.run(blockS, 2);
 		//-------
-		traps.run(player, block, 2, mirror, 0);
-		plates.run(player, block, 2, mirror, 0);
-		block[0].run(doors.getDoor(), doors.getNumber(), blockS, 2);
-		block[1].run(doors.getDoor(), doors.getNumber(), blockS, 2);
+		traps.run(player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
+		plates.run(player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
+		blocks.run();
 		blockS[0].run(map, doors.getDoor(), doors.getNumber(), blockS, 2);
 		blockS[1].run(map, doors.getDoor(), doors.getNumber(), blockS, 2);
-		teleports.run(player, block, 2, mirror, 0);
+		teleports.run(player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
 		//-------
 
-		if (plates.isPressed(0)) doors.setOpen(0, true, player, block, 2, mirror, 0);
-		else if (plates.isPressed(1)) doors.setOpen(0, true, player, block, 2, mirror, 0);
-		else doors.setOpen(0, false, player, block, 2, mirror, 0);
+		if (plates.isPressed(0)) doors.setOpen(0, true, player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
+		else if (plates.isPressed(1)) doors.setOpen(0, true, player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
+		else doors.setOpen(0, false, player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
 
 		teleports.setOpen(0, plates.isPressed(0));
 		blockS[0].setOn(plates.isPressed(0));
@@ -132,8 +137,7 @@ int main() {
 		teleports.draw(app);
 		blockS[0].draw(app);
 		blockS[1].draw(app);
-		block[0].draw(app);
-		block[1].draw(app);
+		blocks.draw(app);
 		player.draw(app);
 		app.draw(fps);
 		app.display();
