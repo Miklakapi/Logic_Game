@@ -3,11 +3,6 @@
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
 #include <string>
-#include "VectorConverter.hpp"
-#include "Map.hpp"
-#include "Door.hpp"
-#include "ShootingBlock.hpp"
-#include "LaserMachine.hpp"
 
 using namespace sf;
 using namespace std;
