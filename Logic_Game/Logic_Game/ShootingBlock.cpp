@@ -216,21 +216,21 @@ Mine* ShootingBlock::getMine() {
 void ShootingBlock::draw(RenderWindow& window) {
 	window.draw(background);
 	window.draw(*this);
-	if (type < 4) (mine + 0)->draw(on, window);
+	if (type < 4) (mine + 0)->draw(window);
 	else if (type >= 4 && type < 10) {
-		(mine + 0)->draw(on, window);
-		(mine + 1)->draw(on, window);
+		(mine + 0)->draw(window);
+		(mine + 1)->draw(window);
 	}
 	else if (type >= 10 && type < 14) {
-		(mine + 0)->draw(on, window);
-		(mine + 1)->draw(on, window);
-		(mine + 2)->draw(on, window);
+		(mine + 0)->draw(window);
+		(mine + 1)->draw(window);
+		(mine + 2)->draw(window);
 	}
 	else if (type == 14) {
-		(mine + 0)->draw(on, window);
-		(mine + 1)->draw(on, window);
-		(mine + 2)->draw(on, window);
-		(mine + 3)-> draw(on, window);
+		(mine + 0)->draw(window);
+		(mine + 1)->draw(window);
+		(mine + 2)->draw(window);
+		(mine + 3)-> draw(window);
 	}
 }
 
@@ -240,33 +240,7 @@ void ShootingBlock::run(Map& map, Door* door, int number, ShootingBlock* block, 
 			continue;
 		}
 		if (on)(clock + i)->restart();
-		int nr = (mine + i)->run(on, map, door, number);
-		if (nr == 8) {
-			VectorConverter vec((mine + i)->getPosition());
-			Mine::Direction direction = (mine + i)->getDirection();
-			switch (direction) {
-			case Mine::Up:
-				for (int j = 0; j < number2; j++) {
-					if ((block + j)->getPosition() == VectorConverter::convert(vec.asXY().x, vec.asXY().y - 1).asVector2f()) (mine + i)->reset();
-				}
-				break;
-			case Mine::Down:
-				for (int j = 0; j < number2; j++) {
-					if ((block + j)->getPosition() == VectorConverter::convert(vec.asXY().x, vec.asXY().y + 1).asVector2f()) (mine + i)->reset();
-				}
-				break;
-			case Mine::Left:
-				for (int j = 0; j < number2; j++) {
-					if ((block + j)->getPosition() == VectorConverter::convert(vec.asXY().x - 1, vec.asXY().y).asVector2f()) (mine + i)->reset();
-				}
-				break;
-			case Mine::Right:
-				for (int j = 0; j < number2; j++) {
-					if ((block + j)->getPosition() == VectorConverter::convert(vec.asXY().x + 1, vec.asXY().y).asVector2f()) (mine + i)->reset();
-				}
-				break;
-			}
-		}
+		(mine + i)->run(on);
 	}
 }
 
