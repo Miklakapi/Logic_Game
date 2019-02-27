@@ -48,13 +48,13 @@ void TeleportFields::run(Player& player, SlidingBlock* block, int number, Mirror
 	for (int i = 0; i < this->number; i++) {
 		if (player.getPosition() == (field + i)->getPosition()) {
 			if (!(field + i)->isOpen()) continue;
-			for (int i = 0; i < number; i++) {
-				if (!(block + i)->getExist()) continue;
-				if ((block + i)->getPosition() == (field + i)->getTeleportPlace()) return;
+			for (int j = 0; j < number; j++) {
+				if (!(block + j)->getExist()) continue;
+				if ((block + j)->getPosition() == (field + i)->getTeleportPlace()) return;
 			}
-			for (int i = 0; i < number2; i++) {
-				if (!(mirror + i)->getExist()) continue;
-				if ((mirror + i)->getPosition() == (field + i)->getTeleportPlace()) return;
+			for (int j = 0; j < number2; j++) {
+				if (!(mirror + j)->getExist()) continue;
+				if ((mirror + j)->getPosition() == (field + i)->getTeleportPlace()) return;
 			}
 			player.setPosition((field + i)->getTeleportPlace());
 		}
