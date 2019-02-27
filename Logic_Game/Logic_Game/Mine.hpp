@@ -2,10 +2,7 @@
 #include <SFML\Window.hpp>
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
-#include "VectorConverter.hpp"
-#include "Map.hpp"
-#include "Door.hpp"
-#include <iostream>
+#include <string>
 
 using namespace sf;
 using namespace std;
@@ -53,9 +50,9 @@ public:
 
 	bool getExist();
 
-	void draw(bool on, RenderWindow& window);
+	void draw(RenderWindow& window);
 
-	int run(bool on, Map& map, Door* door, int number);
+	void run(bool on);
 
 	void reset();
 };
