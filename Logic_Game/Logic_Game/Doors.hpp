@@ -4,11 +4,8 @@
 #include <SFML\Graphics.hpp>
 #include <string>
 #include "Door.hpp"
-#include "Laser.hpp"
 #include "Player.hpp"
-#include "ShootingBlock.hpp"
 #include "SlidingBlock.hpp"
-#include "LaserMachine.hpp"
 #include "Mirror.hpp"
 
 using namespace sf;
