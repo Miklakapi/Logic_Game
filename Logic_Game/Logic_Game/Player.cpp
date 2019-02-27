@@ -75,7 +75,7 @@ bool Player::movePlayer(Direction direction, Map& map, SlidingBlock* block, int 
 	}
 
 	for (int i = 0; i < number2; i++) {
-		if ((mirror + i)->getExist() && (mirror + i)->getPosition() == vec.asVector2f()) return false;
+		if ((mirror + i)->getExist() && (mirror + i)->getPosition() == vec.asVector2f()) return true;
 	}
 	
 	for (int i = 0; i < number3; i++) {
