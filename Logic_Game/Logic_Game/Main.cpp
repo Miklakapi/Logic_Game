@@ -1,6 +1,7 @@
 #include <SFML\Window.hpp>
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
+#include "ShootingBlock.hpp"
 #include "Map.hpp"
 #include "MenuBar.hpp"
 #include "VectorConverter.hpp"
@@ -8,12 +9,11 @@
 #include "Doors.hpp"
 #include "TeleportFields.hpp"
 #include "Traps.hpp"
-#include "SlidingBLocks.hpp"
 #include "FPS.hpp"
 #include "Player.hpp"
 #include "HelpClass.hpp"
-
-
+#include "SlidingBLocks.hpp"
+#include "ShootingBlocks.hpp"
 
 #include "Mirror.hpp"
 
@@ -52,16 +52,12 @@ int main() {
 	blocks.setBlockPosition(1, VectorConverter::convert(5, 6).asVector2f());
 
 	//-------
-	Mine::setMineTexture();
-	ShootingBlock::setBlockTexture();
+	ShootingBlocks blockss(2);
+	blockss.setPosition(0, VectorConverter::convert(1, 9).asVector2f());
+	blockss.setType(0, ShootingBlock::B1);
+	blockss.setDelay(0, 2);
 
-	ShootingBlock blockS[2];
-	blockS[0].setBlockPosition(VectorConverter::convert(1, 9).asVector2f());
-	blockS[0].setType(ShootingBlock::B1);
-	blockS[0].setOn(true);
-	blockS[0].setDelay(2);
-	blockS[1].setBlockPosition(VectorConverter::convert(1, 5).asVector2f());
-
+	blockss.setPosition(1, VectorConverter::convert(2, 5).asVector2f());
 	//-------
 	LaserMachine* machine = NULL;
 	Mirror* mirror = NULL;
@@ -102,15 +98,15 @@ int main() {
 
 		//-------
 		menu.run();
-		player.run(blockS, 2);
+		player.run(blockss.getBlock(), blockss.getNumber());
 		//-------
 		traps.run(player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
 		plates.run(player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
 		blocks.run();
-		blockS[0].run(map, doors.getDoor(), doors.getNumber(), blockS, 2);
-		blockS[1].run(map, doors.getDoor(), doors.getNumber(), blockS, 2);
+		blockss.run(map, doors.getDoor(), doors.getNumber(), blocks.getBlock(), blocks.getNumber(),
+			mirror, 0, machine, 0);
 		teleports.run(player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
-		help.move(player, map, blocks.getBlock(), blocks.getNumber(), mirror, 0, doors.getDoor(), doors.getNumber(), blockS, 2, machine, 0);
+		help.move(player, map, blocks.getBlock(), blocks.getNumber(), mirror, 0, doors.getDoor(), doors.getNumber(), blockss.getBlock(), blockss.getNumber(), machine, 0);
 		//-------
 
 		if (plates.isPressed(0)) doors.setOpen(0, true, player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
@@ -118,8 +114,8 @@ int main() {
 		else doors.setOpen(0, false, player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
 
 		teleports.setOpen(0, plates.isPressed(0));
-		blockS[0].setOn(plates.isPressed(0));
-		blockS[1].setOn(plates.isPressed(0));
+		blockss.setOn(0, plates.isPressed(0));
+		blockss.setOn(1, plates.isPressed(0));
 		
 		//-------
 
@@ -130,8 +126,7 @@ int main() {
 		traps.draw(app);
 		menu.draw(app);
 		teleports.draw(app);
-		blockS[0].draw(app);
-		blockS[1].draw(app);
+		blockss.draw(app);
 		blocks.draw(app);
 		player.draw(app);
 		app.draw(fps);
