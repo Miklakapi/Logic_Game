@@ -5,16 +5,15 @@ Texture* ShootingBlock::texture;
 IntRect* ShootingBlock::rect;
 
 ShootingBlock::ShootingBlock(){
+	setDelay(0);
 	mine = new Mine[1];
 	type = Type::A1;
 	clock = new Clock[1];
-	delay = 0;
 	setBlockPosition(Vector2f{ 0,0 });
 	setBlockSize(Vector2f{ 80,80 });
 	setTexture(texture);
 	setType(Type::A1);
 	background.setFillColor(Color::Red);
-	setDelay(0);
 	reset();
 }
 
@@ -54,7 +53,7 @@ void ShootingBlock::setBlockSize(Vector2f size) {
 	background.setSize(size);
 }
 
-void ShootingBlock::setDelay(int delay) {
+void ShootingBlock::setDelay(float delay) {
 	this->delay = delay;
 }
 
@@ -213,6 +212,10 @@ Mine* ShootingBlock::getMine() {
 	return mine;
 }
 
+int ShootingBlock::getMinerNr() {
+	return mineNr;
+}
+
 void ShootingBlock::draw(RenderWindow& window) {
 	window.draw(background);
 	window.draw(*this);
@@ -234,7 +237,7 @@ void ShootingBlock::draw(RenderWindow& window) {
 	}
 }
 
-void ShootingBlock::run(Map& map, Door* door, int number, ShootingBlock* block, int number2) {
+void ShootingBlock::run() {
 	for (int i = 0; i < mineNr; i++) {
 		if (on && !(mine + i)->getExist() && (clock + i)->getElapsedTime().asSeconds() < delay) {
 			continue;
