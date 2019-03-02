@@ -3,7 +3,6 @@
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
 #include <string>
-#include <iostream>
 #include "VectorConverter.hpp"
 #include "ShootingBlock.hpp"
 #include "Map.hpp"
