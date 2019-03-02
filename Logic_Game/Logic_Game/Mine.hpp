@@ -50,6 +50,8 @@ public:
 
 	bool getExist();
 
+	int getMoveNr();
+
 	void draw(RenderWindow& window);
 
 	void run(bool on);
