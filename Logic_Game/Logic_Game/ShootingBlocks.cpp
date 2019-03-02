@@ -67,63 +67,72 @@ void ShootingBlocks::run(Map& map, Door* door, int number, SlidingBlock* block, 
 		for (int j = 0; j < (this->block + i)->getMinerNr(); j++) {
 			if (!(mine + j)->getExist()) continue;
 
+			VectorConverter vec((mine + j)->getPosition());
+
 			if ((mine + j)->getMoveNr() == 9) {
 				if ((mine + j)->getDirection() == Mine::Up || (mine + j)->getDirection() == Mine::Left) {
-					if (map.getType(VectorConverter::convert((mine + j)->getPosition()).asNumber()) == Square::Wall) {
+					if (map.getType(vec.asNumber()) == Square::Wall) {
 						(mine + j)->setExist(false);
 					}
-
-					for (int k = 0; k < number4; k++) {
-						if ((mine + j)->getPosition().x + 12 > (machine + k)->getPosition().x &&
-							(mine + j)->getPosition().x < (machine + k)->getPosition().x + 80 &&
-							(mine + j)->getPosition().y + 12 >(machine + k)->getPosition().y &&
-							(mine + j)->getPosition().y < (machine + k)->getPosition().y + 80) {
-							(mine + j)->setExist(false);
-						}
-					}
-
-					for (int k = 0; k < number; k++) {
-						if ((mine + j)->getPosition().x + 12 > (this->block + k)->getPosition().x &&
-							(mine + j)->getPosition().x < (this->block + k)->getPosition().x + 80 &&
-							(mine + j)->getPosition().y + 12 >(this->block + k)->getPosition().y &&
-							(mine + j)->getPosition().y < (this->block + k)->getPosition().y + 80) {
-							(mine + j)->setExist(false);
-						}
+				}
+				else if ((mine + j)->getDirection() == Mine::Direction::Right) {
+					VectorConverter vec2(vec.asXY().x + 1, vec.asXY().y);
+					if (map.getType(vec2.asNumber()) == Square::Wall) {
+						(mine + j)->setExist(false);
 					}
 				}
 				else {
+					VectorConverter vec2(vec.asXY().x, vec.asXY().y + 1);
+					if (map.getType(vec2.asNumber()) == Square::Wall) {
+						(mine + j)->setExist(false);
+					}
+				}
 
+				for (int k = 0; k < number4; k++) {
+					if (vec.asVector2f().x + 12 > (machine + k)->getPosition().x &&
+						vec.asVector2f().x < (machine + k)->getPosition().x + 80 &&
+						vec.asVector2f().y + 12 >(machine + k)->getPosition().y &&
+						vec.asVector2f().y < (machine + k)->getPosition().y + 80) {
+						(mine + j)->setExist(false);
+					}
+				}
 
-
+				for (int k = 0; k < number; k++) {
+					if (vec.asVector2f().x + 12 > (this->block + k)->getPosition().x &&
+						vec.asVector2f().x < (this->block + k)->getPosition().x + 80 &&
+						vec.asVector2f().y + 12 >(this->block + k)->getPosition().y &&
+						vec.asVector2f().y < (this->block + k)->getPosition().y + 80) {
+						(mine + j)->setExist(false);
+					}
 				}
 			}
 
 			for (int k = 0; k < number; k++) {
 				if ((door + k)->isOpen()) continue;
-				if ((mine + j)->getPosition().x + 12 > (door + k)->getPosition().x &&
-					(mine + j)->getPosition().x < (door + k)->getPosition().x + 80 &&
-					(mine + j)->getPosition().y + 12 >(door + k)->getPosition().y &&
-					(mine + j)->getPosition().y < (door + k)->getPosition().y + 80) {
+				if (vec.asVector2f().x + 12 > (door + k)->getPosition().x &&
+					vec.asVector2f().x < (door + k)->getPosition().x + 80 &&
+					vec.asVector2f().y + 12 >(door + k)->getPosition().y &&
+					vec.asVector2f().y < (door + k)->getPosition().y + 80) {
 					(mine + j)->setExist(false);
 				}
 			}
 
 			for (int k = 0; k < number2; k++) {
 				if (!(block + k)->getExist()) continue;
-				if ((mine + j)->getPosition().x + 12 > (block + k)->getPosition().x &&
-					(mine + j)->getPosition().x < (block + k)->getPosition().x + 80 &&
-					(mine + j)->getPosition().y + 12 >(block + k)->getPosition().y &&
-					(mine + j)->getPosition().y < (block + k)->getPosition().y + 80) {
+				if (vec.asVector2f().x + 12 > (block + k)->getPosition().x &&
+					vec.asVector2f().x < (block + k)->getPosition().x + 80 &&
+					vec.asVector2f().y + 12 >(block + k)->getPosition().y &&
+					vec.asVector2f().y < (block + k)->getPosition().y + 80) {
 					(mine + j)->setExist(false);
 				}
 			}
 
 			for (int k = 0; k < number3; k++) {
 				if (!(mirror + k)->getExist()) continue;
-				if ((mine + j)->getPosition().x + 12 > (mirror + k)->getPosition().x &&
-					(mine + j)->getPosition().x < (mirror + k)->getPosition().x + 80 &&
-					(mine + j)->getPosition().y + 12 >(mirror + k)->getPosition().y &&
-					(mine + j)->getPosition().y < (mirror + k)->getPosition().y + 80) {
+				if (vec.asVector2f().x + 12 > (mirror + k)->getPosition().x &&
+					vec.asVector2f().x < (mirror + k)->getPosition().x + 80 &&
+					vec.asVector2f().y + 12 >(mirror + k)->getPosition().y &&
+					vec.asVector2f().y < (mirror + k)->getPosition().y + 80) {
 					(mine + j)->setExist(false);
 				}
 			}
