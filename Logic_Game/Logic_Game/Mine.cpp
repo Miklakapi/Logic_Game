@@ -46,6 +46,10 @@ bool Mine::getExist() {
 	return exist;
 }
 
+int Mine::getMoveNr() {
+	return moveNr;
+}
+
 void Mine::draw(RenderWindow& window) {
 	if (!exist) return;
 	window.draw(*this);
@@ -55,7 +59,9 @@ void Mine::run(bool on) {
 	if (on == false && exist == false) return;
 	if (on == true && exist == false) {
 		exist = true;
-		reset();
+		moveNr = 0;
+		setPosition(startPosition);
+		clock.restart();
 	}
 	if (clock.getElapsedTime().asSeconds() < 0.03) return;
 	clock.restart();
