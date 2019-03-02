@@ -2,10 +2,7 @@
 #include <SFML\Window.hpp>
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
-#include "VectorConverter.hpp"
 #include "Mine.hpp"
-#include "Map.hpp"
-#include "Door.hpp"
 
 using namespace sf;
 using namespace std;
@@ -48,7 +45,7 @@ private:
 
 	bool on;
 
-	int delay;
+	float delay;
 
 	Clock* clock;
 
@@ -62,13 +59,15 @@ public:
 
 	void setBlockSize(Vector2f size);
 
-	void setDelay(int delay);
+	void setDelay(float delay);
 
 	int getDelay();
 
 	void setType(Type type);
 
 	Type getType();
+
+	int getMinerNr();
 
 	void setOn(bool on);
 
@@ -78,7 +77,7 @@ public:
 
 	void draw(RenderWindow& window);
 
-	void run(Map& map, Door* door, int number, ShootingBlock* block, int number2);
+	void run();
 
 	void reset();
 };
