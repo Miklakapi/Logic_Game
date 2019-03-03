@@ -80,5 +80,7 @@ public:
 	void run();
 
 	void reset();
+
+	~ShootingBlock();
 };
 
