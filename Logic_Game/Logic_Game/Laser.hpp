@@ -3,6 +3,7 @@
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
 #include <string>
+#include <iostream>
 #include "VectorConverter.hpp"
 
 using namespace sf;
@@ -10,17 +11,32 @@ using namespace std;
 
 class SimpleLaser : public RectangleShape{
 
+public:
+
+	enum Direction {
+		Horizontal,
+		Vertical
+	};
+
+private:
+
 	static Texture* texture;
 
 	static IntRect* rect;
 
 	bool exist;
 
+	Direction direction;
+
 public:
 	
 	SimpleLaser();
 	
 	static void setLaserTexture(string textureFile = "Img/Laser.png");
+
+	void setDirection(Direction direction);
+
+	Direction getDirection();
 
 	void setExist(bool exist);
 
@@ -34,7 +50,7 @@ public:
 ////////////////////////////////////////////
 ////////////////////////////////////////////
 
-class Laser {
+class Laser{
 
 public:
 
@@ -51,8 +67,6 @@ private:
 
 	int laserNr;
 
-	int actualLaser;
-
 	Direction direction;
 
 public:
@@ -61,9 +75,13 @@ public:
 
 	void setPosition(Vector2f position, Direction direction, int laserNr);
 
-	void draw(RenderWindow& window);
+	SimpleLaser* getSimpleLaser();
 
-	void run(bool on, int nr);
+	int getLaserNr();
+
+	Direction getDirection();
+
+	void draw(RenderWindow& window);
 
 	void reset();
 };
