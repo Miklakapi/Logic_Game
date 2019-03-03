@@ -1,8 +1,8 @@
 #include "VectorConverter.hpp"
 
 VectorConverter::VectorConverter(int number) {
-	x = number - (18 * (number % 18));
 	y = number % 18;
+	x = number - (18 * y);
 	this->number = number;
 	vector = Vector2i{ int(x * 80),int(y * 80) };
 }
@@ -15,24 +15,24 @@ VectorConverter::VectorConverter(int x, int y) {
 }
 
 VectorConverter::VectorConverter(Vector2f vector) {
-	this->vector = Vector2i{ int(vector.x),int(vector.y) };
-	this->x = this->vector.x / 80;
-	this->y = this->vector.y / 80;
+	this->x = vector.x / 80;
+	this->y = vector.y / 80;
 	number = x + (y * 18);
+	this->vector = Vector2i{ int(x * 80),int(y * 80) };
 }
 
 VectorConverter::VectorConverter(Vector2i vector) {
-	this->vector = vector;
-	this->x = this->vector.x / 80;
-	this->y = this->vector.y / 80;
+	this->x = vector.x / 80;
+	this->y = vector.y / 80;
 	number = x + (y * 18);
+	this->vector = Vector2i{ int(x * 80),int(y * 80) };
 }
 
 VectorConverter::VectorConverter(Vector2u vector) {
-	this->vector = Vector2i{ int(vector.x),int(vector.y) };
-	this->x = this->vector.x / 80;
-	this->y = this->vector.y / 80;
+	this->x = vector.x / 80;
+	this->y = vector.y / 80;
 	number = x + (y * 18);
+	this->vector = Vector2i{ int(x * 80),int(y * 80) };
 }
 
 VectorConverter VectorConverter::convert(int number) {
