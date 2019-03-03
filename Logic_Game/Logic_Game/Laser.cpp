@@ -13,7 +13,9 @@ SimpleLaser::SimpleLaser(){
 void SimpleLaser::setLaserTexture(string textureFile) {
 	static int a = 0;
 	if (a == 0) {
-		rect = new IntRect[3];
+		rect = new IntRect[2];
+		*(rect + 0) = { 0,0,80,80 };
+		*(rect + 1) = { 80,0,80,80 };
 		texture = new Texture;
 		a++;
 	}
