@@ -61,7 +61,6 @@ void SimpleLaser::reset() {
 
 Laser::Laser() {
 	laser = new SimpleLaser[1];
-	setPosition({ 0,0 }, Up, 1);
 }
 
 void Laser::setPosition(Vector2f position, Direction direction, int laserNr) {
@@ -69,27 +68,34 @@ void Laser::setPosition(Vector2f position, Direction direction, int laserNr) {
 	laser = new SimpleLaser[laserNr];
 	this->laserNr = laserNr;
 	this->direction = direction;
+
 	SimpleLaser::Direction direction2;
 	if (direction == Up || direction == Down) direction2 = SimpleLaser::Vertical;
 	else direction2 = SimpleLaser::Horizontal;
+
 	VectorConverter vec(position);
 	int x(0), y(0);
+
 	switch (direction) {
 	case Up:
 		x = 0;
 		y = -1;
+		vec = { vec.asXY().x, vec.asXY().y - 1 };
 		break;
 	case Down:
 		x = 0;
 		y = 1;
+		vec = { vec.asXY().x, vec.asXY().y + 1 };
 		break;
 	case Left:
 		x = -1;
 		y = 0;
+		vec = { vec.asXY().x - 1, vec.asXY().y };
 		break;
 	case Right:
 		x = 1;
 		y = 0;
+		vec = { vec.asXY().x + 1, vec.asXY().y };
 		break;
 	}
 	for (int i = 0; i < laserNr; i++) {
