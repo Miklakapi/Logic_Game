@@ -72,7 +72,6 @@ int main() {
 	fps.setOn(true);
 	doors.setOpen(1, true, player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
 
-	HelpClass help;
 	while (app.isOpen()) {
 
 		fps.run();
@@ -106,7 +105,7 @@ int main() {
 		blockss.run(map, doors.getDoor(), doors.getNumber(), blocks.getBlock(), blocks.getNumber(),
 			mirror, 0, machine, 0);
 		teleports.run(player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
-		help.move(player, map, blocks.getBlock(), blocks.getNumber(), mirror, 0, doors.getDoor(), doors.getNumber(), blockss.getBlock(), blockss.getNumber(), machine, 0);
+		HelpClass::move(player, map, blocks.getBlock(), blocks.getNumber(), mirror, 0, doors.getDoor(), doors.getNumber(), blockss.getBlock(), blockss.getNumber(), machine, 0);
 		//-------
 
 		if (plates.isPressed(0)) doors.setOpen(0, true, player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
