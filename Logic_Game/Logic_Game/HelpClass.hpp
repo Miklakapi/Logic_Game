@@ -5,11 +5,11 @@
 #include "VectorConverter.hpp"
 #include "Map.hpp"
 #include "Player.hpp"
-#include "SlidingBlock.hpp"
-#include "Mirror.hpp"
-#include "Door.hpp"
-#include "ShootingBlock.hpp"
-#include "LaserMachine.hpp"
+#include "SlidingBlocks.hpp"
+#include "Mirrors.hpp"
+#include "Doors.hpp"
+#include "ShootingBlocks.hpp"
+#include "LaserMachines.hpp"
 
 using namespace sf;
 
@@ -17,8 +17,12 @@ class HelpClass{
 
 public:
 	
-	void move(Player& player, Map& map, SlidingBlock* block, int number, Mirror* mirror, int number2, Door* door, int number3,
+	static void move(Player& player, Map& map, SlidingBlock* block, int number, Mirror* mirror, int number2, Door* door, int number3,
 		ShootingBlock* blockS, int number4, LaserMachine* machine, int number5);
 	
+	static void runAll(Map& map, Player& player, SlidingBlocks& block, Mirrors& mirror, Doors& door, ShootingBlocks& blockS, LaserMachines& machine);
 
+	static void resetAll(Map& map, Player& player, SlidingBlocks& block, Mirrors& mirror, Doors& door, ShootingBlocks& blockS, LaserMachines& machine);
+
+	static void drawAll(RenderWindow& window, Map& map, Player& player, SlidingBlocks& block, Mirrors& mirror, Doors& door, ShootingBlocks& blockS, LaserMachines& machine)
 };
