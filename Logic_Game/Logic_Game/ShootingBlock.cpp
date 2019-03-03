@@ -253,3 +253,8 @@ void ShootingBlock::reset() {
 		(clock + i)->restart();
 	}
 }
+
+ShootingBlock::~ShootingBlock() {
+	delete [] clock;
+	delete [] mine;
+}
