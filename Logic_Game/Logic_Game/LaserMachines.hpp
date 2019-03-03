@@ -29,7 +29,7 @@ public:
 
 	int getLaserNr(int number);
 
-	void setType(int number, LaserMachine::Type type);
+	void setType(int number, LaserMachine::Type type, Map& map, ShootingBlock* blocks, int number2);
 
 	LaserMachine::Type getType(int number);
 
