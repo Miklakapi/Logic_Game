@@ -14,6 +14,7 @@
 #include "HelpClass.hpp"
 #include "SlidingBLocks.hpp"
 #include "ShootingBlocks.hpp"
+#include "LaserMachines.hpp"
 
 #include "Mirror.hpp"
 
@@ -59,7 +60,13 @@ int main() {
 
 	blockss.setPosition(1, VectorConverter::convert(2, 5).asVector2f());
 	//-------
-	LaserMachine* machine = NULL;
+	LaserMachines machines(2);
+	machines.setPosition(0, VectorConverter::convert(16, 1).asVector2f());
+	machines.setPosition(1, VectorConverter::convert(16, 8).asVector2f());
+	machines.setType(0, LaserMachine::A4);
+	machines.setType(1, LaserMachine::A1);
+
+	//-------
 	Mirror* mirror = NULL;
 
 	//-------
@@ -71,6 +78,7 @@ int main() {
 	FPS fps;
 	fps.setOn(true);
 	doors.setOpen(1, true, player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
+	
 
 	while (app.isOpen()) {
 
@@ -89,6 +97,7 @@ int main() {
 					break;
 				case Keyboard::Space:
 					doors.setOpen(1, !doors.isOpen(1), player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
+					machines.setOn(0, !machines.isOn(0));
 					break;
 				}
 				break;
@@ -103,9 +112,11 @@ int main() {
 		plates.run(player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
 		blocks.run();
 		blockss.run(map, doors.getDoor(), doors.getNumber(), blocks.getBlock(), blocks.getNumber(),
-			mirror, 0, machine, 0);
+			mirror, 0, machines.getMachine(), machines.getNumber());
 		teleports.run(player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
-		HelpClass::move(player, map, blocks.getBlock(), blocks.getNumber(), mirror, 0, doors.getDoor(), doors.getNumber(), blockss.getBlock(), blockss.getNumber(), machine, 0);
+		HelpClass::move(player, map, blocks.getBlock(), blocks.getNumber(), mirror, 0,
+			doors.getDoor(), doors.getNumber(), blockss.getBlock(), blockss.getNumber(),
+			machines.getMachine(), machines.getNumber());
 		//-------
 
 		if (plates.isPressed(0)) doors.setOpen(0, true, player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
@@ -128,6 +139,7 @@ int main() {
 		blockss.draw(app);
 		blocks.draw(app);
 		player.draw(app);
+		machines.draw(app);
 		app.draw(fps);
 		app.display();
 	}
