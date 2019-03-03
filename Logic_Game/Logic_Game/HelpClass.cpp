@@ -80,3 +80,15 @@ void HelpClass::move(Player& player, Map& map, SlidingBlock* block, int number, 
 		}
 	}
 }
+
+void HelpClass::runAll(Map& map, Player& player, SlidingBlocks& block, Mirrors& mirror, Doors& door, ShootingBlocks& blockS, LaserMachines& machine) {
+
+}
+
+void HelpClass::resetAll(Map& map, Player& player, SlidingBlocks& block, Mirrors& mirror, Doors& door, ShootingBlocks& blockS, LaserMachines& machine) {
+
+}
+
+void HelpClass::drawAll(RenderWindow& window, Map& map, Player& player, SlidingBlocks& block, Mirrors& mirror, Doors& door, ShootingBlocks& blockS, LaserMachines& machine) {
+
+}
