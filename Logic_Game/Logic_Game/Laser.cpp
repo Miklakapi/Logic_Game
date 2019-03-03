@@ -8,6 +8,8 @@ SimpleLaser::SimpleLaser(){
 	setSize(Vector2f{ 80,80 });
 	setPosition(Vector2f{ 0,0 });
 	setTexture(texture);
+	setDirection(Vertical);
+	reset();
 }
 
 void SimpleLaser::setLaserTexture(string textureFile) {
@@ -20,6 +22,22 @@ void SimpleLaser::setLaserTexture(string textureFile) {
 		a++;
 	}
 	texture->loadFromFile(textureFile);
+}
+
+void SimpleLaser::setDirection(Direction direction) {
+	this->direction = direction;
+	switch (direction) {
+	case Vertical:
+		setTextureRect(*(rect + 0));
+		break;
+	case Horizontal:
+		setTextureRect(*(rect + 1));
+		break;
+	}
+}
+
+SimpleLaser::Direction SimpleLaser::getDirection() {
+	return direction;
 }
 
 void SimpleLaser::setExist(bool exist) {
@@ -43,73 +61,63 @@ void SimpleLaser::reset() {
 
 Laser::Laser() {
 	laser = new SimpleLaser[1];
-	laserNr = 1;
-	reset();
+	setPosition({ 0,0 }, Up, 1);
 }
 
 void Laser::setPosition(Vector2f position, Direction direction, int laserNr) {
-	VectorConverter vec(position);
-	this->laserNr = laserNr;
 	delete [] laser;
 	laser = new SimpleLaser[laserNr];
-	int a = 1;
+	this->laserNr = laserNr;
+	this->direction = direction;
+	SimpleLaser::Direction direction2;
+	if (direction == Up || direction == Down) direction2 = SimpleLaser::Vertical;
+	else direction2 = SimpleLaser::Horizontal;
+	VectorConverter vec(position);
+	int x(0), y(0);
 	switch (direction) {
 	case Up:
-		
-		for (int i = 0; i < laserNr; i++) {
-			(laser + i)->setPosition(VectorConverter::convert(vec.asXY().x, vec.asXY().y - a).asVector2f());
-			a++;
-		}
+		x = 0;
+		y = -1;
 		break;
 	case Down:
-		for (int i = 0; i < laserNr; i++) {
-			(laser + i)->setPosition(VectorConverter::convert(vec.asXY().x, vec.asXY().y + a).asVector2f());
-			a++;
-		}
+		x = 0;
+		y = 1;
 		break;
 	case Left:
-		for (int i = 0; i < laserNr; i++) {
-			(laser + i)->setPosition(VectorConverter::convert(vec.asXY().x - a, vec.asXY().y).asVector2f());
-			a++;
-		}
+		x = -1;
+		y = 0;
 		break;
 	case Right:
-		for (int i = 0; i < laserNr; i++) {
-			(laser + i)->setPosition(VectorConverter::convert(vec.asXY().x + a, vec.asXY().y).asVector2f());
-			a++;
-		}
+		x = 1;
+		y = 0;
 		break;
 	}
+	for (int i = 0; i < laserNr; i++) {
+		(laser + i)->setDirection(direction2);
+		(laser + i)->setPosition(VectorConverter::convert(vec.asXY().x + x * i, vec.asXY().y + y * i).asVector2f());
+	}
+}
+
+SimpleLaser* Laser::getSimpleLaser() {
+	return laser;
+}
+
+Laser::Direction Laser::getDirection() {
+	return direction;
+}
+
+int Laser::getLaserNr() {
+	return laserNr;
 }
 
 void Laser::draw(RenderWindow& window) {
 	for (int i = 0; i < laserNr; i++) {
-		laser->draw(window);
-	}
-}
-
-void Laser::run(bool on, int nr) {
-	if (!on) {
-		actualLaser = -1;
-		for (int i = 0; i < laserNr; i++) {
-			laser->setExist(false);
-		}
-	}
-	else {
-		if (nr > laserNr) nr = laserNr;
-		if (actualLaser != nr) {
-			actualLaser = nr;
-			for (int i = 0; i < laserNr; i++) {
-				if (i < nr)laser->setExist(true);
-				else if (i > nr)laser->setExist(false);
-			}
-		}
+		(laser + i)->draw(window);
 	}
 }
 
 void Laser::reset() {
-	actualLaser = -1;
 	for (int i = 0; i < laserNr; i++) {
-		laser->setExist(false);
+		(laser + i)->reset();
 	}
 }
