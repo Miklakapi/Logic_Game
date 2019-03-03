@@ -28,7 +28,7 @@ public:
 
 	void setSize(int number, Vector2f size);
 
-	void setDelay(int number, int delay);
+	void setDelay(int number, float delay);
 
 	int getDelay(int number);
 
