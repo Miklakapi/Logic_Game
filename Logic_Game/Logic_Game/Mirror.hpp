@@ -42,6 +42,10 @@ public:
 
 private:
 
+	Laser* laser;
+
+	int laserNr;
+
 	static Texture* texture;
 
 	static IntRect* rect;
@@ -51,6 +55,10 @@ private:
 	Clock clock;
 
 	Direction direction;
+
+	Type type;
+
+	int rectNr;
 
 	bool exist;
 
@@ -62,16 +70,27 @@ public:
 	
 	static void setBlockTexture(string textureFile = "Img/Mirror.png");
 
+	Laser* getLaser();
+
+	int getLaserNr();
+
+	Type getType();
+
+	void setType(Type type);
+
+	void setOn(bool on);
+
+	bool isOn();
+
+	int getMoveNumber();
+
 	void destroy();
 
 	bool getExist();
 
-	bool push(Direction direction, Map& map, ShootingBlock* blockS, int number, Door* door, int number2,
-		LaserMachine* machine, int number3);
-
 	void push(Direction direction);
 
-	void run(Door* door, int number);
+	void run();
 
 	void draw(RenderWindow& window);
 
