@@ -64,7 +64,9 @@ int main() {
 	machines.setType(1, LaserMachine::D1, map, blockss.getBlock(), blockss.getNumber());
 
 	//-------
-	Mirror* mirror = NULL;
+	Mirror::setBlockTexture();
+	Mirror mirror;
+	mirror.setPosition(VectorConverter::convert(6, 3).asVector2f());
 
 	//-------
 	TeleportFields teleports(1);
@@ -74,7 +76,7 @@ int main() {
 	//-------
 	FPS fps;
 	fps.setOn(true);
-	doors.setOpen(1, true, player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
+	doors.setOpen(1, true, player, blocks.getBlock(), blocks.getNumber(), &mirror, 1);
 	
 
 	while (app.isOpen()) {
@@ -94,7 +96,7 @@ int main() {
 					player.reset();
 					break;
 				case Keyboard::Space:
-					doors.setOpen(1, !doors.isOpen(1), player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
+					doors.setOpen(1, !doors.isOpen(1), player, blocks.getBlock(), blocks.getNumber(), &mirror, 1);
 					machines.setOn(0, !machines.isOn(0));
 					break;
 				}
@@ -104,23 +106,24 @@ int main() {
 
 		//-------
 		menu.run();
-		player.run(blockss.getBlock(), blockss.getNumber());
 		//-------
-		traps.run(player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
-		plates.run(player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
+		traps.run(player, blocks.getBlock(), blocks.getNumber(), &mirror, 1);
+		plates.run(player, blocks.getBlock(), blocks.getNumber(), &mirror, 1);
 		blocks.run();
+		mirror.run();
 		blockss.run(map, doors.getDoor(), doors.getNumber(), blocks.getBlock(), blocks.getNumber(),
-			mirror, 0, machines.getMachine(), machines.getNumber());
-		teleports.run(player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
-		HelpClass::move(player, map, blocks.getBlock(), blocks.getNumber(), mirror, 0,
+			&mirror, 1, machines.getMachine(), machines.getNumber());
+		teleports.run(player, blocks.getBlock(), blocks.getNumber(), &mirror, 1);
+		HelpClass::move(player, map, blocks.getBlock(), blocks.getNumber(), &mirror, 1,
 			doors.getDoor(), doors.getNumber(), blockss.getBlock(), blockss.getNumber(),
 			machines.getMachine(), machines.getNumber());
-		machines.run(blocks.getBlock(), blocks.getNumber(), mirror, 0, doors.getDoor(), doors.getNumber());
+		machines.run(blocks.getBlock(), blocks.getNumber(), &mirror, 1, doors.getDoor(), doors.getNumber());
+		player.run(blockss.getBlock(), blockss.getNumber());
 		//-------
 
-		if (plates.isPressed(0)) doors.setOpen(0, true, player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
-		else if (plates.isPressed(1)) doors.setOpen(0, true, player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
-		else doors.setOpen(0, false, player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
+		if (plates.isPressed(0)) doors.setOpen(0, true, player, blocks.getBlock(), blocks.getNumber(), &mirror, 1);
+		else if (plates.isPressed(1)) doors.setOpen(0, true, player, blocks.getBlock(), blocks.getNumber(), &mirror, 1);
+		else doors.setOpen(0, false, player, blocks.getBlock(), blocks.getNumber(), &mirror, 1);
 
 		teleports.setOpen(0, plates.isPressed(0));
 		blockss.setOn(0, plates.isPressed(0));
@@ -137,6 +140,7 @@ int main() {
 		teleports.draw(app);
 		blockss.draw(app);
 		blocks.draw(app);
+		mirror.draw(app);
 		player.draw(app);
 		machines.draw(app);
 		app.draw(fps);
