@@ -82,5 +82,9 @@ public:
 
 	void draw(RenderWindow& window);
 
+	void on();
+
+	void off();
+
 	void reset();
 };
