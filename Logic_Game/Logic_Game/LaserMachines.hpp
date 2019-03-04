@@ -11,6 +11,9 @@
 #include "Door.hpp"
 #include "ShootingBlock.hpp"
 
+using namespace sf;
+using namespace std;
+
 class LaserMachines{
 
 	LaserMachine* machine;
