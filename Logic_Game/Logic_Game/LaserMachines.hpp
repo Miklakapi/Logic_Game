@@ -43,8 +43,7 @@ public:
 
 	void draw(RenderWindow& window);
 
-	void run(Map& map, SlidingBlock* block, int number, Mirror* mirror, int number2, Door* door, int number3,
-		ShootingBlock* blockS, int number4);
+	void run(SlidingBlock* block, int number, Mirror* mirror, int number2, Door* door, int number3);
 
 	void reset(int number);
 
