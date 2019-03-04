@@ -18,9 +18,6 @@
 
 #include "Mirror.hpp"
 
-
-
-
 using namespace sf;
 
 int main() {
@@ -61,10 +58,10 @@ int main() {
 	blockss.setPosition(1, VectorConverter::convert(2, 5).asVector2f());
 	//-------
 	LaserMachines machines(2);
-	machines.setPosition(0, VectorConverter::convert(16, 2).asVector2f());
-	machines.setPosition(1, VectorConverter::convert(16, 8).asVector2f());
-	machines.setType(0, LaserMachine::A4, map, blockss.getBlock(), blockss.getNumber());
-	machines.setType(1, LaserMachine::A1, map, blockss.getBlock(), blockss.getNumber());
+	machines.setPosition(0, VectorConverter::convert(13, 2).asVector2f());
+	machines.setPosition(1, VectorConverter::convert(12, 8).asVector2f());
+	machines.setType(0, LaserMachine::D1, map, blockss.getBlock(), blockss.getNumber());
+	machines.setType(1, LaserMachine::D1, map, blockss.getBlock(), blockss.getNumber());
 
 	//-------
 	Mirror* mirror = NULL;
@@ -93,6 +90,7 @@ int main() {
 			case Event::KeyPressed:
 				switch (event.key.code) {
 				case Keyboard::R:
+					player.setPosition(VectorConverter::convert(2, 1).asVector2f());
 					player.reset();
 					break;
 				case Keyboard::Space:
@@ -117,8 +115,7 @@ int main() {
 		HelpClass::move(player, map, blocks.getBlock(), blocks.getNumber(), mirror, 0,
 			doors.getDoor(), doors.getNumber(), blockss.getBlock(), blockss.getNumber(),
 			machines.getMachine(), machines.getNumber());
-		machines.run(map, blocks.getBlock(), blocks.getNumber(), mirror, 0, doors.getDoor(), doors.getNumber(),
-			blockss.getBlock(), blockss.getNumber());
+		machines.run(blocks.getBlock(), blocks.getNumber(), mirror, 0, doors.getDoor(), doors.getNumber());
 		//-------
 
 		if (plates.isPressed(0)) doors.setOpen(0, true, player, blocks.getBlock(), blocks.getNumber(), mirror, 0);
