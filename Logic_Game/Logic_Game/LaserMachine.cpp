@@ -87,7 +87,12 @@ void LaserMachine::setOn(bool on) {
 	if (this->on == on) return;
 	this->on = on;
 	if (on) background.setFillColor(Color::Green);
-	else background.setFillColor(Color::Red);
+	else {
+		background.setFillColor(Color::Red);
+		for (int i = 0; i < laserNr; i++) {
+			(laser + i)->off();
+		}
+	}
 }
 
 bool LaserMachine::isOn() {
