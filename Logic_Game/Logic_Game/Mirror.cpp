@@ -5,10 +5,12 @@ Texture* Mirror::texture;
 IntRect* Mirror::rect;
 
 Mirror::Mirror(){
+	laser = new Laser[1];
+	laserNr = 1;
 	setSize(Vector2f{ 80,80 });
 	setTexture(texture);
 	setPosition(Vector2f{ 0,0 });
-	reset();
+	setType(Type::A1);
 }
 
 void Mirror::setBlockTexture(string textureFile) {
@@ -70,29 +72,110 @@ void Mirror::setBlockTexture(string textureFile) {
 	texture->loadFromFile(textureFile);
 }
 
-void Mirror::destroy() {
+Laser* Mirror::getLaser() {
+	return laser;
+}
 
+int Mirror::getLaserNr() {
+	return laserNr;
+}
+
+Mirror::Type Mirror::getType() {
+	return type;
+}
+
+void Mirror::setType(Type type) {
+	delete [] laser;
+	this->type = type;
+	rectNr = type;
+	if (type < 4) {
+		laser = new Laser[2];
+		laserNr = 2;
+	}
+	else if (type < 8 && type > 3) {
+		laser = new Laser[3];
+		laserNr = 3;
+	}
+	else if (type == 8) {
+		laser = new Laser[4];
+		laserNr = 4;
+	}
+	reset();
+}
+
+void Mirror::setOn(bool on) {
+	if (this->on == on) return;
+	this->on = on;
+	if (on) {
+		rectNr += 9;
+		setTextureRect(*(rect + rectNr));
+	}
+	else {
+		rectNr -= 9;
+		setTextureRect(*(rect + rectNr));
+		for (int i = 0; i < laserNr; i++) {
+			(laser + i)->off();
+		}
+	}
+}
+
+bool Mirror::isOn() {
+	return on;
+}
+
+int Mirror::getMoveNumber() {
+	return moveNr;
+}
+
+void Mirror::destroy() {
+	if (!exist) return;
+	clock.restart();
+	exist = false;
+	rectNr += 18;
+	setTextureRect(*(rect + rectNr));
 }
 
 bool Mirror::getExist() {
 	return exist;
 }
 
-bool Mirror::push(Direction direction, Map& map, ShootingBlock* blockS, int number, Door* door, int number2,
-	LaserMachine* machine, int number3){
-	return false;
-}
-
 void Mirror::push(Direction direction) {
-
+	this->direction = direction;
+	moveNr = 0;
 }
 
-void Mirror::run(Door* door, int number) {
-
+void Mirror::run() {
+	if (clock.getElapsedTime().asSeconds() >= 0.06 && moveNr < 10 && exist) {
+		clock.restart();
+		switch (direction) {
+		case Direction::Up:
+			move(Vector2f{ 0, -8 });
+			break;
+		case Direction::Down:
+			move(Vector2f{ 0, 8 });
+			break;
+		case Direction::Left:
+			move(Vector2f{ -8, 0 });
+			break;
+		case Direction::Right:
+			move(Vector2f{ 8, 0 });
+			break;
+		}
+		moveNr++;
+	}
+	else if (!exist && moveNr != -1) {
+		if (clock.getElapsedTime().asSeconds() >= 0.5) {
+			setTextureRect(IntRect{ 80,160,1,1 });
+			moveNr = -1;
+		}
+	}
 }
 
 void Mirror::draw(RenderWindow& window) {
 	window.draw(*this);
+	for (int i = 0; i < laserNr; i++) {
+		(laser + i)->draw(window);
+	}
 }
 
 void Mirror::reset() {
@@ -100,4 +183,10 @@ void Mirror::reset() {
 	moveNr = 10;
 	clock.restart();
 	direction = Direction::None;
+	on = false;
+	rectNr = type;
+	setTextureRect(*(rect + rectNr));
+	for (int i = 0; i < laserNr; i++) {
+		(laser + i)->reset();
+	}
 }
