@@ -24,9 +24,27 @@ public:
 		None
 	};
 
+	enum Type {
+		A1,
+		A2,
+		A3,
+		A4,
+		B1,
+		B2,
+		B3,
+		B4,
+		C1,
+		C2,
+		C3,
+		C4,
+		D1,
+	};
+
 private:
 
 	static Texture* texture;
+
+	static IntRect* rect;
 
 	int moveNr;
 
@@ -35,6 +53,8 @@ private:
 	Direction direction;
 
 	bool exist;
+
+	bool on;
 
 public:
 
