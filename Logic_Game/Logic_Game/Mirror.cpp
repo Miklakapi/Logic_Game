@@ -11,6 +11,7 @@ Mirror::Mirror(){
 	setTexture(texture);
 	setPosition(Vector2f{ 0,0 });
 	setType(Type::A1);
+	reset();
 }
 
 void Mirror::setBlockTexture(string textureFile) {
@@ -103,6 +104,13 @@ void Mirror::setType(Type type) {
 	reset();
 }
 
+bool Mirror::isOnNewPosition() {
+	return newPosition;
+}
+
+void Mirror::setOnNewPosition(bool newPos) {
+	newPosition = newPosition;
+}
 void Mirror::setOn(bool on) {
 	if (this->on == on) return;
 	this->on = on;
@@ -142,6 +150,11 @@ bool Mirror::getExist() {
 void Mirror::push(Direction direction) {
 	this->direction = direction;
 	moveNr = 0;
+	newPosition = false;
+	positionChg = false;
+	for (int i = 9; i < laserNr; i++) {
+		(laser + i)->off();
+	}
 }
 
 void Mirror::run() {
@@ -169,6 +182,10 @@ void Mirror::run() {
 			moveNr = -1;
 		}
 	}
+	else if (moveNr == 10 && newPosition == false && positionChg == false) {
+		newPosition = true;
+		positionChg = true;
+	}
 }
 
 void Mirror::draw(RenderWindow& window) {
@@ -189,4 +206,6 @@ void Mirror::reset() {
 	for (int i = 0; i < laserNr; i++) {
 		(laser + i)->reset();
 	}
+	newPosition = true;
+	positionChg = true;
 }
