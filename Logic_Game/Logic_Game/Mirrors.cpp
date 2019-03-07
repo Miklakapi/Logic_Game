@@ -283,10 +283,11 @@ void Mirrors::run(Map& map, SlidingBlock* block, int number, Door* door, int num
 		(mirror + i)->run();
 
 		if ((mirror + i)->getMoveNumber() != 10 || !(mirror + i)->getExist()) continue;
+				
+		for (int j = 0; j < number4; j++) {
 
 
-
-
+		}
 
 		if (!(mirror + i)->isOn()) continue;
 
