@@ -64,6 +64,8 @@ private:
 
 	bool on;
 
+	bool newPosition, positionChg;
+
 public:
 
 	Mirror();
@@ -77,6 +79,10 @@ public:
 	Type getType();
 
 	void setType(Type type);
+
+	bool isOnNewPosition();
+
+	void setOnNewPosition(bool newPos);
 
 	void setOn(bool on);
 
