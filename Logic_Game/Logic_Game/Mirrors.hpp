@@ -30,12 +30,9 @@ public:
 
 	int getLaserNr(int number);
 
-	void setType(int number, Mirror::Type type, Map& map, 
-		ShootingBlock* blocks, int number2, LaserMachine machine, int number3);
+	void setType(int number, Mirror::Type type, Map& map, ShootingBlock* blocks, int number2, LaserMachine* machine, int number3);
 
 	Mirror::Type getType(int number);
-
-	void setOn(int number, bool on);
 
 	bool isOn(int number);
 
@@ -45,9 +42,8 @@ public:
 
 	bool getExist(int number);
 
-	bool push(int number, SlidingBlock::Direction direction, Map& map, 
-		Door* door, int number3, ShootingBlock* blockS, int number4,
-		LaserMachine* machine, int number5);
+	bool push(int number, Mirror::Direction direction, Map& map, SlidingBlock* block, int number2, Door* door, int number3,
+		ShootingBlock* blockS, int number4, LaserMachine* machine, int number5);
 
 	Mirror* getMirror();
 
@@ -55,7 +51,8 @@ public:
 
 	void draw(RenderWindow& window);
 
-	void run();
+	void run(Map& map, SlidingBlock* block, int number, Door* door, int number2, ShootingBlock* blockS, int number3,
+		LaserMachine* machine, int number4);
 
 	void reset(int number);
 
