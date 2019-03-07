@@ -247,7 +247,7 @@ void LaserMachines::run(SlidingBlock* block, int number, Mirror* mirror, int num
 
 	//Machine
 	for (int i = 0; i < this->number; i++) {
-		if (!(machine + i)->isOn()) return;
+		if (!(machine + i)->isOn()) continue;
 
 		Laser* laser = (machine + i)->getLaser();
 		LaserMachine::Type type = (machine + i)->getType();
