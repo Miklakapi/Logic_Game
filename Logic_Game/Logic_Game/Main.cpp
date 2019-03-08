@@ -64,10 +64,8 @@ int main() {
 	machines.setType(1, LaserMachine::D1, map, blockss.getBlock(), blockss.getNumber());
 
 	//-------
-	Mirror::setBlockTexture();
-	Mirror mirror;
-	mirror.setPosition(VectorConverter::convert(6, 3).asVector2f());
-
+	Mirrors mirror(1);
+	mirror.setPosition(0, VectorConverter::convert(6, 3).asVector2f());
 	//-------
 	TeleportFields teleports(1);
 	teleports.setTeleportPosition(0,VectorConverter::convert(2, 4).asVector2f());
@@ -76,7 +74,8 @@ int main() {
 	//-------
 	FPS fps;
 	fps.setOn(true);
-	doors.setOpen(1, true, player, blocks.getBlock(), blocks.getNumber(), &mirror, 1);
+	doors.setOpen(1, true, player, blocks.getBlock(), blocks.getNumber(),
+		mirror.getMirror(), mirror.getNumber());
 	
 
 	while (app.isOpen()) {
@@ -96,7 +95,8 @@ int main() {
 					player.reset();
 					break;
 				case Keyboard::Space:
-					doors.setOpen(1, !doors.isOpen(1), player, blocks.getBlock(), blocks.getNumber(), &mirror, 1);
+					doors.setOpen(1, !doors.isOpen(1), player, blocks.getBlock(), blocks.getNumber(),
+						mirror.getMirror(), mirror.getNumber());
 					machines.setOn(0, !machines.isOn(0));
 					break;
 				}
@@ -107,23 +107,30 @@ int main() {
 		//-------
 		menu.run();
 		//-------
-		traps.run(player, blocks.getBlock(), blocks.getNumber(), &mirror, 1);
-		plates.run(player, blocks.getBlock(), blocks.getNumber(), &mirror, 1);
+		traps.run(player, blocks.getBlock(), blocks.getNumber(), mirror.getMirror(), mirror.getNumber());
+		plates.run(player, blocks.getBlock(), blocks.getNumber(), mirror.getMirror(), mirror.getNumber());
 		blocks.run();
-		mirror.run();
+		mirror.run(map, blocks.getBlock(), blocks.getNumber(), doors.getDoor(), doors.getNumber(),
+			blockss.getBlock(), blockss.getNumber(), machines.getMachine(), machines.getNumber());
 		blockss.run(map, doors.getDoor(), doors.getNumber(), blocks.getBlock(), blocks.getNumber(),
-			&mirror, 1, machines.getMachine(), machines.getNumber());
-		teleports.run(player, blocks.getBlock(), blocks.getNumber(), &mirror, 1);
-		HelpClass::move(player, map, blocks.getBlock(), blocks.getNumber(), &mirror, 1,
+			mirror.getMirror(), mirror.getNumber(), machines.getMachine(), machines.getNumber());
+		teleports.run(player, blocks.getBlock(), blocks.getNumber(),
+			mirror.getMirror(), mirror.getNumber());
+		HelpClass::move(player, map, blocks.getBlock(), blocks.getNumber(),
+			mirror.getMirror(), mirror.getNumber(),
 			doors.getDoor(), doors.getNumber(), blockss.getBlock(), blockss.getNumber(),
 			machines.getMachine(), machines.getNumber());
-		machines.run(blocks.getBlock(), blocks.getNumber(), &mirror, 1, doors.getDoor(), doors.getNumber());
+		machines.run(blocks.getBlock(), blocks.getNumber(), mirror.getMirror(), mirror.getNumber(),
+			doors.getDoor(), doors.getNumber());
 		player.run(blockss.getBlock(), blockss.getNumber());
 		//-------
 
-		if (plates.isPressed(0)) doors.setOpen(0, true, player, blocks.getBlock(), blocks.getNumber(), &mirror, 1);
-		else if (plates.isPressed(1)) doors.setOpen(0, true, player, blocks.getBlock(), blocks.getNumber(), &mirror, 1);
-		else doors.setOpen(0, false, player, blocks.getBlock(), blocks.getNumber(), &mirror, 1);
+		if (plates.isPressed(0)) doors.setOpen(0, true, player, blocks.getBlock(), blocks.getNumber(),
+			mirror.getMirror(), mirror.getNumber());
+		else if (plates.isPressed(1)) doors.setOpen(0, true, player, blocks.getBlock(), blocks.getNumber(),
+			mirror.getMirror(), mirror.getNumber());
+		else doors.setOpen(0, false, player, blocks.getBlock(), blocks.getNumber(),
+			mirror.getMirror(), mirror.getNumber());
 
 		teleports.setOpen(0, plates.isPressed(0));
 		blockss.setOn(0, plates.isPressed(0));
