@@ -111,6 +111,7 @@ bool Mirror::isOnNewPosition() {
 void Mirror::setOnNewPosition(bool newPos) {
 	newPosition = newPosition;
 }
+
 void Mirror::setOn(bool on) {
 	if (this->on == on) return;
 	this->on = on;
