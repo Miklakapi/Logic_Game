@@ -454,9 +454,20 @@ void Mirrors::run(Map& map, SlidingBlock* block, int number, Door* door, int num
 			break;
 		}
 		
+		boolDown = !boolDown;
+		boolUp = !boolUp;
+		boolRight = !boolRight;
+		boolLeft = !boolLeft;
+
+		//
+
 		if (!(mirror + i)->isOn()) continue;
+
+		Laser* laser = (machine + i)->getLaser();
+		LaserMachine::Type type = (machine + i)->getType();
+
+
 	}
-	
 }
 
 void Mirrors::reset(int number) {
