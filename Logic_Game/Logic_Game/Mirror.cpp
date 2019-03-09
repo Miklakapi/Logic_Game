@@ -184,7 +184,7 @@ void Mirror::run() {
 			moveNr = -1;
 		}
 	}
-	else if (moveNr == 10 && newPosition == false && positionChg == false) {
+	if (moveNr == 10 && newPosition == false && positionChg == false) {
 		newPosition = true;
 		positionChg = true;
 	}
