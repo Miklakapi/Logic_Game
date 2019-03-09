@@ -8,7 +8,6 @@
 #include "Door.hpp"
 #include "ShootingBlock.hpp"
 #include "LaserMachine.hpp"
-#include <iostream>
 
 using namespace sf;
 using namespace std;
