@@ -262,7 +262,7 @@ void LaserMachines::run(SlidingBlock* block, int number, Mirror* mirror, int num
 		//Laser
 		for (int j = 0; j < nr; j++) {
 
-			(laser + j)->on();
+			(laser + j)->setOn(true);
 			SimpleLaser* simLaser = (laser + j)->getSimpleLaser();
 			bool wall(false);
 
