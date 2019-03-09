@@ -68,6 +68,8 @@ private:
 
 	Direction direction;
 
+	bool on;
+
 public:
 
 	Laser();
@@ -82,9 +84,9 @@ public:
 
 	void draw(RenderWindow& window);
 
-	void on();
+	void setOn(bool on);
 
-	void off();
+	bool isOn();
 
 	void reset();
 };
