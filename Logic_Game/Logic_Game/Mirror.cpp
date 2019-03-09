@@ -123,7 +123,7 @@ void Mirror::setOn(bool on) {
 		rectNr -= 9;
 		setTextureRect(*(rect + rectNr));
 		for (int i = 0; i < laserNr; i++) {
-			(laser + i)->off();
+			(laser + i)->setOn(false);
 		}
 	}
 }
@@ -153,8 +153,9 @@ void Mirror::push(Direction direction) {
 	moveNr = 0;
 	newPosition = false;
 	positionChg = false;
+	setOn(false);
 	for (int i = 9; i < laserNr; i++) {
-		(laser + i)->off();
+		(laser + i)->setOn(false);
 	}
 }
 
