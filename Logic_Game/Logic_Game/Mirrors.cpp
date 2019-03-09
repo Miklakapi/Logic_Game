@@ -31,7 +31,7 @@ void Mirrors::setType(int number, Mirror::Type type, Map& map, ShootingBlock* bl
 	int down(0);
 	int left(0);
 	int right(0);
-
+	
 	//UP
 	bool wall(false);
 	do {
@@ -56,7 +56,7 @@ void Mirrors::setType(int number, Mirror::Type type, Map& map, ShootingBlock* bl
 		if (wall) break;
 		up++;
 	} while (!wall);
-
+	
 	wall = false;
 	vec2 = { vec };
 	//Down
@@ -134,11 +134,11 @@ void Mirrors::setType(int number, Mirror::Type type, Map& map, ShootingBlock* bl
 		if (wall) break;
 		right++;
 	} while (!wall);
-
+	
 	(mirror + number)->setType(type);
-
-	Laser* laser = (machine + number)->getLaser();
-
+	
+	Laser* laser = (mirror + number)->getLaser();
+	
 	if (type < 4) {
 		switch (type) {
 		case 0:
@@ -281,9 +281,13 @@ void Mirrors::run(Map& map, SlidingBlock* block, int number, Door* door, int num
 	for (int i = 0; i < this->number; i++) {
 
 		(mirror + i)->run();
-
+		
 		if ((mirror + i)->getMoveNumber() != 10 || !(mirror + i)->getExist()) continue;
 			
+		if ((mirror + i)->isOnNewPosition()) {
+			setType(i, (mirror + i)->getType(), map, blockS, number3, machine, number4);
+		}
+
 		bool wallUp(false);
 		bool wallDown(false);
 		bool wallLeft(false);
@@ -308,68 +312,100 @@ void Mirrors::run(Map& map, SlidingBlock* block, int number, Door* door, int num
 		if (map.getType(VectorConverter::convert(vecRight).asNumber()) == Square::Type::Wall) wallRight = true;
 		
 		for (int j = 0; j < number4; j++) {
-			Laser* laser = (machine + j)->getLaser();
 			
+			if (!(machine + j)->isOn()) continue;
+			
+			if (vecUp == (machine + j)->getPosition()) boolUp = true;
+			else if (vecDown == (machine + j)->getPosition()) boolDown = true;
+			else if (vecLeft == (machine + j)->getPosition()) boolLeft = true;
+			else if (vecRight == (machine + j)->getPosition()) boolRight = true;
+
+			Laser* laser = (machine + j)->getLaser();
+
 			for (int k = 0; k < (machine + j)->getLaserNr(); k++) {
-				if (!boolUp && !wallUp) {
-					if (((laser + k)->getSimpleLaser() + (laser + k)->getLaserNr() - 1)->getPosition() == vecUp &&
-						((laser + k)->getSimpleLaser() + (laser + k)->getLaserNr() - 1)->getDirection() == SimpleLaser::Vertical) {
-						boolUp = true;
+
+				SimpleLaser* simLaser = (laser + k)->getSimpleLaser();
+
+				for (int l = 0; l < (laser + k)->getLaserNr(); l++) {
+					
+					if (!(simLaser + l)->getExist()) continue;
+				
+					if (!boolUp && !wallUp) {
+						if ((simLaser + l)->getPosition() == vecUp &&
+							(simLaser + l)->getDirection() == SimpleLaser::Vertical) {
+							boolUp = true;
+						}
 					}
-				}
-				if (!boolDown && !wallDown) {
-					if (((laser + k)->getSimpleLaser() + (laser + k)->getLaserNr() - 1)->getPosition() == vecDown &&
-						((laser + k)->getSimpleLaser() + (laser + k)->getLaserNr() - 1)->getDirection() == SimpleLaser::Vertical) {
-						boolDown = true;
+					if (!boolDown && !wallDown) {
+						if ((simLaser + l)->getPosition() == vecDown &&
+							(simLaser + l)->getDirection() == SimpleLaser::Vertical) {
+							boolDown = true;
+						}
 					}
-				}
-				if (!boolLeft && !wallLeft) {
-					if (((laser + k)->getSimpleLaser() + (laser + k)->getLaserNr() - 1)->getPosition() == vecLeft &&
-						((laser + k)->getSimpleLaser() + (laser + k)->getLaserNr() - 1)->getDirection() == SimpleLaser::Horizontal) {
-						boolLeft = true;
+					if (!boolLeft && !wallLeft) {
+						if ((simLaser + l)->getPosition() == vecLeft &&
+							(simLaser + l)->getDirection() == SimpleLaser::Horizontal) {
+							boolLeft = true;
+						}
 					}
-				}
-				if (!boolRight && !wallRight) {
-					if (((laser + k)->getSimpleLaser() + (laser + k)->getLaserNr() - 1)->getPosition() == vecRight &&
-						((laser + k)->getSimpleLaser() + (laser + k)->getLaserNr() - 1)->getDirection() == SimpleLaser::Horizontal) {
-						boolRight = true;
+					if (!boolRight && !wallRight) {
+						if ((simLaser + l)->getPosition() == vecRight &&
+							(simLaser + l)->getDirection() == SimpleLaser::Horizontal) {
+							boolRight = true;
+						}
 					}
 				}
 			}
 		}
 		
 		for (int j = 0; j < this->number; j++) {
+			
 			if (j == i)continue;
+			if (!(mirror + j)->isOn()) continue;
+
+			if (vecUp == (mirror + j)->getPosition()) boolUp = true;
+			else if (vecDown == (mirror + j)->getPosition()) boolDown = true;
+			else if (vecLeft == (mirror + j)->getPosition()) boolLeft = true;
+			else if (vecRight == (mirror + j)->getPosition()) boolRight = true;
+
 			Laser* laser = (mirror + j)->getLaser();
 
 			for (int k = 0; k < (mirror + j)->getLaserNr(); k++) {
-				if (!boolUp && !wallUp) {
-					if (((laser + k)->getSimpleLaser() + (laser + k)->getLaserNr() - 1)->getPosition() == vecUp &&
-						((laser + k)->getSimpleLaser() + (laser + k)->getLaserNr() - 1)->getDirection() == SimpleLaser::Vertical) {
-						boolUp = true;
+
+				SimpleLaser* simLaser = (laser + k)->getSimpleLaser();
+
+				for (int l = 0; l < (laser + k)->getLaserNr(); l++) {
+
+					if (!boolUp && !wallUp) {
+						if ((simLaser + l)->getPosition() == vecUp &&
+							(simLaser + l)->getDirection() == SimpleLaser::Vertical) {
+							boolUp = true;
+						}
 					}
-				}
-				if (!boolDown && !wallDown) {
-					if (((laser + k)->getSimpleLaser() + (laser + k)->getLaserNr() - 1)->getPosition() == vecDown &&
-						((laser + k)->getSimpleLaser() + (laser + k)->getLaserNr() - 1)->getDirection() == SimpleLaser::Vertical) {
-						boolDown = true;
+					if (!boolDown && !wallDown) {
+						if ((simLaser + l)->getPosition() == vecDown &&
+							(simLaser + l)->getDirection() == SimpleLaser::Vertical) {
+							boolDown = true;
+						}
 					}
-				}
-				if (!boolLeft && !wallLeft) {
-					if (((laser + k)->getSimpleLaser() + (laser + k)->getLaserNr() - 1)->getPosition() == vecLeft &&
-						((laser + k)->getSimpleLaser() + (laser + k)->getLaserNr() - 1)->getDirection() == SimpleLaser::Horizontal) {
-						boolLeft = true;
+					if (!boolLeft && !wallLeft) {
+						if ((simLaser + l)->getPosition() == vecLeft &&
+							(simLaser + l)->getDirection() == SimpleLaser::Horizontal) {
+							boolLeft = true;
+						}
 					}
-				}
-				if (!boolRight && !wallRight) {
-					if (((laser + k)->getSimpleLaser() + (laser + k)->getLaserNr() - 1)->getPosition() == vecRight &&
-						((laser + k)->getSimpleLaser() + (laser + k)->getLaserNr() - 1)->getDirection() == SimpleLaser::Horizontal) {
-						boolRight = true;
+					if (!boolRight && !wallRight) {
+						if ((simLaser + l)->getPosition() == vecRight &&
+							(simLaser + l)->getDirection() == SimpleLaser::Horizontal) {
+							boolRight = true;
+						}
 					}
 				}
 			}
 		}
 		
+		(mirror + i)->setOn(false);
+
 		switch ((mirror+i)->getType()){
 		case Mirror::A1:
 			if (boolUp || boolRight) {
@@ -417,42 +453,10 @@ void Mirrors::run(Map& map, SlidingBlock* block, int number, Door* door, int num
 			}
 			break;
 		}
-
-		if (!(mirror + i)->isOn()) continue;
-
-		if ((mirror + i)->isOnNewPosition()) {
-			setType(i, (mirror + i)->getType(), map, blockS, number3, machine, number4);
-		}
 		
-		Laser* laser = (mirror + i)->getLaser();
-		Mirror::Type type = (mirror + i)->getType();
-
-		int nr = (mirror+i)->getLaserNr();
-		/*
-		//Laser
-		for (int j = 0; j < nr; j++) {
-
-			(laser + j)->on();
-			SimpleLaser* simLaser = (laser + j)->getSimpleLaser();
-			bool wall(false);
-
-			//Simple Laser
-			for (int k = 0; k < (laser + j)->getLaserNr(); k++) {
-				
-
-
-
-
-
-
-
-
-
-
-
-			}
-		}*/
+		if (!(mirror + i)->isOn()) continue;
 	}
+	
 }
 
 void Mirrors::reset(int number) {
