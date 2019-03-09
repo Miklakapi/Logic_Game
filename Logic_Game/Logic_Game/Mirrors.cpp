@@ -463,10 +463,13 @@ void Mirrors::run(Map& map, SlidingBlock* block, int number, Door* door, int num
 
 		if (!(mirror + i)->isOn()) continue;
 
-		Laser* laser = (machine + i)->getLaser();
-		LaserMachine::Type type = (machine + i)->getType();
+		Laser* laser = (mirror + i)->getLaser();
+		Mirror::Type type = (mirror + i)->getType();
 
-
+		for (int j = 0; j < (mirror + i)->getLaserNr(); j++) {
+			
+			(laser + j)->setOn(true);
+		}	
 	}
 }
 
