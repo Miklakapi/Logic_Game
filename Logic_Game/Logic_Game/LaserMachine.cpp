@@ -90,7 +90,7 @@ void LaserMachine::setOn(bool on) {
 	else {
 		background.setFillColor(Color::Red);
 		for (int i = 0; i < laserNr; i++) {
-			(laser + i)->off();
+			(laser + i)->setOn(false);
 		}
 	}
 }
