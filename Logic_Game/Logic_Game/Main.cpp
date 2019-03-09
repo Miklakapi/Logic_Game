@@ -15,10 +15,10 @@
 #include "SlidingBLocks.hpp"
 #include "ShootingBlocks.hpp"
 #include "LaserMachines.hpp"
-
-#include "Mirror.hpp"
+#include "Mirrors.hpp"
 
 using namespace sf;
+using namespace std;
 
 int main() {
 	RenderWindow app(VideoMode{ 1440,880 }, "Logic_Game", Style::Close);
