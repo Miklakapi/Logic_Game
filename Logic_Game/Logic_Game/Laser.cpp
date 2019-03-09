@@ -122,16 +122,21 @@ void Laser::draw(RenderWindow& window) {
 	}
 }
 
-void Laser::on() {
-	for (int i = 0; i < laserNr; i++) {
-		(laser + i)->setExist(true);
+void Laser::setOn(bool on) {
+	if (on) {
+		for (int i = 0; i < laserNr; i++) {
+			(laser + i)->setExist(true);
+		}
+	}
+	else {
+		for (int i = 0; i < laserNr; i++) {
+			(laser + i)->setExist(false);
+		}
 	}
 }
 
-void Laser::off() {
-	for (int i = 0; i < laserNr; i++) {
-		(laser + i)->setExist(false);
-	}
+bool Laser::isOn() {
+	return on;
 }
 
 void Laser::reset() {
