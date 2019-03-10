@@ -95,6 +95,13 @@ bool Player::movePlayer(Direction direction, Map& map, SlidingBlock* block, int 
 	return false;
 }
 
+void Player::movePlayer(Player::Direction direction) {
+	if (!live || moveNr != 10) return;
+	if (direction == Player::Direction::None) return;
+	this->direction = direction;
+	moveNr = 0;
+}
+
 void Player::run(ShootingBlock* block, int number) {
 	if (live && clockStage.getElapsedTime().asSeconds() >= 0.05) {
 		clockStage.restart();
