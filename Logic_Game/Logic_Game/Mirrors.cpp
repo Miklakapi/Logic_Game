@@ -277,10 +277,6 @@ void Mirrors::draw(RenderWindow& window) {
 void Mirrors::run(Map& map, SlidingBlock* block, int number, Door* door, int number2, ShootingBlock* blockS, int number3,
 	LaserMachine* machine, int number4) {
 
-	for (int i = 0; i < this->number; i++) {
-		(mirror + i)->setOn(false);
-	}
-
 	//Mirror
 	for (int i = 0; i < this->number; i++) {
 
@@ -361,16 +357,22 @@ void Mirrors::run(Map& map, SlidingBlock* block, int number, Door* door, int num
 				}
 			}
 		}
-		
+
 		for (int j = 0; j < this->number; j++) {
 			
 			if (j == i)continue;
 			if (!(mirror + j)->isOn()) continue;
 
-			if (vecUp == (mirror + j)->getPosition()) boolUp = true;
-			else if (vecDown == (mirror + j)->getPosition()) boolDown = true;
-			else if (vecLeft == (mirror + j)->getPosition()) boolLeft = true;
-			else if (vecRight == (mirror + j)->getPosition()) boolRight = true;
+			Mirror::Type type = (mirror + j)->getType();
+
+			if (vecUp == (mirror + j)->getPosition() && 
+				(type == 1 || type == 2 || type == 5 || type == 6 || type == 7 || type == 8)) boolUp = true;
+			if (vecDown == (mirror + j)->getPosition() &&
+				(type == 0 || type == 3 || type == 4 || type == 5 || type == 7 || type == 8)) boolDown = true;
+			if (vecLeft == (mirror + j)->getPosition() &&
+				(type == 0 || type == 1 || type == 4 || type == 5 || type == 6 || type == 8)) boolLeft = true;
+			if (vecRight == (mirror + j)->getPosition() &&
+				(type == 2 || type == 3 || type == 4 || type == 6 || type == 7 || type == 8)) boolRight = true;
 
 			Laser* laser = (mirror + j)->getLaser();
 
@@ -379,6 +381,8 @@ void Mirrors::run(Map& map, SlidingBlock* block, int number, Door* door, int num
 				SimpleLaser* simLaser = (laser + k)->getSimpleLaser();
 
 				for (int l = 0; l < (laser + k)->getLaserNr(); l++) {
+
+					if (!(simLaser + l)->getExist()) continue;
 
 					if (!boolUp && !wallUp) {
 						if ((simLaser + l)->getPosition() == vecUp &&
@@ -466,62 +470,172 @@ void Mirrors::run(Map& map, SlidingBlock* block, int number, Door* door, int num
 		if (!(mirror + i)->isOn()) continue;
 
 		Laser* laser = (mirror + i)->getLaser();
-		Mirror::Type type = (mirror + i)->getType();
 
 		for (int j = 0; j < (mirror + i)->getLaserNr(); j++) {
 			(laser + j)->setOn(false);
 		}
 
+		Mirror::Type type = (mirror + i)->getType();
+
 		switch (type) {
 		case Mirror::A1:
 			if (boolUp) (laser + 0)->setOn(true);
-			else if (boolRight) (laser + 1)->setOn(true);
+			else (laser + 0)->setOn(false);
+			if (boolRight) (laser + 1)->setOn(true);
+			else (laser + 1)->setOn(false);
 			break;
 		case Mirror::A2:
 			if (boolRight) (laser + 0)->setOn(true);
-			else if (boolDown) (laser + 1)->setOn(true);
+			else (laser + 0)->setOn(false);
+			if (boolDown) (laser + 1)->setOn(true);
+			else (laser + 1)->setOn(false);
 			break;
 		case Mirror::A3:
 			if (boolDown) (laser + 0)->setOn(true);
-			else if (boolLeft) (laser + 1)->setOn(true);
+			else (laser + 0)->setOn(false);
+			if (boolLeft) (laser + 1)->setOn(true);
+			else (laser + 1)->setOn(false);
 			break;
 		case Mirror::A4:
 			if (boolLeft) (laser + 0)->setOn(true);
-			else if (boolUp) (laser + 1)->setOn(true);
+			else (laser + 0)->setOn(false);
+			if (boolUp) (laser + 1)->setOn(true);
+			else (laser + 1)->setOn(false);
 			break;
 		case Mirror::B1:
 			if (boolLeft) (laser + 0)->setOn(true);
+			else (laser + 0)->setOn(false);
 			if (boolUp) (laser + 1)->setOn(true);
+			else (laser + 1)->setOn(false);
 			if (boolRight) (laser + 2)->setOn(true);
+			else (laser + 2)->setOn(false);
 			break;
 		case Mirror::B2:
 			if (boolUp) (laser + 0)->setOn(true);
+			else (laser + 0)->setOn(false);
 			if (boolRight) (laser + 1)->setOn(true);
+			else (laser + 1)->setOn(false);
 			if (boolDown) (laser + 2)->setOn(true);
+			else (laser + 2)->setOn(false);
 			break;
 		case Mirror::B3:
 			if (boolRight) (laser + 0)->setOn(true);
+			else (laser + 0)->setOn(false);
 			if (boolDown) (laser + 1)->setOn(true);
+			else (laser + 1)->setOn(false);
 			if (boolLeft) (laser + 2)->setOn(true);
+			else (laser + 2)->setOn(false);
 			break;
 		case Mirror::B4:
 			if (boolDown) (laser + 0)->setOn(true);
+			else (laser + 0)->setOn(false);
 			if (boolLeft) (laser + 1)->setOn(true);
+			else (laser + 1)->setOn(false);
 			if (boolUp) (laser + 2)->setOn(true);
+			else (laser + 2)->setOn(false);
 			break;
 		case Mirror::C1:
 			if (boolUp) (laser + 0)->setOn(true);
+			else (laser + 0)->setOn(false);
 			if (boolRight) (laser + 1)->setOn(true);
+			else (laser + 1)->setOn(false);
 			if (boolDown) (laser + 2)->setOn(true);
+			else (laser + 2)->setOn(false);
 			if (boolLeft) (laser + 3)->setOn(true);
+			else (laser + 3)->setOn(false);
 			break;
 		}
 
+		//Laser
 		for (int j = 0; j < (mirror + i)->getLaserNr(); j++) {
-			
-
+	
 			if (!(laser + j)->isOn()) continue;
-			(laser + j)->setOn(true);
+
+			SimpleLaser* simLaser = (laser + j)->getSimpleLaser();
+			bool wall(false);
+
+			//Simple Laser
+			for (int k = 0; k < (laser + j)->getLaserNr(); k++) {
+			
+				if (wall) {
+					(simLaser + k)->setExist(false);
+					continue;
+				}
+
+				Vector2f vec = (simLaser + k)->getPosition();
+				SimpleLaser::Direction direction = (simLaser + k)->getDirection();
+				if (direction == SimpleLaser::Direction::Horizontal) {
+					vec = Vector2f{ vec.x,vec.y + 35 };
+				}
+				else {
+					vec = Vector2f{ vec.x + 35,vec.y };
+				}
+			
+				for (int l = 0; l < number; l++) {
+					if (!(block + l)->getExist()) continue;
+					Vector2f vec2 = (block + l)->getPosition();
+					if (direction == SimpleLaser::Direction::Horizontal) {
+						if (vec.x + 80 > vec2.x && vec.x < vec2.x + 80 &&
+							vec.y + 10 > vec2.y && vec.y < vec2.y + 80) {
+							wall = true;
+							(simLaser + k)->setExist(false);
+							break;;
+						}
+					}
+					else {
+						if (vec.x + 10 > vec2.x && vec.x < vec2.x + 80 &&
+							vec.y + 80 > vec2.y && vec.y < vec2.y + 80) {
+							wall = true;
+							(simLaser + k)->setExist(false);
+							break;
+						}
+					}
+				}
+				if (wall) continue;
+
+				for (int l = 0; l < this->number; l++) {
+					if (!(mirror + l)->getExist() || l == i) continue;
+					Vector2f vec2 = (mirror + l)->getPosition();
+					if (direction == SimpleLaser::Direction::Horizontal) {
+						if (vec.x + 80 > vec2.x && vec.x < vec2.x + 80 &&
+							vec.y + 10 > vec2.y && vec.y < vec2.y + 80) {
+							wall = true;
+							(simLaser + k)->setExist(false);
+							break;;
+						}
+					}
+					else {
+						if (vec.x + 10 > vec2.x && vec.x < vec2.x + 80 &&
+							vec.y + 80 > vec2.y && vec.y < vec2.y + 80) {
+							wall = true;
+							(simLaser + k)->setExist(false);
+							break;
+						}
+					}
+				}
+				if (wall) continue;
+
+				for (int l = 0; l < number2; l++) {
+					if ((door + l)->isOpen()) continue;
+					Vector2f vec2 = (door + l)->getPosition();
+					if (direction == SimpleLaser::Direction::Horizontal) {
+						if (vec.x + 80 > vec2.x && vec.x < vec2.x + 80 &&
+							vec.y + 10 > vec2.y && vec.y < vec2.y + 80) {
+							wall = true;
+							(simLaser + k)->setExist(false);
+							break;;
+						}
+					}
+					else {
+						if (vec.x + 10 > vec2.x && vec.x < vec2.x + 80 &&
+							vec.y + 80 > vec2.y && vec.y < vec2.y + 80) {
+							wall = true;
+							(simLaser + k)->setExist(false);
+							break;
+						}
+					}
+				}
+			}
 		}	
 	}
 }
