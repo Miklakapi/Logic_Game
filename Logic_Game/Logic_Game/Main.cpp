@@ -104,8 +104,10 @@ int main() {
 			}
 		}
 
+
+
 		//-------
-		menu.run();
+		/*menu.run();
 		//-------
 		traps.run(player, blocks.getBlock(), blocks.getNumber(), mirror.getMirror(), mirror.getNumber());
 		plates.run(player, blocks.getBlock(), blocks.getNumber(), mirror.getMirror(), mirror.getNumber());
@@ -116,13 +118,13 @@ int main() {
 			mirror.getMirror(), mirror.getNumber(), machines.getMachine(), machines.getNumber());
 		teleports.run(player, blocks.getBlock(), blocks.getNumber(),
 			mirror.getMirror(), mirror.getNumber());
-		HelpClass::move(player, map, blocks.getBlock(), blocks.getNumber(),
-			mirror.getMirror(), mirror.getNumber(),
-			doors.getDoor(), doors.getNumber(), blockss.getBlock(), blockss.getNumber(),
-			machines.getMachine(), machines.getNumber());
+
 		machines.run(blocks.getBlock(), blocks.getNumber(), mirror.getMirror(), mirror.getNumber(),
-			doors.getDoor(), doors.getNumber());
-		player.run(blockss.getBlock(), blockss.getNumber());
+			doors.getDoor(), doors.getNumber());*/
+		
+
+		HelpClass::runAll(menu, map, teleports, plates, traps, player, blocks, mirror, doors, blockss, machines);
+
 		//-------
 
 		if (plates.isPressed(0)) doors.setOpen(0, true, player, blocks.getBlock(), blocks.getNumber(),
@@ -135,21 +137,21 @@ int main() {
 		teleports.setOpen(0, plates.isPressed(0));
 		blockss.setOn(0, plates.isPressed(0));
 		blockss.setOn(1, plates.isPressed(0));
+
+
 		
+		HelpClass::move(player, map, blocks.getBlock(), blocks.getNumber(),
+			mirror.getMirror(), mirror.getNumber(),
+			doors.getDoor(), doors.getNumber(), blockss.getBlock(), blockss.getNumber(),
+			machines.getMachine(), machines.getNumber());
+		//player.run(blockss.getBlock(), blockss.getNumber());
+
+
+
 		//-------
 
 		app.clear();
-		map.draw(app);
-		plates.draw(app);
-		doors.draw(app);
-		traps.draw(app);
-		menu.draw(app);
-		teleports.draw(app);
-		blockss.draw(app);
-		blocks.draw(app);
-		mirror.draw(app);
-		player.draw(app);
-		machines.draw(app);
+		HelpClass::drawAll(app, map, teleports, plates, traps, player, blocks, mirror, doors, blockss, machines);
 		app.draw(fps);
 		app.display();
 	}
