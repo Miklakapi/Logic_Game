@@ -211,3 +211,7 @@ void Mirror::reset() {
 	newPosition = true;
 	positionChg = true;
 }
+
+Mirror::~Mirror() {
+	delete [] laser;
+}
