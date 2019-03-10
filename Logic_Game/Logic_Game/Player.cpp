@@ -156,3 +156,7 @@ void Player::reset() {
 	direction = Direction::None;
 	setStage(0);
 }
+
+Player::~Player() {
+	delete [] rect;
+}
