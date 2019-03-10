@@ -89,4 +89,6 @@ public:
 	bool isOn();
 
 	void reset();
+
+	~Laser();
 };
