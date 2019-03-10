@@ -97,4 +97,6 @@ public:
 	void draw(RenderWindow& window);
 
 	void reset();
+
+	~Mirror();
 };
