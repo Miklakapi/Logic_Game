@@ -184,10 +184,10 @@ void Mirrors::setType(int number, Mirror::Type type, Map& map, ShootingBlock* bl
 		}
 	}
 	else if (type == 8) {
-		(laser + 0)->setPosition(vec.asVector2f(), Laser::Down, down);
-		(laser + 1)->setPosition(vec.asVector2f(), Laser::Left, left);
-		(laser + 2)->setPosition(vec.asVector2f(), Laser::Up, up);
-		(laser + 3)->setPosition(vec.asVector2f(), Laser::Right, right);
+		(laser + 0)->setPosition(vec.asVector2f(), Laser::Up, up);
+		(laser + 1)->setPosition(vec.asVector2f(), Laser::Right, right);
+		(laser + 2)->setPosition(vec.asVector2f(), Laser::Down, down);
+		(laser + 3)->setPosition(vec.asVector2f(), Laser::Left, left);	
 	}
 }
 
@@ -276,6 +276,10 @@ void Mirrors::draw(RenderWindow& window) {
 
 void Mirrors::run(Map& map, SlidingBlock* block, int number, Door* door, int number2, ShootingBlock* blockS, int number3,
 	LaserMachine* machine, int number4) {
+
+	for (int i = 0; i < this->number; i++) {
+		(mirror + i)->setOn(false);
+	}
 
 	//Mirror
 	for (int i = 0; i < this->number; i++) {
@@ -403,8 +407,6 @@ void Mirrors::run(Map& map, SlidingBlock* block, int number, Door* door, int num
 				}
 			}
 		}
-		
-		(mirror + i)->setOn(false);
 
 		switch ((mirror+i)->getType()){
 		case Mirror::A1:
@@ -467,7 +469,58 @@ void Mirrors::run(Map& map, SlidingBlock* block, int number, Door* door, int num
 		Mirror::Type type = (mirror + i)->getType();
 
 		for (int j = 0; j < (mirror + i)->getLaserNr(); j++) {
+			(laser + j)->setOn(false);
+		}
+
+		switch (type) {
+		case Mirror::A1:
+			if (boolUp) (laser + 0)->setOn(true);
+			else if (boolRight) (laser + 1)->setOn(true);
+			break;
+		case Mirror::A2:
+			if (boolRight) (laser + 0)->setOn(true);
+			else if (boolDown) (laser + 1)->setOn(true);
+			break;
+		case Mirror::A3:
+			if (boolDown) (laser + 0)->setOn(true);
+			else if (boolLeft) (laser + 1)->setOn(true);
+			break;
+		case Mirror::A4:
+			if (boolLeft) (laser + 0)->setOn(true);
+			else if (boolUp) (laser + 1)->setOn(true);
+			break;
+		case Mirror::B1:
+			if (boolLeft) (laser + 0)->setOn(true);
+			if (boolUp) (laser + 1)->setOn(true);
+			if (boolRight) (laser + 2)->setOn(true);
+			break;
+		case Mirror::B2:
+			if (boolUp) (laser + 0)->setOn(true);
+			if (boolRight) (laser + 1)->setOn(true);
+			if (boolDown) (laser + 2)->setOn(true);
+			break;
+		case Mirror::B3:
+			if (boolRight) (laser + 0)->setOn(true);
+			if (boolDown) (laser + 1)->setOn(true);
+			if (boolLeft) (laser + 2)->setOn(true);
+			break;
+		case Mirror::B4:
+			if (boolDown) (laser + 0)->setOn(true);
+			if (boolLeft) (laser + 1)->setOn(true);
+			if (boolUp) (laser + 2)->setOn(true);
+			break;
+		case Mirror::C1:
+			if (boolUp) (laser + 0)->setOn(true);
+			if (boolRight) (laser + 1)->setOn(true);
+			if (boolDown) (laser + 2)->setOn(true);
+			if (boolLeft) (laser + 3)->setOn(true);
+			break;
+		}
+
+		for (int j = 0; j < (mirror + i)->getLaserNr(); j++) {
 			
+
+			if (!(laser + j)->isOn()) continue;
 			(laser + j)->setOn(true);
 		}	
 	}
