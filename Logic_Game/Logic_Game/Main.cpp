@@ -110,7 +110,7 @@ int main() {
 		HelpClass::runAll(menu, map, teleports, plates, traps, player, blocks, mirror, doors, blockss, machines);
 
 		//-------
-
+		
 		if (plates.isPressed(0)) doors.setOpen(0, true, player, blocks.getBlock(), blocks.getNumber(),
 			mirror.getMirror(), mirror.getNumber());
 		else if (plates.isPressed(1)) doors.setOpen(0, true, player, blocks.getBlock(), blocks.getNumber(),
@@ -130,7 +130,7 @@ int main() {
 		//-------
 
 		app.clear();
-		HelpClass::drawAll(app, map, teleports, plates, traps, player, blocks, mirror, doors, blockss, machines);
+		HelpClass::drawAll(app, menu, map, teleports, plates, traps, player, blocks, mirror, doors, blockss, machines);
 		app.draw(fps);
 		app.display();
 	}
