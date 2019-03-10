@@ -113,3 +113,7 @@ void LaserMachine::reset() {
 		(laser + i)->reset();
 	}
 }
+
+LaserMachine::~LaserMachine() {
+	delete [] laser;
+}
