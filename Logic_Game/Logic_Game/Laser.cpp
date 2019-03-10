@@ -145,3 +145,7 @@ void Laser::reset() {
 		(laser + i)->reset();
 	}
 }
+
+Laser::~Laser() {
+	delete [] laser;
+}
