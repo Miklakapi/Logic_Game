@@ -282,12 +282,12 @@ void Mirrors::run(Map& map, SlidingBlock* block, int number, Door* door, int num
 
 		(mirror + i)->run();
 		
-		if ((mirror + i)->getMoveNumber() != 10 || !(mirror + i)->getExist()) continue;
-			
+		if (!(mirror + i)->getMoveNumber() == 10 || !(mirror + i)->getExist()) continue;
+		
 		if ((mirror + i)->isOnNewPosition()) {
 			setType(i, (mirror + i)->getType(), map, blockS, number3, machine, number4);
 		}
-
+		
 		bool wallUp(false);
 		bool wallDown(false);
 		bool wallLeft(false);
@@ -297,7 +297,7 @@ void Mirrors::run(Map& map, SlidingBlock* block, int number, Door* door, int num
 		bool boolDown(false);
 		bool boolLeft(false);
 		bool boolRight(false);
-
+		
 		Vector2f position = (mirror + i)->getPosition();
 		VectorConverter position2 = VectorConverter{ position };
 
@@ -636,7 +636,7 @@ void Mirrors::run(Map& map, SlidingBlock* block, int number, Door* door, int num
 					}
 				}
 			}
-		}	
+		}
 	}
 }
 
