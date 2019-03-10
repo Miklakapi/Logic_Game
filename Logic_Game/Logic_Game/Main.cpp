@@ -64,8 +64,11 @@ int main() {
 	machines.setType(1, LaserMachine::D1, map, blockss.getBlock(), blockss.getNumber());
 
 	//-------
-	Mirrors mirror(1);
+	Mirrors mirror(2);
 	mirror.setPosition(0, VectorConverter::convert(6, 3).asVector2f());
+	mirror.setPosition(1, VectorConverter::convert(4, 7).asVector2f());
+	mirror.setType(0, Mirror::C1, map, blockss.getBlock(), blockss.getNumber(), machines.getMachine(),
+		machines.getNumber());
 	//-------
 	TeleportFields teleports(1);
 	teleports.setTeleportPosition(0,VectorConverter::convert(2, 4).asVector2f());
@@ -104,25 +107,6 @@ int main() {
 			}
 		}
 
-
-
-		//-------
-		/*menu.run();
-		//-------
-		traps.run(player, blocks.getBlock(), blocks.getNumber(), mirror.getMirror(), mirror.getNumber());
-		plates.run(player, blocks.getBlock(), blocks.getNumber(), mirror.getMirror(), mirror.getNumber());
-		blocks.run();
-		mirror.run(map, blocks.getBlock(), blocks.getNumber(), doors.getDoor(), doors.getNumber(),
-			blockss.getBlock(), blockss.getNumber(), machines.getMachine(), machines.getNumber());
-		blockss.run(map, doors.getDoor(), doors.getNumber(), blocks.getBlock(), blocks.getNumber(),
-			mirror.getMirror(), mirror.getNumber(), machines.getMachine(), machines.getNumber());
-		teleports.run(player, blocks.getBlock(), blocks.getNumber(),
-			mirror.getMirror(), mirror.getNumber());
-
-		machines.run(blocks.getBlock(), blocks.getNumber(), mirror.getMirror(), mirror.getNumber(),
-			doors.getDoor(), doors.getNumber());*/
-		
-
 		HelpClass::runAll(menu, map, teleports, plates, traps, player, blocks, mirror, doors, blockss, machines);
 
 		//-------
@@ -137,16 +121,11 @@ int main() {
 		teleports.setOpen(0, plates.isPressed(0));
 		blockss.setOn(0, plates.isPressed(0));
 		blockss.setOn(1, plates.isPressed(0));
-
-
 		
 		HelpClass::move(player, map, blocks.getBlock(), blocks.getNumber(),
 			mirror.getMirror(), mirror.getNumber(),
 			doors.getDoor(), doors.getNumber(), blockss.getBlock(), blockss.getNumber(),
 			machines.getMachine(), machines.getNumber());
-		//player.run(blockss.getBlock(), blockss.getNumber());
-
-
 
 		//-------
 
