@@ -283,7 +283,6 @@ void LaserMachines::run(SlidingBlock* block, int number, Mirror* mirror, int num
 					vec = Vector2f{ vec.x + 35,vec.y };
 				}
 
-
 				for (int l = 0; l < number; l++) {
 					if (!(block + l)->getExist()) continue;
 					Vector2f vec2 = (block + l)->getPosition();
