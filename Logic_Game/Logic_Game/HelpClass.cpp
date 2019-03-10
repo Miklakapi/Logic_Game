@@ -96,10 +96,12 @@ void HelpClass::move(Player& player, Map& map, SlidingBlock* block, int number, 
 		if (end == false) {
 			if (nr != -1) {
 				(block + nr)->push(direction1);
+				player.movePlayer(direction, map, block, number, mirror, number2, door, number3, blockS, number4, machine, number5);
 			}
 
 			if (nr2 != -1) {
 				(mirror + nr2)->push(direction2);
+				player.movePlayer(direction, map, block, number, mirror, number2, door, number3, blockS, number4, machine, number5);
 			}
 		}
 	}
