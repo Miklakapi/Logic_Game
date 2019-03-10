@@ -112,7 +112,7 @@ void HelpClass::runAll(MenuBar& menu, Map& map, TeleportFields& fields, Plates& 
 	blockS.run(map, door.getDoor(), door.getNumber(), block.getBlock(), block.getNumber(), mirror.getMirror(), mirror.getNumber(), machine.getMachine(), machine.getNumber());
 }
 
-void HelpClass::resetAll(Map& map, Player& player, SlidingBlocks& block, Mirrors& mirror, Doors& door, ShootingBlocks& blockS, LaserMachines& machine) {
+void HelpClass::resetAll(MenuBar& menu, Map& map, Player& player, SlidingBlocks& block, Mirrors& mirror, Doors& door, ShootingBlocks& blockS, LaserMachines& machine) {
 	map.reset();
 	player.reset();
 	block.reset();
@@ -120,9 +120,10 @@ void HelpClass::resetAll(Map& map, Player& player, SlidingBlocks& block, Mirrors
 	door.reset();
 	blockS.reset();
 	machine.reset();
+	menu.reset();
 }
 
-void HelpClass::drawAll(RenderWindow& window, Map& map, TeleportFields& fields, Plates& plates,Traps& traps, Player& player, SlidingBlocks& block, Mirrors& mirror, Doors& door, ShootingBlocks& blockS, LaserMachines& machine) {
+void HelpClass::drawAll(RenderWindow& window, MenuBar& menu, Map& map, TeleportFields& fields, Plates& plates,Traps& traps, Player& player, SlidingBlocks& block, Mirrors& mirror, Doors& door, ShootingBlocks& blockS, LaserMachines& machine) {
 	map.draw(window);
 	fields.draw(window);
 	plates.draw(window);
@@ -133,4 +134,5 @@ void HelpClass::drawAll(RenderWindow& window, Map& map, TeleportFields& fields, 
 	door.draw(window);
 	blockS.draw(window);
 	machine.draw(window);
+	menu.draw(window);
 }
