@@ -200,7 +200,6 @@ void Mirror::draw(RenderWindow& window) {
 void Mirror::reset() {
 	exist = true;
 	moveNr = 10;
-	clock.restart();
 	direction = Direction::None;
 	on = false;
 	rectNr = type;
