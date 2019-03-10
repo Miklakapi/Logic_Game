@@ -133,6 +133,7 @@ void Laser::setOn(bool on) {
 			(laser + i)->setExist(false);
 		}
 	}
+	this->on = on;
 }
 
 bool Laser::isOn() {
