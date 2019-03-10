@@ -6,34 +6,47 @@ void HelpClass::move(Player& player, Map& map, SlidingBlock* block, int number, 
 	bool end(false);
 
 	Player::Direction direction = Player::None;
+
 	if (Keyboard::isKeyPressed(Keyboard::W)) direction = Player::Up;
 	else if (Keyboard::isKeyPressed(Keyboard::A)) direction = Player::Left;
 	else if (Keyboard::isKeyPressed(Keyboard::S)) direction = Player::Down;
 	else if (Keyboard::isKeyPressed(Keyboard::D)) direction = Player::Right;
 	else end = true;
 
-
 	if (player.movePlayer(direction, map, block, number, mirror, number2, door, number3, blockS, number4, machine, number5) && player.getLive() && end == false) {
-		VectorConverter vec(player.getPosition());
-		SlidingBlock::Direction direction1 = SlidingBlock::Up;
+		VectorConverter vec{ player.getPosition() };
+		SlidingBlock::Direction direction1 = SlidingBlock::None;
+		Mirror::Direction direction2 = Mirror::None;
 		VectorConverter vec2 = vec;
-		if (Keyboard::isKeyPressed(Keyboard::W)) {
+		if (direction == Player::Up) {
+			
 			direction1 = SlidingBlock::Up;
+			direction2 = Mirror::Up;
+
 			vec2 = VectorConverter::convert(vec.asXY().x, vec.asXY().y - 2);
 			vec = VectorConverter::convert(vec.asXY().x, vec.asXY().y - 1);
 		}
-		else if (Keyboard::isKeyPressed(Keyboard::A)) {
+		else if (direction == Player::Left) {
+
 			direction1 = SlidingBlock::Left;
+			direction2 = Mirror::Left;
+
 			vec2 = VectorConverter::convert(vec.asXY().x - 2, vec.asXY().y);
 			vec = VectorConverter::convert(vec.asXY().x - 1, vec.asXY().y);
 		}
-		else if (Keyboard::isKeyPressed(Keyboard::S)) {
+		else if (direction == Player::Down) {
+
 			direction1 = SlidingBlock::Down;
+			direction2 = Mirror::Down;
+
 			vec2 = VectorConverter::convert(vec.asXY().x, vec.asXY().y + 2);
 			vec = VectorConverter::convert(vec.asXY().x, vec.asXY().y + 1);
 		}
-		else if (Keyboard::isKeyPressed(Keyboard::D)) {
+		else if (direction == Player::Right) {
+
 			direction1 = SlidingBlock::Right;
+			direction2 = Mirror::Right;
+
 			vec2 = VectorConverter::convert(vec.asXY().x + 2, vec.asXY().y);
 			vec = VectorConverter::convert(vec.asXY().x + 1, vec.asXY().y);
 		}
@@ -83,18 +96,10 @@ void HelpClass::move(Player& player, Map& map, SlidingBlock* block, int number, 
 		if (end == false) {
 			if (nr != -1) {
 				(block + nr)->push(direction1);
-				return;
 			}
-
-			Mirror::Direction direction2 = Mirror::Up;
-			if (Keyboard::isKeyPressed(Keyboard::W)) direction2 = Mirror::Up;
-			else if (Keyboard::isKeyPressed(Keyboard::A)) direction2 = Mirror::Left;
-			else if (Keyboard::isKeyPressed(Keyboard::S)) direction2 = Mirror::Down;
-			else if (Keyboard::isKeyPressed(Keyboard::D)) direction2 = Mirror::Right;
 
 			if (nr2 != -1) {
 				(mirror + nr2)->push(direction2);
-				end = true;
 			}
 		}
 	}
