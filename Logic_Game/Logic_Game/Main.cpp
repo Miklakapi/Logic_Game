@@ -122,10 +122,8 @@ int main() {
 		blockss.setOn(0, plates.isPressed(0));
 		blockss.setOn(1, plates.isPressed(0));
 		
-		HelpClass::move(player, map, blocks.getBlock(), blocks.getNumber(),
-			mirror.getMirror(), mirror.getNumber(),
-			doors.getDoor(), doors.getNumber(), blockss.getBlock(), blockss.getNumber(),
-			machines.getMachine(), machines.getNumber());
+		HelpClass::move(player, map, blocks.getBlock(), blocks.getNumber(), mirror.getMirror(), mirror.getNumber(),
+			doors.getDoor(), doors.getNumber(), blockss.getBlock(), blockss.getNumber(), machines.getMachine(), machines.getNumber());
 
 		//-------
 
