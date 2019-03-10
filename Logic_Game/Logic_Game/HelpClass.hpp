@@ -26,7 +26,7 @@ public:
 	
 	static void runAll(MenuBar& menu, Map& map, TeleportFields& fields, Plates& plates, Traps& traps, Player& player, SlidingBlocks& block, Mirrors& mirror, Doors& door, ShootingBlocks& blockS, LaserMachines& machine);
 
-	static void resetAll(Map& map, Player& player, SlidingBlocks& block, Mirrors& mirror, Doors& door, ShootingBlocks& blockS, LaserMachines& machine);
+	static void resetAll(MenuBar& menu, Map& map, Player& player, SlidingBlocks& block, Mirrors& mirror, Doors& door, ShootingBlocks& blockS, LaserMachines& machine);
 
-	static void drawAll(RenderWindow& window, Map& map, TeleportFields& fields, Plates& plates, Traps& traps, Player& player, SlidingBlocks& block, Mirrors& mirror, Doors& door, ShootingBlocks& blockS, LaserMachines& machine);
+	static void drawAll(RenderWindow& window, MenuBar& menu, Map& map, TeleportFields& fields, Plates& plates, Traps& traps, Player& player, SlidingBlocks& block, Mirrors& mirror, Doors& door, ShootingBlocks& blockS, LaserMachines& machine);
 };
