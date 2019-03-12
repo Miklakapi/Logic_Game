@@ -1,11 +1,53 @@
 #pragma once
+#include <SFML\Window.hpp>
+#include <SFML\System.hpp>
+#include <SFML\Graphics.hpp>
+#include <string>
+#include <fstream>
 
-class Options{
+using namespace sf;
+using namespace std;
 
+class Options : public RectangleShape{
+
+public:
+
+	enum Type {
+		None,
+		Return
+	};
+
+private:
+
+	Texture* texture;
+
+	RectangleShape sound[2];
+
+	RectangleShape fps[2];
+
+	RectangleShape counter[2];
+
+	bool bSound;
+
+	int iFps;
+
+	bool bCounter;
+
+	Clock clickDelay;
 
 public:
 	
-	Options();
-	
+	Options(RenderWindow& window);
+
+	bool getSound();
+
+	int getFps();
+
+	bool getCounter();
+
+	Type run(RenderWindow& window);
+
+	void draw(RenderWindow& window);
+
 	~Options();
 };
