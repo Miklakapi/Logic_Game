@@ -14,17 +14,8 @@ void FPS::setFPSFont(string fontFile) {
 	setFont(font);
 }
 
-void FPS::setOn(bool on) {
-	this->on = on;
-}
-
-bool FPS::isOn() {
-	return on;
-}
-
 void FPS::run() {
-	if (!on) return;
-	if (delay.getElapsedTime().asSeconds() >= 1) {
+	if (delay.getElapsedTime().asSeconds() >= 0.5) {
 		delay.restart();
 		setString("FPS: " + to_string(int(1 / clock.restart().asSeconds())));
 	}
