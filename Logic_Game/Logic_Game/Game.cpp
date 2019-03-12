@@ -54,8 +54,9 @@ void Game::run(RenderWindow& window) {
 	else if (type == Type::InMenu) {
 		Menu::Type type1 = menu->run(window, true);
 		if (type1 == Menu::None);
-		else if (type1 == Menu::Play) {
-			//////
+		else if (type1 == Menu::Play && delayClick.getElapsedTime().asSeconds() > 0.3) {
+			type = Type::InGame;
+			levelSelect = new LevelSelect;
 		}
 		else if (type1 == Menu::Editor) {
 			//////
@@ -70,7 +71,16 @@ void Game::run(RenderWindow& window) {
 		else if (type1 == Menu::Exit && delayClick.getElapsedTime().asSeconds() > 0.3) exit(0);
 	}
 	else if (type == Type::InGame) {
-		////////
+		if (levelSelect->getType() != LevelSelect::Start) menu->run(window, false);
+		LevelSelect::Type type1 = levelSelect->run(window);
+		if (type1 == LevelSelect::Return) {
+			type = Type::InMenu;
+			delete levelSelect;
+			delayClick.restart();
+		}
+		else if (type1 == LevelSelect::Start) {
+			delete menu;
+		}
 	}
 	else if (type == Type::InEditor) {
 		////////
@@ -108,7 +118,10 @@ void Game::draw(RenderWindow& window) {
 		menu->draw(window, true);
 		break;
 	case Type::InGame:
-		////////
+		levelSelect->draw(window);
+		if (levelSelect->getType() != LevelSelect::Start) {
+			menu->draw(window, false);
+		}
 		break;
 	case Type::InEditor:
 		///////////
