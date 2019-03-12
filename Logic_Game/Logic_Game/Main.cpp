@@ -11,7 +11,7 @@ int main() {
 	RenderWindow app(VideoMode{ 1440,880 }, "Logic_Game", Style::Close);
 	app.setFramerateLimit(144);
 
-	Game game;
+	Game game(app);
 
 
 	while (app.isOpen()) {
