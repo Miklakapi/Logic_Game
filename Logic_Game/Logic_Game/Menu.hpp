@@ -36,9 +36,9 @@ public:
 	
 	Menu();
 	
-	Type run(RenderWindow& window);
+	Type run(RenderWindow& window, bool on);
 
-	void draw(RenderWindow& window);
+	void draw(RenderWindow& window, bool on);
 
 	~Menu();
 };
