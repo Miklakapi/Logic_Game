@@ -27,7 +27,7 @@ Menu::Menu(){
 	rec4.setTexture((texture + 1));
 }
 
-Menu::Type Menu::run(RenderWindow& window) {
+Menu::Type Menu::run(RenderWindow& window, bool on) {
 	if (clock.getElapsedTime().asSeconds() >= 0.05) {
 		clock.restart();
 		rec1.rotate(3);
@@ -35,7 +35,7 @@ Menu::Type Menu::run(RenderWindow& window) {
 		rec3.rotate(-3);
 		rec4.rotate(3);
 	}
-	if (Mouse::isButtonPressed(Mouse::Left)) {
+	if (Mouse::isButtonPressed(Mouse::Left) && on) {
 		Vector2f pos = { float(Mouse::getPosition(window).x), float(Mouse::getPosition(window).y) };
 
 		if (pos.x >= 495 && pos.x <= 945 &&
@@ -51,8 +51,8 @@ Menu::Type Menu::run(RenderWindow& window) {
 	return Type::None;
 }
 
-void Menu::draw(RenderWindow& window) {
-	window.draw(*this);
+void Menu::draw(RenderWindow& window, bool on) {
+	if(on) window.draw(*this);
 	window.draw(rec1);
 	window.draw(rec2);
 	window.draw(rec3);
