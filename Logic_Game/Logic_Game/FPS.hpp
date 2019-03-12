@@ -15,17 +15,11 @@ class FPS : public Text{
 
 	Clock clock;
 
-	bool on;
-
 public:
 
 	FPS(Vector2f position = Vector2f{ 3,825 }, string fontFile = "Fonts/IndieFlower.ttf");
 
 	void setFPSFont(string fontFile);
-
-	void setOn(bool on);
-
-	bool isOn();
 
 	void run();
 };
