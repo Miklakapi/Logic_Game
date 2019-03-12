@@ -6,7 +6,7 @@
 #include <fstream>
 #include "Intro.hpp"
 #include "Menu.hpp"
-#include "Play.hpp"
+#include "LevelSelect.hpp"
 
 #include "Options.hpp"
 #include "FPS.hpp"
@@ -29,10 +29,15 @@ class Game{
 
 	Menu* menu;
 
+	//
+
+	LevelSelect* levelSelect;
 
 	Options* options;
 
 	FPS* FpsCounter;
+
+	//
 
 	Type type;
 
