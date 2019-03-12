@@ -48,4 +48,3 @@ public:
 	Vector2u asVector2u();
 
 };
-
