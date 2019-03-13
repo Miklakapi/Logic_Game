@@ -1,6 +1,7 @@
 #include "Hearts.hpp"
 
 Hearts::Hearts(Vector2f position, string textureFile) {
+	texture = new Texture;
 	setHeartsTexture(textureFile);
 	heart = new RectangleShape[3];
 	for (int i = 0; i < 3; i++) {
@@ -12,11 +13,6 @@ Hearts::Hearts(Vector2f position, string textureFile) {
 }
 
 void Hearts::setHeartsTexture(string textureFile) {
-	static int n = 0;
-	if (n == 0) {
-		texture = new Texture[1];
-		n++;
-	}
 	texture->loadFromFile(textureFile);
 }
 
@@ -74,5 +70,5 @@ void Hearts::reset() {
 
 Hearts::~Hearts() {
 	delete [] heart;
-	delete [] texture;
+	delete texture;
 }
