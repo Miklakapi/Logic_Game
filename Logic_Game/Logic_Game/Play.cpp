@@ -57,13 +57,15 @@ void Play::run() {
 	
 	HelpClass::runAll(*menuBar, *map, *teleports, *plates, *traps, *player, *blocks, *mirrors, *doors, *blockS, *machines);
 
-	if (plates->isPressed(0)) doors->setOpen(0, true, *player, blocks->getBlock(), blocks->getNumber(),
-		mirrors->getMirror(), mirrors->getNumber());
-	else if (plates->isPressed(1)) doors->setOpen(0, true, *player, blocks->getBlock(), blocks->getNumber(),
-		mirrors->getMirror(), mirrors->getNumber());
-	else doors->setOpen(0, false, *player, blocks->getBlock(), blocks->getNumber(),
-		mirrors->getMirror(), mirrors->getNumber());
+	if (plates->isPressed(0)) doors->setOpen(0, true, *player, blocks->getBlock(), blocks->getNumber(), mirrors->getMirror(), mirrors->getNumber());
+	else if (plates->isPressed(1)) {
+		doors->setOpen(0, true, *player, blocks->getBlock(), blocks->getNumber(), mirrors->getMirror(), mirrors->getNumber());
+	}
+	else doors->setOpen(0, false, *player, blocks->getBlock(), blocks->getNumber(), mirrors->getMirror(), mirrors->getNumber());
 
+
+	machines->setOn(0, plates->isPressed(1));
+	machines->setOn(1, plates->isPressed(1));
 	teleports->setOpen(0, plates->isPressed(0));
 	blockS->setOn(0, plates->isPressed(0));
 	blockS->setOn(1, plates->isPressed(0));
