@@ -5,15 +5,15 @@
 #include "VectorConverter.hpp"
 #include "Map.hpp"
 #include "MenuBar.hpp"
-#include "SlidingBLocks.hpp"
-#include "Mirrors.hpp"
-#include "LaserMachines.hpp"
-#include "ShootingBlocks.hpp"
-#include "Plates.hpp"
-#include "Doors.hpp"
+#include "Player.hpp"
 #include "TeleportFields.hpp"
 #include "Traps.hpp"
-#include "Player.hpp"
+#include "SlidingBLocks.hpp"
+#include "Plates.hpp"
+#include "Doors.hpp"
+#include "ShootingBlocks.hpp"
+#include "LaserMachines.hpp"
+#include "Mirrors.hpp"
 #include "HelpClass.hpp"
 
 
@@ -24,13 +24,36 @@ using namespace std;
 
 class Play{
 
+	MenuBar* menuBar;
 
+	Map* map;
 
+	Player* player;
+
+	TeleportFields* teleports;
+
+	Traps* traps;
+
+	SlidingBlocks* blocks;
+
+	Plates* plates;
+
+	Doors* doors;
+
+	ShootingBlocks* blockS;
+
+	LaserMachines* machines;
+
+	Mirrors* mirrors;
+
+	VectorConverter startPosition;
 
 public:
 	
-	Play();
+	Play(int lv);
 	
+	bool setLv(int lv);
+
 	void run();
 
 	void draw(RenderWindow& window);
