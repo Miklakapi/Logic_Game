@@ -1,8 +1,11 @@
 #pragma once
-class Instruction
-{
+
+
+class Instruction{
+
 public:
+	
 	Instruction();
+	
 	~Instruction();
 };
-
