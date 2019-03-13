@@ -1,8 +1,12 @@
 #pragma once
-class Editor
-{
+
+
+class Editor{
+
+
 public:
+	
 	Editor();
+	
 	~Editor();
 };
-
