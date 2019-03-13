@@ -54,21 +54,21 @@ void Game::run(RenderWindow& window) {
 	else if (type == Type::InMenu) {
 		Menu::Type type1 = menu->run(window, true);
 		if (type1 == Menu::None);
-		else if (type1 == Menu::Play && delayClick.getElapsedTime().asSeconds() > 0.3) {
+		else if (type1 == Menu::Play && delayClick.getElapsedTime().asSeconds() > 0.2) {
 			type = Type::InGame;
 			levelSelect = new LevelSelect;
 		}
 		else if (type1 == Menu::Editor) {
-			//////
+			/////////////////////////////////////////////////
 		}
 		else if (type1 == Menu::Instruction) {
-			///////
+			/////////////////////////////////////////////////
 		}
 		else if (type1 == Menu::Options) {
 			options = new Options(window);
 			type = Type::InOptions;
 		}
-		else if (type1 == Menu::Exit && delayClick.getElapsedTime().asSeconds() > 0.3) exit(0);
+		else if (type1 == Menu::Exit && delayClick.getElapsedTime().asSeconds() > 0.2) exit(0);
 	}
 	else if (type == Type::InGame) {
 		if (levelSelect->getType() != LevelSelect::Start) menu->run(window, false);
@@ -81,12 +81,18 @@ void Game::run(RenderWindow& window) {
 		else if (type1 == LevelSelect::Start) {
 			delete menu;
 		}
+		else if (type1 == LevelSelect::Exit) {
+			type = Type::InMenu;
+			delete levelSelect;
+			menu = new Menu;
+			delayClick.restart();
+		}
 	}
 	else if (type == Type::InEditor) {
-		////////
+		/////////////////////////////////////////////////
 	}
 	else if (type == Type::InInstruction) {
-		//////
+		/////////////////////////////////////////////////
 	}
 	else if (type == Type::InOptions) {
 		menu->run(window, false);
@@ -124,10 +130,10 @@ void Game::draw(RenderWindow& window) {
 		}
 		break;
 	case Type::InEditor:
-		///////////
+		/////////////////////////////////////////////////
 		break;
 	case Type::InInstruction:
-		///////////
+		/////////////////////////////////////////////////
 		break;
 	case Type::InOptions:
 		options->draw(window);
@@ -138,5 +144,25 @@ void Game::draw(RenderWindow& window) {
 }
 
 Game::~Game(){
-	
+	switch (type) {
+	case Type::InIntro:
+		delete intro;
+		break;
+	case Type::InMenu:
+		delete menu;
+		break;
+	case Type::InGame:
+		if (levelSelect->getType() != LevelSelect::Start) delete menu;
+		delete levelSelect;
+	case Type::InEditor:
+		/////////////////////////////////////////////////
+		break;
+	case Type::InInstruction:
+		/////////////////////////////////////////////////
+		break;
+	case Type::InOptions:
+		delete menu;
+		delete options;
+		break;
+	}
 }
