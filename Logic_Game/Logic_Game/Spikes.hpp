@@ -47,4 +47,3 @@ public:
 
 	void reset();
 };
-
