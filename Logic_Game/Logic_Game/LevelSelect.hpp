@@ -14,16 +14,38 @@ public:
 	enum Type {
 		None,
 		Start,
+		Exit,
 		Return
 	};
 
 private:
 
+	class Ring : public RectangleShape{
+	
+		bool complete;
+	
+	public:
+
+		Ring();
+
+		bool getComplete();
+
+		void setComplete(bool complete);
+
+		void draw(RenderWindow& window);
+	};
+
 	Texture texture;
+
+	Texture ringTexture;
+
+	Ring* ring;
 
 	Play* play;
 
 	Type type;
+
+	Clock clickDelay;
 
 public:
 
