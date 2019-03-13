@@ -276,13 +276,13 @@ void Mirrors::draw(RenderWindow& window) {
 
 void Mirrors::run(Map& map, SlidingBlock* block, int number, Door* door, int number2, ShootingBlock* blockS, int number3,
 	LaserMachine* machine, int number4) {
-
+	
 	//Mirror
 	for (int i = 0; i < this->number; i++) {
 
 		(mirror + i)->run();
 		
-		if (!(mirror + i)->getMoveNumber() == 10 || !(mirror + i)->getExist()) continue;
+		if ((mirror + i)->getMoveNumber() != 10 || !(mirror + i)->getExist()) continue;
 		
 		if ((mirror + i)->isOnNewPosition()) {
 			setType(i, (mirror + i)->getType(), map, blockS, number3, machine, number4);
