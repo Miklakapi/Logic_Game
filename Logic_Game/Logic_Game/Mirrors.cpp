@@ -286,8 +286,11 @@ void Mirrors::run(Map& map, SlidingBlock* block, int number, Door* door, int num
 		
 		if ((mirror + i)->isOnNewPosition()) {
 			setType(i, (mirror + i)->getType(), map, blockS, number3, machine, number4);
+			(mirror + i)->setOnNewPosition(false);
 		}
 		
+		(mirror + i)->setOn(false);
+
 		bool wallUp(false);
 		bool wallDown(false);
 		bool wallLeft(false);
