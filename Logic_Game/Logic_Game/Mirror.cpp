@@ -109,7 +109,7 @@ bool Mirror::isOnNewPosition() {
 }
 
 void Mirror::setOnNewPosition(bool newPos) {
-	newPosition = newPosition;
+	newPosition = newPos;
 }
 
 void Mirror::setOn(bool on) {
@@ -154,7 +154,7 @@ void Mirror::push(Direction direction) {
 	newPosition = false;
 	positionChg = false;
 	setOn(false);
-	for (int i = 9; i < laserNr; i++) {
+	for (int i = 0; i < laserNr; i++) {
 		(laser + i)->setOn(false);
 	}
 }
