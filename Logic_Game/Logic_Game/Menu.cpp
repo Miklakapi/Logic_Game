@@ -58,6 +58,7 @@ void Menu::draw(RenderWindow& window, bool on) {
 	window.draw(rec3);
 	window.draw(rec4);
 }
+
 Menu::~Menu() {
 	delete [] texture;
 }
