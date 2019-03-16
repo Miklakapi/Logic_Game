@@ -165,4 +165,5 @@ Game::~Game(){
 		delete options;
 		break;
 	}
+	if (fpsCounter) delete FpsCounter;
 }
