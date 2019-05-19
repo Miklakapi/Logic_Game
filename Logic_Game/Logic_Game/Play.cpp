@@ -39,7 +39,7 @@ bool Play::setLv(int lv) {
 	blockS->setDelay(0, 2);
 	blockS->setPosition(1, VectorConverter::convert(2, 5).asVector2f());
 
-	receivers->setType(0, LaserReceiver::Type::A2);
+	receivers->setType(0, LaserReceiver::Type::B2);
 	receivers->setPosition(0, VectorConverter::convert(3, 2).asVector2f());
 
 	machines->setPosition(0, VectorConverter::convert(13, 2).asVector2f());
