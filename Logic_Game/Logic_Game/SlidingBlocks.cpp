@@ -23,7 +23,7 @@ bool SlidingBlocks::getExist(int number) {
 }
 
 bool SlidingBlocks::push(int number, SlidingBlock::Direction direction, Map& map, Mirror* mirror, int number2, Door* door, int number3, 
-	ShootingBlock* blockS, int number4, LaserMachine* machine, int number5) {
+	ShootingBlock* blockS, int number4, LaserMachine* machine, int number5, LaserReceiver* receiver, int number6) {
 
 	if (!(block + number)->getExist() || (block + number)->getMoveNumber() != 10) return false;
 	if (direction == SlidingBlock::Direction::None) return false;
@@ -65,6 +65,10 @@ bool SlidingBlocks::push(int number, SlidingBlock::Direction direction, Map& map
 
 	for (int i = 0; i < number5; i++) {
 		if ((machine + i)->getPosition() == vec.asVector2f()) return false;
+	}
+
+	for (int i = 0; i < number6; i++) {
+		if ((receiver + i)->getPosition() == vec.asVector2f()) return false;
 	}
 
 	(block + number)->push(direction);
