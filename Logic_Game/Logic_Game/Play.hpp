@@ -16,6 +16,7 @@
 #include "ShootingBlocks.hpp"
 #include "LaserMachines.hpp"
 #include "Mirrors.hpp"
+#include "LaserReceivers.hpp"
 #include "HelpClass.hpp"
 
 using namespace sf;
@@ -44,6 +45,8 @@ class Play{
 	LaserMachines* machines;
 
 	Mirrors* mirrors;
+
+	LaserReceivers* receivers;
 
 	VectorConverter startPosition;
 
