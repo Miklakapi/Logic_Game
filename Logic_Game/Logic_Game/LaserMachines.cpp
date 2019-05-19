@@ -24,7 +24,7 @@ int LaserMachines::getLaserNr(int number) {
 }
 
 void LaserMachines::setType(int number, LaserMachine::Type type, Map& map, 
-	ShootingBlock* blocks, int number2) {
+	ShootingBlock* blocks, int number2, LaserReceiver* receiver, int number3) {
 
 	VectorConverter vec((machine + number)->getPosition());
 	VectorConverter vec2(vec);
@@ -56,6 +56,13 @@ void LaserMachines::setType(int number, LaserMachine::Type type, Map& map,
 			}
 		}
 		if (wall) break;
+		for (int i = 0; i < number3; i++) {
+			if (VectorConverter::convert((receiver + i)->getPosition()).asNumber() == vec2.asNumber()) {
+				wall = true;
+				break;
+			}
+		}
+		if (wall) break;
 		up++;
 	} while (!wall);
 
@@ -77,6 +84,13 @@ void LaserMachines::setType(int number, LaserMachine::Type type, Map& map,
 		if (wall) break;
 		for (int i = 0; i < this->number; i++) {
 			if (VectorConverter::convert((machine + i)->getPosition()).asNumber() == vec2.asNumber()) {
+				wall = true;
+				break;
+			}
+		}
+		if (wall) break;
+		for (int i = 0; i < number3; i++) {
+			if (VectorConverter::convert((receiver + i)->getPosition()).asNumber() == vec2.asNumber()) {
 				wall = true;
 				break;
 			}
@@ -108,6 +122,13 @@ void LaserMachines::setType(int number, LaserMachine::Type type, Map& map,
 			}
 		}
 		if (wall) break;
+		for (int i = 0; i < number3; i++) {
+			if (VectorConverter::convert((receiver + i)->getPosition()).asNumber() == vec2.asNumber()) {
+				wall = true;
+				break;
+			}
+		}
+		if (wall) break;
 		left++;
 	} while (!wall);
 
@@ -129,6 +150,13 @@ void LaserMachines::setType(int number, LaserMachine::Type type, Map& map,
 		if (wall) break;
 		for (int i = 0; i < this->number; i++) {
 			if (VectorConverter::convert((machine + i)->getPosition()).asNumber() == vec2.asNumber()) {
+				wall = true;
+				break;
+			}
+		}
+		if (wall) break;
+		for (int i = 0; i < number3; i++) {
+			if (VectorConverter::convert((receiver + i)->getPosition()).asNumber() == vec2.asNumber()) {
 				wall = true;
 				break;
 			}
