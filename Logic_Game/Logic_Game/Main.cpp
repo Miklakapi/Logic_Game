@@ -1,6 +1,7 @@
 #include <SFML\Window.hpp>
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
+
 #include "ShootingBlock.hpp"
 #include "Game.hpp"
 
