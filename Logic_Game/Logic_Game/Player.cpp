@@ -47,7 +47,7 @@ bool Player::getLive() {
 }
 
 bool Player::movePlayer(Direction direction, Map& map, SlidingBlock* block, int number, Mirror* mirror, int number2, Door* door, int number3,
-	ShootingBlock* blockS, int number4, LaserMachine* machine, int number5) {
+	ShootingBlock* blockS, int number4, LaserMachine* machine, int number5, LaserReceiver* receiver, int number6) {
 
 	if (!live || moveNr != 10) return false;
 	if (direction == Player::Direction::None) return false;
@@ -88,6 +88,10 @@ bool Player::movePlayer(Direction direction, Map& map, SlidingBlock* block, int 
 
 	for (int i = 0; i < number5; i++) {
 		if ((machine + i)->getPosition() == vec.asVector2f()) return false;
+	}
+
+	for (int i = 0; i < number6; i++) {
+		if((receiver+i)->getPosition() == vec.asVector2f()) return false;
 	}
 
 	this->direction = direction;
