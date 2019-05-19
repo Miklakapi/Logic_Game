@@ -15,6 +15,7 @@
 #include "TeleportFields.hpp"
 #include "Plates.hpp"
 #include "MenuBar.hpp"
+#include "LaserReceivers.hpp"
 
 using namespace sf;
 
@@ -23,11 +24,11 @@ class HelpClass{
 public:
 	
 	static void move(Player& player, Map& map, SlidingBlock* block, int number, Mirror* mirror, int number2, Door* door, int number3,
-		ShootingBlock* blockS, int number4, LaserMachine* machine, int number5);
+		ShootingBlock* blockS, int number4, LaserMachine* machine, int number5, LaserReceiver* receivers, int number6);
 	
-	static void runAll(MenuBar& menu, Map& map, TeleportFields& fields, Plates& plates, Traps& traps, Player& player, SlidingBlocks& block, Mirrors& mirror, Doors& door, ShootingBlocks& blockS, LaserMachines& machine);
+	static void runAll(MenuBar& menu, Map& map, TeleportFields& fields, Plates& plates, Traps& traps, Player& player, SlidingBlocks& block, Mirrors& mirror, Doors& door, ShootingBlocks& blockS, LaserMachines& machine, LaserReceivers& receivers);
 
-	static void resetAll(MenuBar& menu, Map& map, Player& player, SlidingBlocks& block, Mirrors& mirror, Doors& door, ShootingBlocks& blockS, LaserMachines& machine);
+	static void resetAll(MenuBar& menu, Map& map, Player& player, SlidingBlocks& block, Mirrors& mirror, Doors& door, ShootingBlocks& blockS, LaserMachines& machine, LaserReceivers& receivers);
 
-	static void drawAll(RenderWindow& window, MenuBar& menu, Map& map, TeleportFields& fields, Plates& plates, Traps& traps, Player& player, SlidingBlocks& block, Mirrors& mirror, Doors& door, ShootingBlocks& blockS, LaserMachines& machine);
+	static void drawAll(RenderWindow& window, MenuBar& menu, Map& map, TeleportFields& fields, Plates& plates, Traps& traps, Player& player, SlidingBlocks& block, Mirrors& mirror, Doors& door, ShootingBlocks& blockS, LaserMachines& machine, LaserReceivers& receivers);
 };
