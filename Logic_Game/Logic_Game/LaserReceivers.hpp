@@ -2,7 +2,9 @@
 #include <SFML\Window.hpp>
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
+
 #include <string>
+
 #include "VectorConverter.hpp"
 #include "LaserReceiver.hpp"
 #include "Mirror.hpp"
@@ -32,6 +34,10 @@ public:
 	bool getOn(int number);
 
 	void setOn(int number, bool on);
+
+	LaserReceiver* getReceiver();
+
+	int getNumber();
 
 	void draw(RenderWindow& window);
 
