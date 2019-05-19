@@ -1,8 +1,11 @@
 #pragma once
+
 #include <SFML\Window.hpp>
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
+
 #include <string>
+
 #include "Hearts.hpp"
 #include "LvInfo.hpp"
 #include "Timer.hpp"
