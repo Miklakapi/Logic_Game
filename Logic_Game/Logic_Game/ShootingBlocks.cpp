@@ -57,7 +57,7 @@ void ShootingBlocks::draw(RenderWindow& window) {
 	}
 }
 
-void ShootingBlocks::run(Map& map, Door* door, int number, SlidingBlock* block, int number2, Mirror* mirror, int number3, LaserMachine* machine, int number4) {
+void ShootingBlocks::run(Map& map, Door* door, int number, SlidingBlock* block, int number2, Mirror* mirror, int number3, LaserMachine* machine, int number4, LaserReceiver* receiver, int number5) {
 	for (int i = 0; i < this->number; i++) {
 		(this->block + i)->run();
 
@@ -93,6 +93,15 @@ void ShootingBlocks::run(Map& map, Door* door, int number, SlidingBlock* block, 
 						vec.asVector2f().x < (machine + k)->getPosition().x + 80 &&
 						vec.asVector2f().y + 12 >(machine + k)->getPosition().y &&
 						vec.asVector2f().y < (machine + k)->getPosition().y + 80) {
+						(mine + j)->setExist(false);
+					}
+				}
+
+				for (int k = 0; k < number5; k++) {
+					if (vec.asVector2f().x + 12 > (receiver + k)->getPosition().x &&
+						vec.asVector2f().x < (receiver + k)->getPosition().x + 80 &&
+						vec.asVector2f().y + 12 >(receiver + k)->getPosition().y &&
+						vec.asVector2f().y < (receiver + k)->getPosition().y + 80) {
 						(mine + j)->setExist(false);
 					}
 				}
