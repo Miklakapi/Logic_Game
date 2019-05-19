@@ -22,7 +22,7 @@ int Mirrors::getLaserNr(int number) {
 	return (mirror + number)->getLaserNr();
 }
 
-void Mirrors::setType(int number, Mirror::Type type, Map& map, ShootingBlock* blocks, int number2, LaserMachine* machine, int number3) {
+void Mirrors::setType(int number, Mirror::Type type, Map& map, ShootingBlock* blocks, int number2, LaserMachine* machine, int number3, LaserReceiver* receiver, int number4) {
 	
 	VectorConverter vec((mirror + number)->getPosition());
 	VectorConverter vec2(vec);
@@ -54,6 +54,13 @@ void Mirrors::setType(int number, Mirror::Type type, Map& map, ShootingBlock* bl
 			}
 		}
 		if (wall) break;
+		for (int i = 0; i < number4; i++) {
+			if (VectorConverter::convert((receiver + i)->getPosition()).asNumber() == vec2.asNumber()) {
+				wall = true;
+				break;
+			}
+		}
+		if (wall) break;
 		up++;
 	} while (!wall);
 	
@@ -75,6 +82,13 @@ void Mirrors::setType(int number, Mirror::Type type, Map& map, ShootingBlock* bl
 		if (wall) break;
 		for (int i = 0; i < number3; i++) {
 			if (VectorConverter::convert((machine + i)->getPosition()).asNumber() == vec2.asNumber()) {
+				wall = true;
+				break;
+			}
+		}
+		if (wall) break;
+		for (int i = 0; i < number4; i++) {
+			if (VectorConverter::convert((receiver + i)->getPosition()).asNumber() == vec2.asNumber()) {
 				wall = true;
 				break;
 			}
@@ -106,6 +120,13 @@ void Mirrors::setType(int number, Mirror::Type type, Map& map, ShootingBlock* bl
 			}
 		}
 		if (wall) break;
+		for (int i = 0; i < number4; i++) {
+			if (VectorConverter::convert((receiver + i)->getPosition()).asNumber() == vec2.asNumber()) {
+				wall = true;
+				break;
+			}
+		}
+		if (wall) break;
 		left++;
 	} while (!wall);
 
@@ -127,6 +148,13 @@ void Mirrors::setType(int number, Mirror::Type type, Map& map, ShootingBlock* bl
 		if (wall) break;
 		for (int i = 0; i < number3; i++) {
 			if (VectorConverter::convert((machine + i)->getPosition()).asNumber() == vec2.asNumber()) {
+				wall = true;
+				break;
+			}
+		}
+		if (wall) break;
+		for (int i = 0; i < number4; i++) {
+			if (VectorConverter::convert((receiver + i)->getPosition()).asNumber() == vec2.asNumber()) {
 				wall = true;
 				break;
 			}
@@ -275,7 +303,7 @@ void Mirrors::draw(RenderWindow& window) {
 }
 
 void Mirrors::run(Map& map, SlidingBlock* block, int number, Door* door, int number2, ShootingBlock* blockS, int number3,
-	LaserMachine* machine, int number4) {
+	LaserMachine* machine, int number4, LaserReceiver* receiver, int number5) {
 	
 	//Mirror
 	for (int i = 0; i < this->number; i++) {
@@ -285,7 +313,7 @@ void Mirrors::run(Map& map, SlidingBlock* block, int number, Door* door, int num
 		if ((mirror + i)->getMoveNumber() != 10 || !(mirror + i)->getExist()) continue;
 		
 		if ((mirror + i)->isOnNewPosition()) {
-			setType(i, (mirror + i)->getType(), map, blockS, number3, machine, number4);
+			setType(i, (mirror + i)->getType(), map, blockS, number3, machine, number4, receiver, number5);
 			(mirror + i)->setOnNewPosition(false);
 		}
 		
