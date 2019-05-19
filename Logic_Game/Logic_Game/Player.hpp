@@ -13,6 +13,7 @@
 #include "Mirror.hpp"
 #include "ShootingBlock.hpp"
 #include "LaserMachine.hpp"
+#include "LaserReceiver.hpp"
 
 using namespace sf;
 using namespace std;
@@ -60,7 +61,7 @@ public:
 	bool getLive();
 
 	bool movePlayer(Direction direction, Map& map, SlidingBlock* block, int number, Mirror* mirror, int number2, Door* door, int number3,
-		ShootingBlock* blockS, int number4, LaserMachine* machine, int number5);
+		ShootingBlock* blockS, int number4, LaserMachine* machine, int number5, LaserReceiver* receiver, int number6);
 
 	void movePlayer(Direction direction);
 
