@@ -9,6 +9,7 @@ using namespace sf;
 using namespace std;
 
 int main() {
+
 	RenderWindow app(VideoMode{ 1440,880 }, "Logic_Game", Style::Close);
 	app.setFramerateLimit(144);
 
@@ -16,8 +17,6 @@ int main() {
 
 
 	while (app.isOpen()) {
-
-		//fps.run();
 
 		Event event;
 		while (app.pollEvent(event)) {
