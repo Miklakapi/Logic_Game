@@ -63,6 +63,7 @@ LaserReceiver::Type LaserReceiver::getType() {
 
 void LaserReceiver::setType(Type type) {
 	this->type = type;
+	setTextureRect(*(rect + type));
 }
 
 bool LaserReceiver::getOn() {
