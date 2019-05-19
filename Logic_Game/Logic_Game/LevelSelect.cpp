@@ -169,7 +169,8 @@ LevelSelect::Type LevelSelect::run(RenderWindow& window) {
 	}
 
 	if (Keyboard::isKeyPressed(Keyboard::Escape)) {
-		return Type::Exit;
+		if(type == Type::Start) return Type::Exit;
+		else if (type == Type::None) return Type::Return;
 	}
 	return Type::None;
 }
