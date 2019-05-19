@@ -1,8 +1,11 @@
 #pragma once
+
 #include <SFML\Window.hpp>
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
+
 #include <string>
+
 #include "VectorConverter.hpp"
 #include "ShootingBlock.hpp"
 #include "Map.hpp"
@@ -48,7 +51,7 @@ public:
 
 	void draw(RenderWindow& window);
 
-	void run(Map& map, Door* door, int number, SlidingBlock* block, int number2, Mirror* mirror, int number3, LaserMachine* machine, int number4);
+	void run(Map& map, Door* door, int number, SlidingBlock* block, int number2, Mirror* mirror, int number3, LaserMachine* machine, int number4, LaserReceiver* receiver, int number5);
 
 	void reset(int number);
 
