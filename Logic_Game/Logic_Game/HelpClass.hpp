@@ -2,6 +2,7 @@
 #include <SFML\Window.hpp>
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
+
 #include "VectorConverter.hpp"
 #include "Map.hpp"
 #include "Player.hpp"
