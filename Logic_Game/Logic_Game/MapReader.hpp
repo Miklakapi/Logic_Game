@@ -1,9 +1,12 @@
 #pragma once
+
 #include <SFML\Window.hpp>
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
+
 #include <string>
 #include <fstream>
+
 #include "Square.hpp"
 
 using namespace std;
