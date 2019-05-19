@@ -17,6 +17,7 @@ bool Play::setLv(int lv) {
 	blockS = new ShootingBlocks(2);
 	machines = new LaserMachines(2);
 	mirrors = new Mirrors(2);
+	receivers = new LaserReceivers(1);
 
 	plates->setPlatePosition(0, VectorConverter::convert(1, 1).asVector2f());
 	plates->setPlatePosition(1, VectorConverter::convert(2, 3).asVector2f());
@@ -38,14 +39,16 @@ bool Play::setLv(int lv) {
 	blockS->setDelay(0, 2);
 	blockS->setPosition(1, VectorConverter::convert(2, 5).asVector2f());
 
+	receivers->setPosition(0, VectorConverter::convert(3, 2).asVector2f());
+
 	machines->setPosition(0, VectorConverter::convert(13, 2).asVector2f());
 	machines->setPosition(1, VectorConverter::convert(12, 8).asVector2f());
-	machines->setType(0, LaserMachine::D1, *map, blockS->getBlock(), blockS->getNumber());
-	machines->setType(1, LaserMachine::D1, *map, blockS->getBlock(), blockS->getNumber());
+	machines->setType(0, LaserMachine::D1, *map, blockS->getBlock(), blockS->getNumber(), receivers->getReceiver(), receivers->getNumber());
+	machines->setType(1, LaserMachine::D1, *map, blockS->getBlock(), blockS->getNumber(), receivers->getReceiver(), receivers->getNumber());
 
 	mirrors->setPosition(0, VectorConverter::convert(6, 3).asVector2f());
 	mirrors->setPosition(1, VectorConverter::convert(4, 7).asVector2f());
-	mirrors->setType(0, Mirror::C1, *map, blockS->getBlock(), blockS->getNumber(), machines->getMachine(), machines->getNumber());
+	mirrors->setType(0, Mirror::C1, *map, blockS->getBlock(), blockS->getNumber(), machines->getMachine(), machines->getNumber(), receivers->getReceiver(), receivers->getNumber());
 
 	teleports->setTeleportPosition(0, VectorConverter::convert(2, 4).asVector2f());
 	teleports->setTeleportPlace(0, VectorConverter::convert(10, 3).asVector2f());
@@ -55,7 +58,7 @@ bool Play::setLv(int lv) {
 
 void Play::run() {
 	
-	HelpClass::runAll(*menuBar, *map, *teleports, *plates, *traps, *player, *blocks, *mirrors, *doors, *blockS, *machines);
+	HelpClass::runAll(*menuBar, *map, *teleports, *plates, *traps, *player, *blocks, *mirrors, *doors, *blockS, *machines, *receivers);
 
 	if (plates->isPressed(0)) doors->setOpen(0, true, *player, blocks->getBlock(), blocks->getNumber(), mirrors->getMirror(), mirrors->getNumber());
 	else if (plates->isPressed(1)) {
@@ -71,7 +74,7 @@ void Play::run() {
 	blockS->setOn(1, plates->isPressed(0));
 
 	HelpClass::move(*player, *map, blocks->getBlock(), blocks->getNumber(), mirrors->getMirror(), mirrors->getNumber(),
-		doors->getDoor(), doors->getNumber(), blockS->getBlock(), blockS->getNumber(), machines->getMachine(), machines->getNumber());
+		doors->getDoor(), doors->getNumber(), blockS->getBlock(), blockS->getNumber(), machines->getMachine(), machines->getNumber(), receivers->getReceiver(), receivers->getNumber());
 
 	if (menuBar->getData().asHealth() == 0) return;
 
@@ -83,7 +86,7 @@ void Play::run() {
 }
 
 void Play::draw(RenderWindow& window) {
-	HelpClass::drawAll(window, *menuBar, *map, *teleports, *plates, *traps, *player, *blocks, *mirrors, *doors, *blockS, *machines);
+	HelpClass::drawAll(window, *menuBar, *map, *teleports, *plates, *traps, *player, *blocks, *mirrors, *doors, *blockS, *machines, *receivers);
 	menuBar->draw(window);
 }
 
@@ -99,4 +102,5 @@ Play::~Play(){
 	delete blockS;
 	delete machines;
 	delete mirrors;
+	delete receivers;
 }
