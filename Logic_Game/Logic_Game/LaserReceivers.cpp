@@ -121,14 +121,127 @@ void LaserReceivers::run(Mirror* mirror, int number, LaserMachine* machine, int 
 
 		for (int j = 0; j < number2; j++) {
 
-			/////////////////////////////
+			if (!(machine + j)->isOn()) continue;
 
+			if (vUp == (machine + j)->getPosition()) up = true;
+			else if (vDown == (machine + j)->getPosition()) down = true;
+			else if (vLeft == (machine + j)->getPosition()) left = true;
+			else if (vRight == (machine + j)->getPosition()) right = true;
+
+			Laser* laser = (machine + j)->getLaser();
+
+			for (int k = 0; k < (machine + j)->getLaserNr(); k++) {
+
+				SimpleLaser* simLaser = (laser + k)->getSimpleLaser();
+
+				for (int l = 0; l < (laser + k)->getLaserNr(); l++) {
+
+					if (!(simLaser + l)->getExist()) continue;
+
+					if (!up) {
+						if ((simLaser + l)->getPosition() == vUp &&
+							(simLaser + l)->getDirection() == SimpleLaser::Vertical) {
+							up = true;
+						}
+					}
+					if (!down) {
+						if ((simLaser + l)->getPosition() == vDown &&
+							(simLaser + l)->getDirection() == SimpleLaser::Vertical) {
+							down = true;
+						}
+					}
+					if (!left) {
+						if ((simLaser + l)->getPosition() == vLeft &&
+							(simLaser + l)->getDirection() == SimpleLaser::Horizontal) {
+							left = true;
+						}
+					}
+					if (!right) {
+						if ((simLaser + l)->getPosition() == vRight &&
+							(simLaser + l)->getDirection() == SimpleLaser::Horizontal) {
+							right = true;
+						}
+					}
+				}
+			}
 		}
 
 		switch ((receiver + i)->getType()) {
 		case LaserReceiver::A1:
-
-
+			if (up) {
+				(receiver + i)->setOn(true);
+			}
+			break;
+		case LaserReceiver::A2:
+			if (right) {
+				(receiver + i)->setOn(true);
+			}
+			break;
+		case LaserReceiver::A3:
+			if (down) {
+				(receiver + i)->setOn(true);
+			}
+			break;
+		case LaserReceiver::A4:
+			if (left) {
+				(receiver + i)->setOn(true);
+			}
+			break;
+		case LaserReceiver::B1:
+			if (up && right) {
+				(receiver + i)->setOn(true);
+			}
+			break;
+		case LaserReceiver::B2:
+			if (down && right) {
+				(receiver + i)->setOn(true);
+			}
+			break;
+		case LaserReceiver::B3:
+			if (down && left) {
+				(receiver + i)->setOn(true);
+			}
+			break;
+		case LaserReceiver::B4:
+			if (up && left) {
+				(receiver + i)->setOn(true);
+			}
+			break;
+		case LaserReceiver::B5:
+			if (down && up) {
+				(receiver + i)->setOn(true);
+			}
+			break;
+		case LaserReceiver::B6:
+			if (right && left) {
+				(receiver + i)->setOn(true);
+			}
+			break;
+		case LaserReceiver::C1:
+			if (right && left && up) {
+				(receiver + i)->setOn(true);
+			}
+			break;
+		case LaserReceiver::C2:
+			if (down && right && up) {
+				(receiver + i)->setOn(true);
+			}
+			break;
+		case LaserReceiver::C3:
+			if (down && left && right) {
+				(receiver + i)->setOn(true);
+			}
+			break;
+		case LaserReceiver::C4:
+			if (down && left && up) {
+				(receiver + i)->setOn(true);
+			}
+			break;
+		case LaserReceiver::D1:
+			if (down && left && up && right) {
+				(receiver + i)->setOn(true);
+			}
+			break;
 		}
 
 	}
