@@ -61,6 +61,7 @@ void SimpleLaser::reset() {
 
 Laser::Laser() {
 	laser = new SimpleLaser[1];
+	laserNr = 1;
 }
 
 void Laser::setPosition(Vector2f position, Direction direction, int laserNr) {

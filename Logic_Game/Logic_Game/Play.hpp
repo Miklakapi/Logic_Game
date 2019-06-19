@@ -30,6 +30,8 @@ class Play{
 
 	Player* player;
 
+	//
+
 	TeleportFields* teleports;
 
 	Traps* traps;
