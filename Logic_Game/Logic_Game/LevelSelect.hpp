@@ -4,6 +4,8 @@
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
 
+#include <fstream>
+
 #include "Play.hpp"
 
 using namespace sf;

@@ -1,8 +1,22 @@
 #include "Play.hpp"
 
-Play::Play(int lv) : startPosition(0){
+Play::Play(int lv, string loseTexture, string winTexture, string fontFile) : startPosition(0), winPosition(0) {
 	Square::setTextureFile();
 	setLv(lv);
+	this->loseTexture.loadFromFile(loseTexture);
+	this->winTexture.loadFromFile(winTexture);
+	screen.setSize(Vector2f{ 1440,880 });
+	screen.setPosition(Vector2f{ 0,0 });
+	win = false;
+	//
+	font.loadFromFile(fontFile);
+
+	winTime.setCharacterSize(80);
+	winTime.setFont(font);
+	winTime.setFillColor(Color::White);
+	winTime.setLetterSpacing(1);
+	winTime.setStyle(Text::Bold);
+	winTime.setPosition(Vector2f{ 685,520 });
 }
 
 bool Play::setLv(int lv) {
@@ -20,6 +34,17 @@ bool Play::setLv(int lv) {
 	machines = new LaserMachines(1);
 	mirrors = new Mirrors(3);
 	receivers = new LaserReceivers(2);
+
+	//////
+	//////
+	//////
+
+	menuBar->setLV(lv);
+	map->renderLV(lv);
+
+	//////
+	//////
+	//////
 
 	plates->setPlatePosition(0, VectorConverter::convert(4, 9).asVector2f());
 	plates->setPlatePosition(1, VectorConverter::convert(8, 5).asVector2f());
@@ -68,14 +93,42 @@ bool Play::setLv(int lv) {
 	mirrors->setPosition(2, VectorConverter::convert(14, 7).asVector2f());
 	mirrors->setType(2, Mirror::A4, *map, blockS->getBlock(), blockS->getNumber(), machines->getMachine(), machines->getNumber(), receivers->getReceiver(), receivers->getNumber());
 	
+	winPosition = VectorConverter::convert(16, 1);
+
 	teleports->setTeleportPosition(0, VectorConverter::convert(16, 1).asVector2f());
 	teleports->setTeleportPlace(0, VectorConverter::convert(1, 9).asVector2f());
+
+
+
 
 	return false; // zwarcanie wykrycia poziomu ??
 }
 
-void Play::run() {
+int Play::run() {
 	
+	if (!win && winPosition.asVector2f() == player->getPosition() && teleports->isOpen(0)) {
+		win = true;
+		screen.setTexture(&winTexture);
+		winClock.restart();
+		minutes = menuBar->getData().asMinutes();
+		seconds = menuBar->getData().asSeconds();
+		//
+
+		string minutesS;
+		if (minutes < 10) minutesS = "0" + to_string(minutes);
+		else minutesS = to_string(minutes);
+
+		string secondsS;
+		if (seconds < 10) secondsS = "0" + to_string(seconds);
+		else secondsS = to_string(seconds);
+
+		string clockString;
+
+		clockString = minutesS + " : " + secondsS;
+
+		winTime.setString(clockString);
+	}
+
 	HelpClass::runAll(*menuBar, *map, *teleports, *plates, *traps, *player, *blocks, *mirrors, *doors, *blockS, *machines, *receivers);
 
 	if (plates->isPressed(0)) doors->setOpen(0, true, *player, blocks->getBlock(), blocks->getNumber(), mirrors->getMirror(), mirrors->getNumber());
@@ -98,18 +151,41 @@ void Play::run() {
 	HelpClass::move(*player, *map, blocks->getBlock(), blocks->getNumber(), mirrors->getMirror(), mirrors->getNumber(),
 		doors->getDoor(), doors->getNumber(), blockS->getBlock(), blockS->getNumber(), machines->getMachine(), machines->getNumber(), receivers->getReceiver(), receivers->getNumber());
 
-	if (menuBar->getData().asHealth() == 0) return;
+	if (player->getLive() == false && player->getClock().getElapsedTime().asSeconds() > 0.5) {
 
-	if (player->getLive() == false) {
-		menuBar->setHealth(menuBar->getData().asHealth() - 1);
-		player->setPosition(startPosition.asVector2f());
-		player->reset();
+		if (menuBar->getData().asHealth() > 1) {
+			menuBar->setHealth(menuBar->getData().asHealth() - 1);
+			player->setPosition(startPosition.asVector2f());
+			player->reset();
+		}
+		else if (menuBar->getData().asHealth() == 1) {
+			menuBar->setHealth(menuBar->getData().asHealth() - 1);
+			screen.setTexture(&loseTexture);
+		}
 	}
+
+	if (menuBar->getData().asHealth() <= 0 && player->getClock().getElapsedTime().asSeconds() >= 1.5) {
+		return 0; // death
+	}
+
+	if (win && winClock.getElapsedTime().asSeconds() >= 1.5) {
+		return menuBar->getData().asLV(); // win
+	}
+
+	return -1; // normal
 }
 
 void Play::draw(RenderWindow& window) {
-	HelpClass::drawAll(window, *menuBar, *map, *teleports, *plates, *traps, *player, *blocks, *mirrors, *doors, *blockS, *machines, *receivers);
-	menuBar->draw(window);
+	if (menuBar->getData().asHealth() > 0 && win == false) {
+		HelpClass::drawAll(window, *menuBar, *map, *teleports, *plates, *traps, *player, *blocks, *mirrors, *doors, *blockS, *machines, *receivers);
+		menuBar->draw(window);
+	}
+	else {
+		window.draw(screen);
+		if (win) {
+			window.draw(winTime);
+		}
+	}
 }
 
 Play::~Play(){

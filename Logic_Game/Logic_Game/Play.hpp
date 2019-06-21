@@ -28,7 +28,27 @@ class Play{
 
 	Map* map;
 
+	//
+
 	Player* player;
+
+	Texture loseTexture;
+
+	Texture winTexture;
+
+	RectangleShape screen;
+
+	bool win;
+
+	Clock winClock;
+
+	VectorConverter winPosition;
+
+	int seconds, minutes;
+
+	Text winTime;
+
+	Font font;
 
 	//
 
@@ -54,11 +74,11 @@ class Play{
 
 public:
 	
-	Play(int lv);
+	Play(int lv, string loseTexture = "Img/loseTexture.png", string winTexture = "Img/winTexture.png", string fontFile = "Fonts/IndieFlower.ttf");
 	
 	bool setLv(int lv);
 
-	void run();
+	int run();
 
 	void draw(RenderWindow& window);
 

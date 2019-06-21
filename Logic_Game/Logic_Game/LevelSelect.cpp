@@ -52,6 +52,26 @@ LevelSelect::LevelSelect() {
 	(ring + 17)->setPosition({ 663,594 });
 	(ring + 18)->setPosition({ 860,594 });
 	(ring + 19)->setPosition({ 1057,594 });
+
+	fstream stream("Lvs/complete.txt", ios::in);
+	if (!stream.is_open()) {
+		stream.open("Lvs/complete.txt", ios::out);
+		for (int i = 0; i < 20; i++) {
+			stream << "false\n";
+		}
+		stream.close();
+	}
+	else {
+		string line;
+		for (int i = 0; i < 20; i++) {
+			getline(stream, line);
+			if (line == "true") {
+				(ring + i)->setComplete(true);
+			}
+		}
+		stream.close();
+	}
+
 }
 
 LevelSelect::Type LevelSelect::getType() {
@@ -165,7 +185,43 @@ LevelSelect::Type LevelSelect::run(RenderWindow& window) {
 	}
 
 	if (type == Type::Start) {
-		play->run();
+		int nr = play->run();
+		if (nr != -1) {
+
+			if (nr == 0) { // Game Over
+				return Type::Exit;
+			}
+			else if (nr > 0) { // Level complete
+
+				fstream stream("Lvs/complete.txt", ios::in);
+				if (!stream.is_open()) {
+					stream.open("Lvs/complete.txt", ios::out);
+					for (int i = 0; i < 20; i++) {
+						stream << "false\n";
+					}
+					stream.close();
+				}
+				else {
+					string* line = new string[20];
+					for (int i = 0; i < 20; i++) {
+						getline(stream, *(line + i));
+						if ((i + 1) == nr) *(line + i) = "true";
+					}
+					stream.close();
+
+					stream.open("Lvs/complete.txt", ios::out);
+					for (int i = 0; i < 20; i++) {
+						stream << *(line + i);
+						stream << '\n';
+					}
+
+					delete [] line;
+					stream.close();
+				}
+				return Type::Exit;
+			}
+
+		}
 	}
 
 	if (Keyboard::isKeyPressed(Keyboard::Escape)) {
