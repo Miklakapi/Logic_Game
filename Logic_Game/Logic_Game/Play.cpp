@@ -1,5 +1,60 @@
 #include "Play.hpp"
 
+Play::HelpClass::HelpClass() {
+	deviceNumber = 0;
+	deviceName = new string[0];
+	deviceID = new int[0];
+	on = new bool[0];
+}
+
+void Play::HelpClass::setDeviceNumber(int number) {
+	this->deviceNumber = number;
+	delete [] deviceName;
+	delete [] deviceID;
+	delete [] on;
+	deviceName = new string[number];
+	deviceID = new int[number];
+	on = new bool[number];
+}
+
+int Play::HelpClass::getDeviceNumber() {
+	return deviceNumber;
+}
+
+void Play::HelpClass::setDeviceName(int nr, string name) {
+	*(this->deviceName + nr) = name;
+}
+
+string Play::HelpClass::getDeviceName(int nr) {
+	return *(deviceName + nr);
+}
+
+void Play::HelpClass::setDeviceID(int nr, int id) {
+	*(deviceID + nr) = id;
+}
+
+int Play::HelpClass::getDeviceID(int nr) {
+	return *(deviceID + nr);
+}
+
+void Play::HelpClass::setOn(int nr, bool on) {
+	*(this->on + nr) = on;
+}
+
+bool Play::HelpClass::getOn(int nr) {
+	return *(on + nr);
+}
+
+Play::HelpClass::~HelpClass() {
+	delete [] deviceName;
+	delete [] deviceID;
+	delete [] on;
+}
+
+////////////////
+////////////////
+////////////////
+
 Play::Play(int lv, string loseTexture, string winTexture, string fontFile) : startPosition(0), winPosition(0) {
 	Square::setTextureFile();
 	setLv(lv);
@@ -19,89 +74,474 @@ Play::Play(int lv, string loseTexture, string winTexture, string fontFile) : sta
 	winTime.setPosition(Vector2f{ 685,520 });
 }
 
-bool Play::setLv(int lv) {
-	
+void Play::setLv(int lv) {
+
 	menuBar = new MenuBar;
 	map = new Map;
 	player = new Player;
-	//
-	teleports = new TeleportFields(1);
-	traps = new Traps(6);
-	blocks = new SlidingBlocks(2);
-	plates = new Plates(2);
-	doors = new Doors(2);
-	blockS = new ShootingBlocks(2);
-	machines = new LaserMachines(1);
-	mirrors = new Mirrors(3);
-	receivers = new LaserReceivers(2);
 
-	//////
-	//////
-	//////
+	int* number = new int[9]; //ilosc urzadzen
+
+	int* teleportPosition;
+	int* teleportPlace;
+	bool* teleportOpen;
+
+	int* trapPosition;
+	bool* trapOn;
+
+	int* slidingPosition;
+
+	int* platePosition;
+
+	int* doorPosition;
+	bool* doorOn;
+
+	int* sblockPosition;
+	ShootingBlock::Type* sblockType;
+	int* sblockDelay;
+	bool* sblockOn;
+
+	int* laserPosition;
+	LaserMachine::Type* laserType;
+	bool* laserOn;
+
+	int* mirrorPosition;
+	Mirror::Type* mirrorType;
+
+	int* receiverPosition;
+	LaserReceiver::Type* receiverType;
+
+	string file = "Lv" + to_string(lv) + ".txt";
+	fstream stream(file, ios::in);
+	
+	if (!stream.is_open()) {
+		stream.open("error.txt", ios::out);
+		stream << "File " << "Lv" << to_string(lv) << ".txt is not exist.\n";
+		exit(0);
+	}
+
+	string line;
+
+	//1
+	getline(stream, line);
+	startPosition = VectorConverter{ int(atoi(line.c_str())) };
+
+	//2
+	getline(stream, line);
+	winPosition = VectorConverter{ int(atoi(line.c_str())) };
+
+	//Teleports
+	getline(stream, line);
+	*(number) = atoi(line.c_str());
+	teleportPosition = new int[*number];
+	teleportPlace = new int[*number];
+	teleportOpen = new bool[*number];
+
+	for (int i = 0; i < *number; i++) {
+		getline(stream, line);
+		*(teleportPosition + i) = atoi(line.c_str());
+		getline(stream, line);
+		*(teleportPlace + i) = atoi(line.c_str());
+		getline(stream, line);
+		*(teleportOpen + i) = atoi(line.c_str());
+	}
+
+	//Traps
+	getline(stream, line);
+	*(number + 1) = atoi(line.c_str());
+	trapPosition = new int[*(number + 1)];
+	trapOn = new bool[*(number + 1)];
+
+	for (int i = 0; i < *(number + 1); i++) {
+		getline(stream, line);
+		*(trapPosition + i) = atoi(line.c_str());
+		getline(stream, line);
+		*(trapOn + i) = atoi(line.c_str());
+	}
+
+	//Sliding Blocks
+	getline(stream, line);
+	*(number + 2) = atoi(line.c_str());
+	slidingPosition = new int[*(number + 2)];
+	
+	for (int i = 0; i < *(number + 2); i++) {
+		getline(stream, line);
+		*(slidingPosition + i) = atoi(line.c_str());
+	}
+
+	//Plates
+	getline(stream, line);
+	*(number + 3) = atoi(line.c_str());
+	platePosition = new int[*(number + 3)];
+	plateC = new HelpClass[*(number + 3)];
+
+	for (int i = 0; i < *(number + 3); i++) {
+		getline(stream, line);
+		*(platePosition + i) = atoi(line.c_str());
+		getline(stream, line);
+		(plateC + i)->setDeviceNumber(atoi(line.c_str()));
+		for (int j = 0; j < (plateC + i)->getDeviceNumber(); j++) {
+			getline(stream, line);
+			(plateC + j)->setDeviceName(j, line);
+			getline(stream, line);
+			(plateC + j)->setDeviceID(j, atoi(line.c_str()));
+			getline(stream, line);
+			(plateC + j)->setOn(j, atoi(line.c_str()));
+		}
+	}
+
+	//Doors
+	getline(stream, line);
+	*(number + 4) = atoi(line.c_str());
+	doorPosition = new int[*(number + 4)];
+	doorOn = new bool[*(number + 4)];
+	
+	for (int i = 0; i < *(number + 4); i++) {
+		getline(stream, line);
+		*(doorPosition + i) = atoi(line.c_str());
+		getline(stream, line);
+		*(doorOn + i) = atoi(line.c_str());
+	}
+
+	//Shooting Blocks
+	getline(stream, line);
+	*(number + 5) = atoi(line.c_str());
+	sblockPosition = new int[*(number + 5)];
+	sblockType = new ShootingBlock::Type[*(number + 5)];
+	sblockDelay = new int[*(number + 5)];
+	sblockOn = new bool[*(number + 5)];
+
+	for (int i = 0; i < *(number + 5); i++) {
+		getline(stream, line);
+		*(sblockPosition + i) = atoi(line.c_str());
+		getline(stream, line);
+		int a = atoi(line.c_str());
+		switch (a) {
+		case 1:
+			*(sblockType + i) = ShootingBlock::A1;
+			break;
+		case 2:
+			*(sblockType + i) = ShootingBlock::A2;
+			break;
+		case 3:
+			*(sblockType + i) = ShootingBlock::A3;
+			break;
+		case 4:
+			*(sblockType + i) = ShootingBlock::A4;
+			break;
+		case 5:
+			*(sblockType + i) = ShootingBlock::B1;
+			break;
+		case 6:
+			*(sblockType + i) = ShootingBlock::B2;
+			break;
+		case 7:
+			*(sblockType + i) = ShootingBlock::B3;
+			break;
+		case 8:
+			*(sblockType + i) = ShootingBlock::B4;
+			break;
+		case 9:
+			*(sblockType + i) = ShootingBlock::B5;
+			break;
+		case 10:
+			*(sblockType + i) = ShootingBlock::B6;
+			break;
+		case 11:
+			*(sblockType + i) = ShootingBlock::C1;
+			break;
+		case 12:
+			*(sblockType + i) = ShootingBlock::C2;
+			break;
+		case 13:
+			*(sblockType + i) = ShootingBlock::C3;
+			break;
+		case 14:
+			*(sblockType + i) = ShootingBlock::C4;
+			break;
+		case 15:
+			*(sblockType + i) = ShootingBlock::D1;
+			break;
+		}
+		getline(stream, line);
+		*(sblockDelay + i) = int(atoi(line.c_str()) / 1000);
+		getline(stream, line);
+		*(sblockOn + i) = atoi(line.c_str());
+	}
+
+	//Laser Block
+	getline(stream, line);
+	*(number + 6) = atoi(line.c_str());
+	laserPosition = new int[*(number + 6)];
+	laserType = new LaserMachine::Type[*(number + 6)];
+	laserOn = new bool[*(number + 6)];
+
+	for (int i = 0; i < *(number + 6); i++) {
+		getline(stream, line);
+		*(laserPosition + i) = atoi(line.c_str());
+		getline(stream, line);
+		int a = atoi(line.c_str());
+		switch (a) {
+		case 1:
+			*(laserType + i) = LaserMachine::A1;
+			break;
+		case 2:
+			*(laserType + i) = LaserMachine::A2;
+			break;
+		case 3:
+			*(laserType + i) = LaserMachine::A3;
+			break;
+		case 4:
+			*(laserType + i) = LaserMachine::A4;
+			break;
+		case 5:
+			*(laserType + i) = LaserMachine::B1;
+			break;
+		case 6:
+			*(laserType + i) = LaserMachine::B2;
+			break;
+		case 7:
+			*(laserType + i) = LaserMachine::B3;
+			break;
+		case 8:
+			*(laserType + i) = LaserMachine::B4;
+			break;
+		case 9:
+			*(laserType + i) = LaserMachine::B5;
+			break;
+		case 10:
+			*(laserType + i) = LaserMachine::B6;
+			break;
+		case 11:
+			*(laserType + i) = LaserMachine::C1;
+			break;
+		case 12:
+			*(laserType + i) = LaserMachine::C2;
+			break;
+		case 13:
+			*(laserType + i) = LaserMachine::C3;
+			break;
+		case 14:
+			*(laserType + i) = LaserMachine::C4;
+			break;
+		case 15:
+			*(laserType + i) = LaserMachine::D1;
+			break;
+		}
+		getline(stream, line);
+		*(laserOn + i) = atoi(line.c_str());
+	}
+
+	//Mirror
+	getline(stream, line);
+	*(number + 7) = atoi(line.c_str());
+	mirrorPosition = new int[*(number + 7)];
+	mirrorType = new Mirror::Type[*(number + 7)];
+
+	for (int i = 0; i < *(number + 7); i++) {
+		getline(stream, line);
+		*(mirrorPosition + i) = atoi(line.c_str());
+		getline(stream, line);
+		int a = atoi(line.c_str());
+		switch (a) {
+		case 1:
+			*(mirrorType + i) = Mirror::A1;
+			break;
+		case 2:
+			*(mirrorType + i) = Mirror::A2;
+			break;
+		case 3:
+			*(mirrorType + i) = Mirror::A3;
+			break;
+		case 4:
+			*(mirrorType + i) = Mirror::A4;
+			break;
+		case 5:
+			*(mirrorType + i) = Mirror::B1;
+			break;
+		case 6:
+			*(mirrorType + i) = Mirror::B2;
+			break;
+		case 7:
+			*(mirrorType + i) = Mirror::B3;
+			break;
+		case 8:
+			*(mirrorType + i) = Mirror::B4;
+			break;
+		case 9:
+			*(mirrorType + i) = Mirror::C1;
+			break;
+		}
+	}
+
+	//Laser Receiver
+	getline(stream, line);
+	*(number + 8) = atoi(line.c_str());
+	receiverPosition = new int[*(number + 8)];
+	receiverType = new LaserReceiver::Type[*(number + 8)];
+	receiverC = new HelpClass[*(number + 8)];
+
+	for (int i = 0; i < *(number + 8); i++) {
+		getline(stream, line);
+		*(receiverPosition + i) = atoi(line.c_str());
+		getline(stream, line);
+		int a = atoi(line.c_str());
+		switch (a) {
+		case 1:
+			*(receiverType + i) = LaserReceiver::A1;
+			break;
+		case 2:
+			*(receiverType + i) = LaserReceiver::A2;
+			break;
+		case 3:
+			*(receiverType + i) = LaserReceiver::A3;
+			break;
+		case 4:
+			*(receiverType + i) = LaserReceiver::A4;
+			break;
+		case 5:
+			*(receiverType + i) = LaserReceiver::B1;
+			break;
+		case 6:
+			*(receiverType + i) = LaserReceiver::B2;
+			break;
+		case 7:
+			*(receiverType + i) = LaserReceiver::B3;
+			break;
+		case 8:
+			*(receiverType + i) = LaserReceiver::B4;
+			break;
+		case 9:
+			*(receiverType + i) = LaserReceiver::B5;
+			break;
+		case 10:
+			*(receiverType + i) = LaserReceiver::B6;
+			break;
+		case 11:
+			*(receiverType + i) = LaserReceiver::C1;
+			break;
+		case 12:
+			*(receiverType + i) = LaserReceiver::C2;
+			break;
+		case 13:
+			*(receiverType + i) = LaserReceiver::C3;
+			break;
+		case 14:
+			*(receiverType + i) = LaserReceiver::C4;
+			break;
+		case 15:
+			*(receiverType + i) = LaserReceiver::D1;
+			break;
+		}
+		getline(stream, line);
+		(receiverC + i)->setDeviceNumber(atoi(line.c_str()));
+		for (int j = 0; j < (receiverC + i)->getDeviceNumber(); j++) {
+			getline(stream, line);
+			(receiverC + j)->setDeviceName(j, line);
+			getline(stream, line);
+			(receiverC + j)->setDeviceID(j, atoi(line.c_str()));
+			getline(stream, line);
+			(receiverC + j)->setOn(j, atoi(line.c_str()));
+		}
+	}
+
+	stream.close();
+
+	teleports = new TeleportFields((*(number + 0) + 1));
+	traps = new Traps(*(number + 1));
+	blocks = new SlidingBlocks(*(number + 2));
+	plates = new Plates(*(number + 3));
+	doors = new Doors(*(number + 4));
+	blockS = new ShootingBlocks(*(number + 5));
+	machines = new LaserMachines(*(number + 6));
+	mirrors = new Mirrors(*(number + 7));
+	receivers = new LaserReceivers(*(number + 8));
 
 	menuBar->setLV(lv);
 	map->renderLV(lv);
 
-	//////
-	//////
-	//////
-
-	plates->setPlatePosition(0, VectorConverter::convert(4, 9).asVector2f());
-	plates->setPlatePosition(1, VectorConverter::convert(8, 5).asVector2f());
-	
-	doors->setDoorPosition(0, VectorConverter::convert(6, 5).asVector2f());
-	doors->setDoorPosition(1, VectorConverter::convert(16, 2).asVector2f());
-	
-	traps->setSpikesPosition(0, VectorConverter::convert(2, 8).asVector2f());
-	traps->setOn(0, true);
-	traps->setSpikesPosition(1, VectorConverter::convert(1, 7).asVector2f());
-	traps->setOn(1, true);
-	traps->setSpikesPosition(2, VectorConverter::convert(4, 4).asVector2f());
-	traps->setOn(2, true);
-	traps->setSpikesPosition(3, VectorConverter::convert(5, 1).asVector2f());
-	traps->setOn(3, true);
-	traps->setSpikesPosition(4, VectorConverter::convert(6, 2).asVector2f());
-	traps->setOn(4, true);
-	traps->setSpikesPosition(5, VectorConverter::convert(7, 1).asVector2f());
-	traps->setOn(5, true);
-	
-	startPosition = { 1,9 };
 	player->setPosition(startPosition.asVector2f());
-	
-	blocks->setBlockPosition(0, VectorConverter::convert(3, 7).asVector2f());
-	blocks->setBlockPosition(1, VectorConverter::convert(5, 4).asVector2f());
-	
-	blockS->setPosition(0, VectorConverter::convert(2, 5).asVector2f());
-	blockS->setType(0, ShootingBlock::A1);
-	blockS->setDelay(0, 1.5);
-	blockS->setPosition(1, VectorConverter::convert(1, 4).asVector2f());
-	blockS->setType(1, ShootingBlock::A2);
-	blockS->setDelay(1, 1.5);
-	
-	receivers->setType(0, LaserReceiver::Type::B1);
-	receivers->setPosition(0, VectorConverter::convert(8, 9).asVector2f());
-	receivers->setType(1, LaserReceiver::Type::A4);
-	receivers->setPosition(1, VectorConverter::convert(16, 5).asVector2f());
 
-	machines->setPosition(0, VectorConverter::convert(12, 1).asVector2f());
-	machines->setType(0, LaserMachine::A3, *map, blockS->getBlock(), blockS->getNumber(), receivers->getReceiver(), receivers->getNumber());
-	
-	mirrors->setPosition(0, VectorConverter::convert(12, 6).asVector2f());
-	mirrors->setType(0, Mirror::A2, *map, blockS->getBlock(), blockS->getNumber(), machines->getMachine(), machines->getNumber(), receivers->getReceiver(), receivers->getNumber());
-	mirrors->setPosition(1, VectorConverter::convert(13, 3).asVector2f());
-	mirrors->setType(1, Mirror::C1, *map, blockS->getBlock(), blockS->getNumber(), machines->getMachine(), machines->getNumber(), receivers->getReceiver(), receivers->getNumber());
-	mirrors->setPosition(2, VectorConverter::convert(14, 7).asVector2f());
-	mirrors->setType(2, Mirror::A4, *map, blockS->getBlock(), blockS->getNumber(), machines->getMachine(), machines->getNumber(), receivers->getReceiver(), receivers->getNumber());
-	
-	winPosition = VectorConverter::convert(16, 1);
+	for (int i = 0; i < *(number + 3); i++) {
+		plates->setPlatePosition(i, VectorConverter::convert(*(platePosition + i)).asVector2f());
+	}
 
-	teleports->setTeleportPosition(0, VectorConverter::convert(16, 1).asVector2f());
-	teleports->setTeleportPlace(0, VectorConverter::convert(1, 9).asVector2f());
+	for (int i = 0; i < *(number + 1); i++) {
+		traps->setSpikesPosition(i, VectorConverter::convert(*(trapPosition + i)).asVector2f());
+		traps->setOn(i, *(trapOn + i));
+	}
 
+	for (int i = 0; i < *(number + 2); i++) {
+		blocks->setBlockPosition(i, VectorConverter::convert(*(slidingPosition + i)).asVector2f());
+	}
 
+	for (int i = 0; i < *(number + 5); i++) {
+		blockS->setPosition(i, VectorConverter::convert(*(sblockPosition + i)).asVector2f());
+		blockS->setType(i, *(sblockType + i));
+		blockS->setDelay(i, *(sblockDelay + i));
+		blockS->setOn(i, *(sblockOn + i));
+	}
 
+	for (int i = 0; i < *(number + 8); i++) {
+		receivers->setType(i, *(receiverType + i));
+		receivers->setPosition(i, VectorConverter::convert(*(receiverPosition + i)).asVector2f());
+	}
 
-	return false; // zwarcanie wykrycia poziomu ??
+	for (int i = 0; i < *(number + 6); i++) {
+		machines->setPosition(i, VectorConverter::convert(*(laserPosition + i)).asVector2f());
+		machines->setType(i, *(laserType + i), *map, blockS->getBlock(), blockS->getNumber(), receivers->getReceiver(), receivers->getNumber());
+		machines->setOn(i, *(laserOn + i));
+	}
+
+	for (int i = 0; i < *(number + 7); i++) {
+		mirrors->setPosition(i, VectorConverter::convert(*(mirrorPosition + i)).asVector2f());
+		mirrors->setType(i, *(mirrorType + i), *map, blockS->getBlock(), blockS->getNumber(), machines->getMachine(), machines->getNumber(), receivers->getReceiver(), receivers->getNumber());
+	}
+
+	for (int i = 0; i < *(number + 4); i++) {
+		doors->setDoorPosition(i, VectorConverter::convert(*(doorPosition + i)).asVector2f());
+		doors->setOpen(i, *(doorOn + i), *player, blocks->getBlock(), blocks->getNumber(), mirrors->getMirror(), mirrors->getNumber());
+	}
+
+	teleports->setTeleportPosition(0, winPosition.asVector2f());
+	teleports->setTeleportPlace(0, startPosition.asVector2f());
+
+	for (int i = 1; i < (*(number)+1); i++) {
+		teleports->setTeleportPosition(i, VectorConverter::convert(*(teleportPosition + i - 1)).asVector2f());
+		teleports->setTeleportPlace(i, VectorConverter::convert(*(teleportPlace + i - 1)).asVector2f());
+		teleports->setOpen(i, *(teleportOpen + i - 1));
+	}
+
+	delete [] number;
+
+	delete [] teleportPlace;
+	delete [] teleportPosition;
+	delete [] teleportOpen;
+
+	delete [] trapPosition;
+	delete [] trapOn;
+
+	delete [] slidingPosition;
+
+	delete [] platePosition;
+
+	delete [] doorPosition;
+	delete [] doorOn;
+
+	delete [] sblockPosition;
+	delete [] sblockType;
+	delete [] sblockDelay;
+	delete [] sblockOn;
+
+	delete [] laserPosition;
+	delete [] laserType;
+	delete [] laserOn;
+
+	delete [] mirrorPosition;
+	delete [] mirrorType;
+
+	delete [] receiverPosition;
+	delete [] receiverType;
 }
 
 int Play::run() {
@@ -129,7 +569,7 @@ int Play::run() {
 		winTime.setString(clockString);
 	}
 
-	HelpClass::runAll(*menuBar, *map, *teleports, *plates, *traps, *player, *blocks, *mirrors, *doors, *blockS, *machines, *receivers);
+	::HelpClass::runAll(*menuBar, *map, *teleports, *plates, *traps, *player, *blocks, *mirrors, *doors, *blockS, *machines, *receivers);
 
 	if (plates->isPressed(0)) doors->setOpen(0, true, *player, blocks->getBlock(), blocks->getNumber(), mirrors->getMirror(), mirrors->getNumber());
 	else doors->setOpen(0, false, *player, blocks->getBlock(), blocks->getNumber(), mirrors->getMirror(), mirrors->getNumber());
@@ -148,7 +588,7 @@ int Play::run() {
 	blockS->setOn(0, plates->isPressed(0));
 	blockS->setOn(1, plates->isPressed(0));
 
-	HelpClass::move(*player, *map, blocks->getBlock(), blocks->getNumber(), mirrors->getMirror(), mirrors->getNumber(),
+	::HelpClass::move(*player, *map, blocks->getBlock(), blocks->getNumber(), mirrors->getMirror(), mirrors->getNumber(),
 		doors->getDoor(), doors->getNumber(), blockS->getBlock(), blockS->getNumber(), machines->getMachine(), machines->getNumber(), receivers->getReceiver(), receivers->getNumber());
 
 	if (player->getLive() == false && player->getClock().getElapsedTime().asSeconds() > 0.5) {
@@ -177,7 +617,7 @@ int Play::run() {
 
 void Play::draw(RenderWindow& window) {
 	if (menuBar->getData().asHealth() > 0 && win == false) {
-		HelpClass::drawAll(window, *menuBar, *map, *teleports, *plates, *traps, *player, *blocks, *mirrors, *doors, *blockS, *machines, *receivers);
+		::HelpClass::drawAll(window, *menuBar, *map, *teleports, *plates, *traps, *player, *blocks, *mirrors, *doors, *blockS, *machines, *receivers);
 		menuBar->draw(window);
 	}
 	else {

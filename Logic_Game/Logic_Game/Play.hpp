@@ -4,6 +4,9 @@
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
 
+#include <fstream>
+#include <string>
+
 #include "VectorConverter.hpp"
 #include "Map.hpp"
 #include "MenuBar.hpp"
@@ -23,6 +26,39 @@ using namespace sf;
 using namespace std;
 
 class Play{
+
+	class HelpClass {
+
+		int deviceNumber;
+
+		string* deviceName;
+
+		int* deviceID;
+
+		bool* on;
+
+	public:
+
+		HelpClass();
+
+		void setDeviceNumber(int number);
+
+		int getDeviceNumber();
+
+		void setDeviceName(int nr, string name);
+
+		string getDeviceName(int nr);
+
+		void setDeviceID(int nr, int id);
+
+		int getDeviceID(int nr);
+
+		void setOn(int nr, bool on);
+
+		bool getOn(int nr);
+
+		~HelpClass();
+	};
 
 	MenuBar* menuBar;
 
@@ -44,11 +80,17 @@ class Play{
 
 	VectorConverter winPosition;
 
+	VectorConverter startPosition;
+
 	int seconds, minutes;
 
 	Text winTime;
 
 	Font font;
+
+	HelpClass* receiverC;
+
+	HelpClass* plateC;
 
 	//
 
@@ -70,13 +112,11 @@ class Play{
 
 	LaserReceivers* receivers;
 
-	VectorConverter startPosition;
-
 public:
 	
 	Play(int lv, string loseTexture = "Img/loseTexture.png", string winTexture = "Img/winTexture.png", string fontFile = "Fonts/IndieFlower.ttf");
 	
-	bool setLv(int lv);
+	void setLv(int lv);
 
 	int run();
 

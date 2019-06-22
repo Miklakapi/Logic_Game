@@ -1,8 +1,8 @@
 #include "VectorConverter.hpp"
 
 VectorConverter::VectorConverter(int number) {
-	y = number % 18;
-	x = number - (18 * y);
+	y = int(number / 18);
+	x = number % 18;
 	this->number = number;
 	vector = Vector2i{ int(x * 80),int(y * 80) };
 }
