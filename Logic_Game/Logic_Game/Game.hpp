@@ -12,6 +12,7 @@
 #include "LevelSelect.hpp"
 #include "Options.hpp"
 #include "FPS.hpp"
+#include "Instruction.hpp"
 
 using namespace sf;
 using namespace std;
@@ -34,6 +35,8 @@ class Game{
 	//
 
 	LevelSelect* levelSelect;
+
+	Instruction* instruction;
 
 	Options* options;
 

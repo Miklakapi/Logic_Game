@@ -62,7 +62,8 @@ void Game::run(RenderWindow& window) {
 			/////////////////////////////////////////////////
 		}
 		else if (type1 == Menu::Instruction) {
-			/////////////////////////////////////////////////
+			instruction = new Instruction;
+			type = Type::InInstruction;
 		}
 		else if (type1 == Menu::Options) {
 			options = new Options(window);
@@ -92,7 +93,12 @@ void Game::run(RenderWindow& window) {
 		/////////////////////////////////////////////////
 	}
 	else if (type == Type::InInstruction) {
-		/////////////////////////////////////////////////
+		menu->run(window, false);
+		if (instruction->run(window) == Instruction::Type::Return) {
+			delete instruction;
+			type = Type::InMenu;
+			delayClick.restart();
+		}
 	}
 	else if (type == Type::InOptions) {
 		menu->run(window, false);
@@ -133,7 +139,8 @@ void Game::draw(RenderWindow& window) {
 		/////////////////////////////////////////////////
 		break;
 	case Type::InInstruction:
-		/////////////////////////////////////////////////
+		instruction->draw(window);
+		menu->draw(window, false);
 		break;
 	case Type::InOptions:
 		options->draw(window);
@@ -158,7 +165,8 @@ Game::~Game(){
 		/////////////////////////////////////////////////
 		break;
 	case Type::InInstruction:
-		/////////////////////////////////////////////////
+		delete instruction;
+		delete menu;
 		break;
 	case Type::InOptions:
 		delete menu;
