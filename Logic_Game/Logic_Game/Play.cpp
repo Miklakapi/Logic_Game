@@ -111,12 +111,12 @@ void Play::setLv(int lv) {
 	int* receiverPosition;
 	LaserReceiver::Type* receiverType;
 
-	string file = "Lv" + to_string(lv) + ".txt";
+	string file = "Lvs/Lv" + to_string(lv) + "b.txt";
 	fstream stream(file, ios::in);
 	
 	if (!stream.is_open()) {
 		stream.open("error.txt", ios::out);
-		stream << "File " << "Lv" << to_string(lv) << ".txt is not exist.\n";
+		stream << "File " << "Lv" << to_string(lv) << "b.txt is not exist.\n";
 		exit(0);
 	}
 
@@ -182,11 +182,11 @@ void Play::setLv(int lv) {
 		(plateC + i)->setDeviceNumber(atoi(line.c_str()));
 		for (int j = 0; j < (plateC + i)->getDeviceNumber(); j++) {
 			getline(stream, line);
-			(plateC + j)->setDeviceName(j, line);
+			(plateC + i)->setDeviceName(j, line);
 			getline(stream, line);
-			(plateC + j)->setDeviceID(j, atoi(line.c_str()));
+			(plateC + i)->setDeviceID(j, atoi(line.c_str()));
 			getline(stream, line);
-			(plateC + j)->setOn(j, atoi(line.c_str()));
+			(plateC + i)->setOn(j, atoi(line.c_str()));
 		}
 	}
 
@@ -437,11 +437,11 @@ void Play::setLv(int lv) {
 		(receiverC + i)->setDeviceNumber(atoi(line.c_str()));
 		for (int j = 0; j < (receiverC + i)->getDeviceNumber(); j++) {
 			getline(stream, line);
-			(receiverC + j)->setDeviceName(j, line);
+			(receiverC + i)->setDeviceName(j, line);
 			getline(stream, line);
-			(receiverC + j)->setDeviceID(j, atoi(line.c_str()));
+			(receiverC + i)->setDeviceID(j, atoi(line.c_str()));
 			getline(stream, line);
-			(receiverC + j)->setOn(j, atoi(line.c_str()));
+			(receiverC + i)->setOn(j, atoi(line.c_str()));
 		}
 	}
 
@@ -571,22 +571,103 @@ int Play::run() {
 
 	::HelpClass::runAll(*menuBar, *map, *teleports, *plates, *traps, *player, *blocks, *mirrors, *doors, *blockS, *machines, *receivers);
 
-	if (plates->isPressed(0)) doors->setOpen(0, true, *player, blocks->getBlock(), blocks->getNumber(), mirrors->getMirror(), mirrors->getNumber());
-	else doors->setOpen(0, false, *player, blocks->getBlock(), blocks->getNumber(), mirrors->getMirror(), mirrors->getNumber());
+	//
 
-	machines->setOn(0, plates->isPressed(1));
-	
-	if (receivers->getOn(0) && receivers->getOn(1)) {
-		teleports->setOpen(0, true);
-		doors->setOpen(1, true, *player, blocks->getBlock(), blocks->getNumber(), mirrors->getMirror(), mirrors->getNumber());
+	for (int i = 0; i < plates->getNumber(); i++) {
+
+		for (int j = 0; j < (plateC + i)->getDeviceNumber(); j++) {
+
+			if ((plateC + i)->getDeviceName(j) == "teleport") {
+
+				if ((plateC + i)->getOn(j) == true) {
+					teleports->setOpen((plateC + i)->getDeviceID(j), plates->isPressed(i));
+				}
+				else {
+					teleports->setOpen((plateC + i)->getDeviceID(j), !(plates->isPressed(i)));
+				}
+			}
+			else if ((plateC + i)->getDeviceName(j) == "trap") {
+				if ((plateC + i)->getOn(j) == true) {
+					traps->setOn((plateC + i)->getDeviceID(j), plates->isPressed(i));
+				}
+				else {
+					traps->setOn((plateC + i)->getDeviceID(j), !(plates->isPressed(i)));
+				}
+			}
+			else if ((plateC + i)->getDeviceName(j) == "door") {
+				if ((plateC + i)->getOn(j) == true) {
+					doors->setOpen((plateC + i)->getDeviceID(j), plates->isPressed(i), *player, blocks->getBlock(), blocks->getNumber(), mirrors->getMirror(), mirrors->getNumber());
+				}
+				else {
+					doors->setOpen((plateC + i)->getDeviceID(j), !(plates->isPressed(i)), *player, blocks->getBlock(), blocks->getNumber(), mirrors->getMirror(), mirrors->getNumber());
+				}
+			}
+			else if ((plateC + i)->getDeviceName(j) == "sblock") {
+				if ((plateC + i)->getOn(j) == true) {
+					blockS->setOn((plateC + i)->getDeviceID(j), plates->isPressed(i));
+				}
+				else {
+					blockS->setOn((plateC + i)->getDeviceID(j), !(plates->isPressed(i)));
+				}
+			}
+			else if ((plateC + i)->getDeviceName(j) == "lmachine") {
+				if ((plateC + i)->getOn(j) == true) {
+					machines->setOn((plateC + i)->getDeviceID(j), plates->isPressed(i));
+				}
+				else {
+					machines->setOn((plateC + i)->getDeviceID(j), !(plates->isPressed(i)));
+				}
+			}
+		}
 	}
-	else {
-		teleports->setOpen(0, false);
-		doors->setOpen(1, false, *player, blocks->getBlock(), blocks->getNumber(), mirrors->getMirror(), mirrors->getNumber());
+
+	for (int i = 0; i < receivers->getNumber(); i++) {
+
+		for (int j = 0; j < (receiverC + i)->getDeviceNumber(); j++) {
+
+			if ((receiverC + i)->getDeviceName(j) == "teleport") {
+
+				if ((receiverC + i)->getOn(j) == true) {
+					teleports->setOpen((receiverC + i)->getDeviceID(j), receivers->getOn(i));
+				}
+				else {
+					teleports->setOpen((receiverC + i)->getDeviceID(j), !(receivers->getOn(i)));
+				}
+			}
+			else if ((receiverC + i)->getDeviceName(j) == "trap") {
+				if ((receiverC + i)->getOn(j) == true) {
+					traps->setOn((receiverC + i)->getDeviceID(j), receivers->getOn(i));
+				}
+				else {
+					traps->setOn((receiverC + i)->getDeviceID(j), !(receivers->getOn(i)));
+				}
+			}
+			else if ((receiverC + i)->getDeviceName(j) == "door") {
+				if ((receiverC + i)->getOn(j) == true) {
+					doors->setOpen((receiverC + i)->getDeviceID(j), receivers->getOn(i), *player, blocks->getBlock(), blocks->getNumber(), mirrors->getMirror(), mirrors->getNumber());
+				}
+				else {
+					doors->setOpen((receiverC + i)->getDeviceID(j), !(receivers->getOn(i)), *player, blocks->getBlock(), blocks->getNumber(), mirrors->getMirror(), mirrors->getNumber());
+				}
+			}
+			else if ((receiverC + i)->getDeviceName(j) == "sblock") {
+				if ((receiverC + i)->getOn(j) == true) {
+					blockS->setOn((receiverC + i)->getDeviceID(j), receivers->getOn(i));
+				}
+				else {
+					blockS->setOn((receiverC + i)->getDeviceID(j), !(receivers->getOn(i)));
+				}
+			}
+			else if ((receiverC + i)->getDeviceName(j) == "lmachine") {
+				if ((receiverC + i)->getOn(j) == true) {
+					machines->setOn((receiverC + i)->getDeviceID(j), receivers->getOn(i));
+				}
+				else {
+					machines->setOn((receiverC + i)->getDeviceID(j), !(receivers->getOn(i)));
+				}
+			}
+		}
 	}
-	
-	blockS->setOn(0, plates->isPressed(0));
-	blockS->setOn(1, plates->isPressed(0));
 
 	::HelpClass::move(*player, *map, blocks->getBlock(), blocks->getNumber(), mirrors->getMirror(), mirrors->getNumber(),
 		doors->getDoor(), doors->getNumber(), blockS->getBlock(), blockS->getNumber(), machines->getMachine(), machines->getNumber(), receivers->getReceiver(), receivers->getNumber());
