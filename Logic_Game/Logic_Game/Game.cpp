@@ -59,7 +59,9 @@ void Game::run(RenderWindow& window) {
 			levelSelect = new LevelSelect;
 		}
 		else if (type1 == Menu::Editor) {
-			/////////////////////////////////////////////////
+			type = Type::InEditor;
+			delete menu;
+			editor = new Editor;
 		}
 		else if (type1 == Menu::Instruction) {
 			instruction = new Instruction;
@@ -90,7 +92,11 @@ void Game::run(RenderWindow& window) {
 		}
 	}
 	else if (type == Type::InEditor) {
-		/////////////////////////////////////////////////
+		if (editor->run(window) == Editor::Type::Exit) {
+			delete editor;
+			type = InMenu;
+			menu = new Menu;
+		}
 	}
 	else if (type == Type::InInstruction) {
 		menu->run(window, false);
@@ -136,7 +142,7 @@ void Game::draw(RenderWindow& window) {
 		}
 		break;
 	case Type::InEditor:
-		/////////////////////////////////////////////////
+		editor->draw(window);
 		break;
 	case Type::InInstruction:
 		instruction->draw(window);
@@ -162,7 +168,7 @@ Game::~Game(){
 		if (levelSelect->getType() != LevelSelect::Start) delete menu;
 		delete levelSelect;
 	case Type::InEditor:
-		/////////////////////////////////////////////////
+		delete editor;
 		break;
 	case Type::InInstruction:
 		delete instruction;

@@ -13,6 +13,7 @@
 #include "Options.hpp"
 #include "FPS.hpp"
 #include "Instruction.hpp"
+#include "Editor.hpp"
 
 using namespace sf;
 using namespace std;
@@ -39,6 +40,8 @@ class Game{
 	Instruction* instruction;
 
 	Options* options;
+
+	Editor* editor;
 
 	FPS* FpsCounter;
 
