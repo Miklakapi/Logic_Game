@@ -73,22 +73,32 @@ void Screen::setContent(int number, Square2::TargetStage content) {
 }
 
 void Screen::setContent(int number, Square2::BlockStage content) {
+	(squares + number)->setTexture((texture + 0));
 	(squares + number)->setContent(content);
 }
 
 void Screen::setContent(int number, Square2::BlockStage content, ShootingBlock::Type type) {
+	(squares + number)->setTexture((texture + 1));
 	(squares + number)->setContent(content, type);
 }
 
 void Screen::setContent(int number, Square2::BlockStage content, LaserMachine::Type type) {
+	(squares + number)->setTexture((texture + 2));
 	(squares + number)->setContent(content, type);
 }
 
 void Screen::setContent(int number, Square2::BlockStage content, Mirror::Type type) {
+	(squares + number)->setTexture((texture + 3));
 	(squares + number)->setContent(content, type);
 }
 
 void Screen::setContent(int number, Square2::SwitchStage content, LaserReceiver::Type type) {
+	if (content == Square2::SwitchStage::NoneSw || content == Square2::SwitchStage::Plate) {
+		(squares + number)->setTexture((texture + 1));
+	}
+	else {
+		(squares + number)->setTexture((texture + 0));
+	}
 	(squares + number)->setContent(content, type);
 }
 

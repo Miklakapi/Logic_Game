@@ -167,6 +167,7 @@ Game::~Game(){
 	case Type::InGame:
 		if (levelSelect->getType() != LevelSelect::Start) delete menu;
 		delete levelSelect;
+		break;
 	case Type::InEditor:
 		delete editor;
 		break;

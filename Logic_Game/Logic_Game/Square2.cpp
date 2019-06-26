@@ -67,16 +67,19 @@ void Square2::setContent(BlockStage content, ShootingBlock::Type type) {
 		*(shootingRect + 1) = { 80,0,80,80 };
 		*(shootingRect + 2) = { 160,0,80,80 };
 		*(shootingRect + 3) = { 240,0,80,80 };
+
 		*(shootingRect + 4) = { 0,80,80,80 };
 		*(shootingRect + 5) = { 80,80,80,80 };
 		*(shootingRect + 6) = { 160,80,80,80 };
 		*(shootingRect + 7) = { 240,80,80,80 };
 		*(shootingRect + 8) = { 320,80,80,80 };
 		*(shootingRect + 9) = { 400,80,80,80 };
+
 		*(shootingRect + 10) = { 0,160,80,80 };
 		*(shootingRect + 11) = { 80,160,80,80 };
 		*(shootingRect + 12) = { 160,160,80,80 };
 		*(shootingRect + 13) = { 240,160,80,80 };
+
 		*(shootingRect + 14) = { 0,240,80,80 };
 
 		setTextureRect(*(shootingRect + type));
@@ -86,17 +89,20 @@ void Square2::setContent(BlockStage content, ShootingBlock::Type type) {
 		*(shootingRect + 1) = { 560,0,80,80 };
 		*(shootingRect + 2) = { 640,0,80,80 };
 		*(shootingRect + 3) = { 720,0,80,80 };
+
 		*(shootingRect + 4) = { 480,80,80,80 };
 		*(shootingRect + 5) = { 560,80,80,80 };
 		*(shootingRect + 6) = { 640,80,80,80 };
 		*(shootingRect + 7) = { 720,80,80,80 };
 		*(shootingRect + 8) = { 800,80,80,80 };
 		*(shootingRect + 9) = { 880,80,80,80 };
+
 		*(shootingRect + 10) = { 480,160,80,80 };
 		*(shootingRect + 11) = { 560,160,80,80 };
 		*(shootingRect + 12) = { 640,160,80,80 };
 		*(shootingRect + 13) = { 720,160,80,80 };
-		*(shootingRect + 14) = { 800,240,80,80 };
+
+		*(shootingRect + 14) = { 480,240,80,80 };
 
 		setTextureRect(*(shootingRect + type));
 	}
@@ -115,16 +121,19 @@ void Square2::setContent(BlockStage content, LaserMachine::Type type) {
 		*(laserRect + 1) = { 80,0,80,80 };
 		*(laserRect + 2) = { 160,0,80,80 };
 		*(laserRect + 3) = { 240,0,80,80 };
+
 		*(laserRect + 4) = { 0,80,80,80 };
 		*(laserRect + 5) = { 80,80,80,80 };
 		*(laserRect + 6) = { 160,80,80,80 };
 		*(laserRect + 7) = { 240,80,80,80 };
 		*(laserRect + 8) = { 320,80,80,80 };
 		*(laserRect + 9) = { 400,80,80,80 };
+
 		*(laserRect + 10) = { 0,160,80,80 };
 		*(laserRect + 11) = { 80,160,80,80 };
 		*(laserRect + 12) = { 160,160,80,80 };
 		*(laserRect + 13) = { 240,160,80,80 };
+
 		*(laserRect + 14) = { 0,240,80,80 };
 
 		setTextureRect(*(laserRect + type));
@@ -134,17 +143,20 @@ void Square2::setContent(BlockStage content, LaserMachine::Type type) {
 		*(laserRect + 1) = { 560,0,80,80 };
 		*(laserRect + 2) = { 640,0,80,80 };
 		*(laserRect + 3) = { 720,0,80,80 };
+
 		*(laserRect + 4) = { 480,80,80,80 };
 		*(laserRect + 5) = { 560,80,80,80 };
 		*(laserRect + 6) = { 640,80,80,80 };
 		*(laserRect + 7) = { 720,80,80,80 };
 		*(laserRect + 8) = { 800,80,80,80 };
 		*(laserRect + 9) = { 880,80,80,80 };
+
 		*(laserRect + 10) = { 480,160,80,80 };
 		*(laserRect + 11) = { 560,160,80,80 };
 		*(laserRect + 12) = { 640,160,80,80 };
 		*(laserRect + 13) = { 720,160,80,80 };
-		*(laserRect + 14) = { 800,240,80,80 };
+
+		*(laserRect + 14) = { 480,240,80,80 };
 
 		setTextureRect(*(laserRect + type));
 	}

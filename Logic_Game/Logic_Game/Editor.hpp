@@ -12,6 +12,7 @@
 #include "LaserMachine.hpp"
 #include "Mirror.hpp"
 #include "Screen.hpp"
+#include "VectorConverter.hpp"
 
 using namespace sf;
 using namespace std;
@@ -32,6 +33,14 @@ private:
 	Screen::Stage stage;
 
 	Screen* screen;
+
+	RectangleShape stageCounter;
+
+	Texture counterTexture;
+
+	bool start;
+
+	bool stop;
 
 public:
 	
