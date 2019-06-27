@@ -42,6 +42,10 @@ private:
 
 	bool stop;
 
+	Screen::Click clickType;
+
+	void save();
+
 public:
 	
 	Editor();

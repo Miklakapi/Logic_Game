@@ -32,7 +32,7 @@ void LaserReceiver::setReceiverTexture(string textureFile) {
 		*(rect + 12) = { 160, 160, 80, 80 };
 		*(rect + 13) = { 240, 160, 80, 80 };
 
-		*(rect + 14) = { 0, 320, 80, 80 };
+		*(rect + 14) = { 0, 240, 80, 80 };
 
 		*(rect + 15) = { 480, 0, 80, 80 };
 		*(rect + 16) = { 560, 0, 80, 80 };
@@ -51,7 +51,7 @@ void LaserReceiver::setReceiverTexture(string textureFile) {
 		*(rect + 27) = { 640, 160, 80, 80 };
 		*(rect + 28) = { 720, 160, 80, 80 };
 
-		*(rect + 29) = { 480, 320, 80, 80 };
+		*(rect + 29) = { 480, 240, 80, 80 };
 		a++;
 	}
 	texture->loadFromFile(textureFile);

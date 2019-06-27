@@ -10,6 +10,8 @@ using namespace std;
 
 int main() {
 
+	srand(time(NULL));
+
 	RenderWindow app(VideoMode{ 1440,880 }, "Logic_Game", Style::Close);
 	app.setFramerateLimit(144);
 

@@ -14,8 +14,12 @@ Screen::Screen() {
 }
 
 void Screen::setStage(Screen::Stage stage) {
-	this->stage = stage;
 	delete[] texture;
+	if (this->stage == Connection && stage != Connection) {
+		delete [] shapes;
+		delete [] shapes2;
+	}
+	this->stage = stage;
 
 	if (stage == Screen::Stage::MapS) {
 		texture = new Texture[1];
@@ -57,6 +61,32 @@ void Screen::setStage(Screen::Stage stage) {
 			(squares + i)->setTexture((texture + 1));
 			(squares + i)->setContent(Square2::SwitchStage::NoneSw);
 		}
+	}
+	else if (stage == Screen::Stage::Connection) {
+		texture = new Texture[0];
+		delete [] squares;
+		shapes = new CircleShape[198];
+		shapes2 = new CircleShape[198];
+		int nr(0);
+		for (int y = 0; y < 11; y++) {
+			for (int x = 0; x < 18; x++) {
+				(shapes + nr)->setRadius(20);
+				(shapes + nr)->setOutlineColor(Color::Black);
+				(shapes + nr)->setOutlineThickness(1);
+				(shapes + nr)->setFillColor(Color::Transparent);
+				(shapes + nr)->setOrigin(Vector2f{ -20,-20 });
+				(shapes + nr)->setPosition(Vector2f{ float(80 * x),float(80 * y) });
+				(shapes2 + nr)->setRadius(10);
+				(shapes2 + nr)->setOutlineColor(Color::Black);
+				(shapes2 + nr)->setOutlineThickness(1);
+				(shapes2 + nr)->setFillColor(Color::Transparent);
+				(shapes2 + nr)->setPosition(Vector2f{ float(80 * x),float(80 * y) });
+				nr++;
+			}
+		}
+	}
+	else if (stage == Screen::Stage::SaveS) {
+		texture = new Texture[0];
 	}
 }
 
@@ -134,13 +164,142 @@ LaserReceiver::Type Screen::getReceiverType(int number) {
 	return (squares + number)->getReceiverType();
 }
 
+void Screen::setNewColor(int nr, Click clickType) {
+	if (clickType != NoneC) {
+		bool other(false);
+		bool r(false), g(false), b(false);
+		bool rc(false), gc(false), bc(false);
+		int re(0), gr(0), bl(0);
+
+		while (!other) {
+			if (!r) {
+				re = rand() % 256;
+				r = true;
+			}
+			if (!g) {
+				gr = rand() % 256;
+				g = true;
+			}
+			if (!b) {
+				bl = rand() % 256;
+				b = true;
+			}
+
+			for (int i = 17; i < 179; i++) {
+				if (i % 18 != 0 && (i + 1) % 18 != 0) {
+					Color color;
+					if (clickType == Device) color = (shapes + i)->getFillColor();
+					else color = (shapes2 + i)->getFillColor();
+					if (r && !rc) {
+						if (color.r == re) {
+							r = false;
+						}
+					}
+					if (g && !gc) {
+						if (color.g == gr) {
+							g = false;
+						}
+					}
+					if (b && !bc) {
+						if (color.b == bl) {
+							b = false;
+						}
+					}
+					if (!r && !g && !b) break;
+					else if (rc && !g && !b) break;
+					else if (rc && gc && !b) break;
+					else if (rc && !g && bc) break;
+					else if (!r && gc && !b) break;
+					else if (!r && gc && bc) break;
+					else if (!r && !g && bc) break;
+				}
+			}
+
+			if (r) rc = true;
+			if (g) gc = true;
+			if (b) bc = true;
+			if (rc && gc && bc) other = true;
+		}
+
+		if (clickType == Device) (shapes + nr)->setFillColor(Color::Color(re, gr, bl, 180));
+		else (shapes2 + nr)->setFillColor(Color::Color(re, gr, bl, 180));
+	}
+}
+
+void Screen::setColor(int number, Color color, Click clickType) {
+	if (clickType == Device) (shapes + number)->setFillColor(color);
+	else if(clickType == Teleport) (shapes2 + number)->setFillColor(color);
+}
+
+Color Screen::getColor(int number, Click clickType) {
+	if (clickType == Device) return (shapes + number)->getFillColor();
+	else if (clickType == Teleport) return (shapes2 + number)->getFillColor();
+	else return Color::Transparent;
+}
+
+bool Screen::findColor(Color color, Click clickType) {
+	int a = 0;
+	for (int i = 19; i <= 178; i++) {
+		if (i % 18 != 0 && (i + 1) % 18 != 0) {
+			if (clickType == Teleport) {
+				if ((shapes2 + i)->getFillColor() == color) {
+					a++;
+					if (a > 1) return true;
+				}
+			}
+			else if (clickType == Device) {
+				if ((shapes + i)->getFillColor() == color) {
+					a++;
+					if (a > 1) return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+
+void Screen::clearColor(Color color, Click clickType) {
+	for (int i = 19; i <= 178; i++) {
+		if (i % 18 != 0 && (i + 1) % 18 != 0) {
+			if (clickType == Teleport) {
+				if ((shapes2 + i)->getFillColor() == color) {
+					(shapes2 + i)->setFillColor(Color::Transparent);
+				}
+			}
+			else if (clickType == Device) {
+				if ((shapes + i)->getFillColor() == color) {
+					(shapes + i)->setFillColor(Color::Transparent);
+				}
+			}
+		}
+	}
+}
+
 void Screen::draw(RenderWindow& window) {
-	for (int i = 0; i < 198; i++) {
-		window.draw(*(squares + i));
+	if (stage != Connection) {
+		for (int i = 0; i < 198; i++) {
+			window.draw(*(squares + i));
+		}
+	}
+	else {
+		for (int i = 19; i <= 178; i++) {
+			if (i % 18 != 0 && (i + 1) % 18 != 0) {
+				window.draw(*(shapes + i));
+				window.draw(*(shapes2 + i));
+			}
+		}
+		window.draw(*(shapes + 17));
+		window.draw(*(shapes2 + 17));
 	}
 }
 
 Screen::~Screen() {
-	delete[] squares;
+	if (stage != Connection) {
+		delete[] squares;	
+	}
+	else {
+		delete [] shapes;
+		delete [] shapes2;
+	}
 	delete[] texture;
 }

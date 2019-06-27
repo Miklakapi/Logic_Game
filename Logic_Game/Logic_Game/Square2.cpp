@@ -209,26 +209,7 @@ void Square2::setContent(SwitchStage content, LaserReceiver::Type type) {
 		*(receiverRect + 12) = { 160, 160, 80, 80 };
 		*(receiverRect + 13) = { 240, 160, 80, 80 };
 
-		*(receiverRect + 14) = { 0, 320, 80, 80 };
-
-		*(receiverRect + 15) = { 480, 0, 80, 80 };
-		*(receiverRect + 16) = { 560, 0, 80, 80 };
-		*(receiverRect + 17) = { 640, 0, 80, 80 };
-		*(receiverRect + 18) = { 720, 0, 80, 80 };
-
-		*(receiverRect + 19) = { 480, 80, 80, 80 };
-		*(receiverRect + 20) = { 560, 80, 80, 80 };
-		*(receiverRect + 21) = { 640, 80, 80, 80 };
-		*(receiverRect + 22) = { 720, 80, 80, 80 };
-		*(receiverRect + 23) = { 800, 80, 80, 80 };
-		*(receiverRect + 24) = { 880, 80, 80, 80 };
-
-		*(receiverRect + 25) = { 480, 160, 80, 80 };
-		*(receiverRect + 26) = { 560, 160, 80, 80 };
-		*(receiverRect + 27) = { 640, 160, 80, 80 };
-		*(receiverRect + 28) = { 720, 160, 80, 80 };
-
-		*(receiverRect + 29) = { 480, 320, 80, 80 };
+		*(receiverRect + 14) = { 0, 240, 80, 80 };
 
 		setTextureRect(*(receiverRect + type));
 

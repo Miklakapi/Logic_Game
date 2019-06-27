@@ -26,7 +26,14 @@ public:
 		TargetS,
 		BlocksS,
 		SwitchS,
+		Connection,
 		SaveS
+	};
+
+	enum Click {
+		NoneC,
+		Teleport,
+		Device
 	};
 
 private:
@@ -34,6 +41,10 @@ private:
 	Square2* squares;
 
 	Texture* texture;
+
+	CircleShape* shapes;
+
+	CircleShape* shapes2;
 
 	Screen::Stage stage;
 
@@ -74,6 +85,16 @@ public:
 	Square2::SwitchStage getSwitchS(int number);
 
 	LaserReceiver::Type getReceiverType(int number);
+
+	void setNewColor(int nr, Click clickType);
+
+	void setColor(int number, Color color, Click clickType);
+
+	Color getColor(int nr, Click clickType);
+
+	bool findColor(Color color, Click clickType);
+
+	void clearColor(Color color, Click clickType);
 
 	void draw(RenderWindow& window);
 
