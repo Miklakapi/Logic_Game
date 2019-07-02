@@ -48,6 +48,28 @@ private:
 
 	Screen::Stage stage;
 
+	int startPosition;
+
+	int winPosition;
+
+	int teleportNumber;
+
+	int trapNumber;
+
+	int slidingNumber;
+
+	int plateNumber;
+
+	int doorNumber;
+
+	int shootingNumber;
+
+	int emiterNumber;
+
+	int mirrorNumber;
+
+	int receiverNumber;
+
 public:
 
 	Screen();
@@ -96,8 +118,29 @@ public:
 
 	void clearColor(Color color, Click clickType);
 
+	int getStartPosition();
+
+	int getWinPosition();
+
+	int getTeleportNumber();
+
+	int getTrapNumber();
+
+	int getSlidingNumber();
+
+	int getPlateNumber();
+
+	int getDoorNumber();
+
+	int getShootingNumber();
+
+	int getEmiterNumber();
+
+	int getMirrorNumber();
+
+	int getReceiverNumber();
+
 	void draw(RenderWindow& window);
 
 	~Screen();
-
 };

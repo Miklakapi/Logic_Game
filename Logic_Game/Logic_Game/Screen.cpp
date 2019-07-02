@@ -11,6 +11,17 @@ Screen::Screen() {
 			nr++;
 		}
 	}
+	startPosition = 0;
+	winPosition = 0;
+	teleportNumber = 0;
+	trapNumber = 0;
+	slidingNumber = 0;
+	plateNumber = 0;
+	doorNumber = 0;
+	shootingNumber = 0;
+	emiterNumber = 0;
+	mirrorNumber = 0;
+	receiverNumber = 0;
 }
 
 void Screen::setStage(Screen::Stage stage) {
@@ -88,6 +99,17 @@ void Screen::setStage(Screen::Stage stage) {
 	else if (stage == Screen::Stage::SaveS) {
 		texture = new Texture[0];
 	}
+	startPosition = 0;
+	winPosition = 0;
+	teleportNumber = 0;
+	trapNumber = 0;
+	slidingNumber = 0;
+	plateNumber = 0;
+	doorNumber = 0;
+	shootingNumber = 0;
+	emiterNumber = 0;
+	mirrorNumber = 0;
+	receiverNumber = 0;
 }
 
 Screen::Stage Screen::getStage() {
@@ -100,24 +122,139 @@ void Screen::setContent(int number, Square2::MapStage content) {
 
 void Screen::setContent(int number, Square2::TargetStage content) {
 	(squares + number)->setContent(content);
+	if (content == Square2::TargetStage::Start) startPosition = number;
+	else if (content == Square2::TargetStage::Win) winPosition = number;
 }
 
 void Screen::setContent(int number, Square2::BlockStage content) {
+
+	if (content == Square2::BlockStage::TeleportOff || content == Square2::BlockStage::TeleportOn) {
+		if ((squares + number)->getBlockS() != Square2::BlockStage::TeleportOff && (squares + number)->getBlockS() != Square2::BlockStage::TeleportOn) {
+			teleportNumber++;
+		}
+	}
+	else if ((squares + number)->getBlockS() == Square2::BlockStage::TeleportOff || (squares + number)->getBlockS() == Square2::BlockStage::TeleportOn) {
+		teleportNumber--;
+	}
+	
+	if (content == Square2::BlockStage::TrapOff || content == Square2::BlockStage::TrapOn) {
+		if ((squares + number)->getBlockS() != Square2::BlockStage::TrapOff && (squares + number)->getBlockS() != Square2::BlockStage::TrapOn) {
+			trapNumber++;
+		}
+	}
+	else if ((squares + number)->getBlockS() == Square2::BlockStage::TrapOff || (squares + number)->getBlockS() == Square2::BlockStage::TrapOn) {
+		trapNumber--;
+	}
+	
+	if (content == Square2::BlockStage::SlidingBlock) {
+		if ((squares + number)->getBlockS() != Square2::BlockStage::SlidingBlock) {
+			slidingNumber++;
+		}
+	}
+	else if ((squares + number)->getBlockS() == Square2::BlockStage::SlidingBlock) {
+		slidingNumber--;
+	}
+	
+	if (content == Square2::BlockStage::DoorOff || content == Square2::BlockStage::DoorOn) {
+		if ((squares + number)->getBlockS() != Square2::BlockStage::DoorOn && (squares + number)->getBlockS() != Square2::BlockStage::DoorOff) {
+			doorNumber++;
+		}
+	}
+	else if ((squares + number)->getBlockS() == Square2::BlockStage::DoorOff || (squares + number)->getBlockS() == Square2::BlockStage::DoorOn) {
+		doorNumber--;
+	}
+
+	if ((squares + number)->getBlockS() == Square2::BlockStage::ShootingBlockOn || (squares + number)->getBlockS() == Square2::BlockStage::ShootingBlockOff) {
+		if (content != Square2::BlockStage::ShootingBlockOn && content != Square2::BlockStage::ShootingBlockOff) shootingNumber--;
+	}
+	else if ((squares + number)->getBlockS() == Square2::BlockStage::EmiterOff || (squares + number)->getBlockS() == Square2::BlockStage::EmiterOn) {
+		if (content != Square2::BlockStage::EmiterOff && content != Square2::BlockStage::EmiterOn) emiterNumber--;
+	}
+	else if ((squares + number)->getBlockS() == Square2::BlockStage::Mirror) {
+		if (content != Square2::BlockStage::Mirror) mirrorNumber--;
+	}
+
 	(squares + number)->setTexture((texture + 0));
 	(squares + number)->setContent(content);
 }
 
 void Screen::setContent(int number, Square2::BlockStage content, ShootingBlock::Type type) {
+	if ((squares + number)->getBlockS() == Square2::BlockStage::TeleportOff || (squares + number)->getBlockS() == Square2::BlockStage::TeleportOn) {
+		teleportNumber--;
+	}
+	else if ((squares + number)->getBlockS() == Square2::BlockStage::TrapOff || (squares + number)->getBlockS() == Square2::BlockStage::TrapOn) {
+		trapNumber--;
+	}
+	else if ((squares + number)->getBlockS() == Square2::BlockStage::SlidingBlock) {
+		slidingNumber--;
+	}
+	else if ((squares + number)->getBlockS() == Square2::BlockStage::DoorOff || (squares + number)->getBlockS() == Square2::BlockStage::DoorOn) {
+		doorNumber--;
+	}
+	else if ((squares + number)->getBlockS() == Square2::BlockStage::EmiterOff || (squares + number)->getBlockS() == Square2::BlockStage::EmiterOn) {
+		emiterNumber--;
+	}
+	else if ((squares + number)->getBlockS() == Square2::BlockStage::Mirror) {
+		mirrorNumber--;
+	}
+
+	if ((squares + number)->getBlockS() != Square2::BlockStage::ShootingBlockOn && (squares + number)->getBlockS() != Square2::BlockStage::ShootingBlockOff) {
+		shootingNumber++;
+	}
 	(squares + number)->setTexture((texture + 1));
 	(squares + number)->setContent(content, type);
 }
 
 void Screen::setContent(int number, Square2::BlockStage content, LaserMachine::Type type) {
+	if ((squares + number)->getBlockS() == Square2::BlockStage::TeleportOff || (squares + number)->getBlockS() == Square2::BlockStage::TeleportOn) {
+		teleportNumber--;
+	}
+	else if ((squares + number)->getBlockS() == Square2::BlockStage::TrapOff || (squares + number)->getBlockS() == Square2::BlockStage::TrapOn) {
+		trapNumber--;
+	}
+	else if ((squares + number)->getBlockS() == Square2::BlockStage::SlidingBlock) {
+		slidingNumber--;
+	}
+	else if ((squares + number)->getBlockS() == Square2::BlockStage::DoorOff || (squares + number)->getBlockS() == Square2::BlockStage::DoorOn) {
+		doorNumber--;
+	}
+	else if ((squares + number)->getBlockS() == Square2::BlockStage::ShootingBlockOn || (squares + number)->getBlockS() == Square2::BlockStage::ShootingBlockOff) {
+		shootingNumber--;
+	}
+	else if ((squares + number)->getBlockS() == Square2::BlockStage::Mirror) {
+		mirrorNumber--;
+	}
+
+	if ((squares + number)->getBlockS() != Square2::BlockStage::EmiterOff && (squares + number)->getBlockS() != Square2::BlockStage::EmiterOn) {
+		emiterNumber++;
+	}
 	(squares + number)->setTexture((texture + 2));
 	(squares + number)->setContent(content, type);
 }
 
 void Screen::setContent(int number, Square2::BlockStage content, Mirror::Type type) {
+	if ((squares + number)->getBlockS() == Square2::BlockStage::TeleportOff || (squares + number)->getBlockS() == Square2::BlockStage::TeleportOn) {
+		teleportNumber--;
+	}
+	else if ((squares + number)->getBlockS() == Square2::BlockStage::TrapOff || (squares + number)->getBlockS() == Square2::BlockStage::TrapOn) {
+		trapNumber--;
+	}
+	else if ((squares + number)->getBlockS() == Square2::BlockStage::SlidingBlock) {
+		slidingNumber--;
+	}
+	else if ((squares + number)->getBlockS() == Square2::BlockStage::DoorOff || (squares + number)->getBlockS() == Square2::BlockStage::DoorOn) {
+		doorNumber--;
+	}
+	else if ((squares + number)->getBlockS() == Square2::BlockStage::ShootingBlockOn || (squares + number)->getBlockS() == Square2::BlockStage::ShootingBlockOff) {
+		shootingNumber--;
+	}
+	else if ((squares + number)->getBlockS() == Square2::BlockStage::EmiterOff || (squares + number)->getBlockS() == Square2::BlockStage::EmiterOn) {
+		emiterNumber--;
+	}
+
+	if ((squares + number)->getBlockS() != Square2::BlockStage::Mirror) {
+		mirrorNumber++;
+	}
 	(squares + number)->setTexture((texture + 3));
 	(squares + number)->setContent(content, type);
 }
@@ -129,6 +266,25 @@ void Screen::setContent(int number, Square2::SwitchStage content, LaserReceiver:
 	else {
 		(squares + number)->setTexture((texture + 0));
 	}
+	
+	if (content == Square2::SwitchStage::Plate) {
+		if((squares + number)->getSwitchS() != Square2::SwitchStage::Plate) {
+			plateNumber++;
+		}
+	}
+	else if ((squares + number)->getSwitchS() == Square2::SwitchStage::Plate) {
+		plateNumber--;
+	}
+	
+	if (content == Square2::SwitchStage::Receiver) {
+		if ((squares + number)->getSwitchS() != Square2::SwitchStage::Receiver) {
+			receiverNumber++;
+		}
+	}
+	else if ((squares + number)->getSwitchS() == Square2::SwitchStage::Receiver) {
+		receiverNumber--;
+	}
+
 	(squares + number)->setContent(content, type);
 }
 
@@ -273,6 +429,50 @@ void Screen::clearColor(Color color, Click clickType) {
 			}
 		}
 	}
+}
+
+int Screen::getStartPosition() {
+	return startPosition;
+}
+
+int Screen::getWinPosition() {
+	return winPosition;
+}
+
+int Screen::getTeleportNumber() {
+	return teleportNumber;
+}
+
+int Screen::getTrapNumber() {
+	return trapNumber;
+}
+
+int Screen::getSlidingNumber() {
+	return slidingNumber;
+}
+
+int Screen::getPlateNumber() {
+	return plateNumber;
+}
+
+int Screen::getDoorNumber() {
+	return doorNumber;
+}
+
+int Screen::getShootingNumber() {
+	return shootingNumber;
+}
+
+int Screen::getEmiterNumber() {
+	return emiterNumber;
+}
+
+int Screen::getMirrorNumber() {
+	return mirrorNumber;
+}
+
+int Screen::getReceiverNumber() {
+	return receiverNumber;
 }
 
 void Screen::draw(RenderWindow& window) {

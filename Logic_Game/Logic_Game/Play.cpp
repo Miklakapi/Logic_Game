@@ -505,6 +505,7 @@ void Play::setLv(int lv) {
 
 	teleports->setTeleportPosition(0, winPosition.asVector2f());
 	teleports->setTeleportPlace(0, startPosition.asVector2f());
+	teleports->setOpen(0, true);
 
 	for (int i = 1; i < (*(number)+1); i++) {
 		teleports->setTeleportPosition(i, VectorConverter::convert(*(teleportPosition + i - 1)).asVector2f());

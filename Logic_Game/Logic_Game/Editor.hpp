@@ -13,6 +13,7 @@
 #include "Mirror.hpp"
 #include "Screen.hpp"
 #include "VectorConverter.hpp"
+#include "Play.hpp"
 
 using namespace sf;
 using namespace std;

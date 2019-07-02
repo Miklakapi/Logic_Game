@@ -1,61 +1,412 @@
 #include "Editor.hpp"
 
 void Editor::save() {
+	
 	fstream stream("New Level.txt", ios::out);
+
 	for (int i = 0; i < 198; i++) {
+		//Map
 		if ((screen + 0)->getMapS(i) == Square2::MapStage::Wall) {
 			stream << "#";
 		}
 		else {
 			stream << "-";
 		}
+		if (i % 17 == 0) stream << endl;
 	}
 	stream.close();
 
-	stream.open("New LevelB.txt", ios::out);
-
-
-	//Start / Win Position
-	int startNumber(0), stopNumber(0);
-	for (int i = 0; i < 198; i++) {
-		if ((screen + 1)->getTargetS(i) == Square2::TargetStage::Start) {
-			startNumber = i;
-			if (stopNumber != 0) break;
-		}
-		else if ((screen + i)->getTargetS(i) == Square2::TargetStage::Win) {
-			stopNumber = i;
-			if (startNumber != 0) break;
-		}
-	}
-	stream << startNumber << endl << stopNumber << endl;
-
-	//Teleports Positions
-	int teleportNumber(0);
-	for (int i = 0; i < 198; i++) {
-		if ((screen + 2)->getBlockS(i) == Square2::BlockStage::TeleportOn || (screen + 2)->getBlockS(i) == Square2::BlockStage::TeleportOff) {
-			teleportNumber++;
-		}
-	}
-
-	int tele(0);
+	//
+	int teleportNumber = (screen + 2)->getTeleportNumber();
 	int* teleportPosition = new int[teleportNumber];
+	int* teleportPlace = new int[teleportNumber];
 	bool* teleportOn = new bool[teleportNumber];
-	for (int i = 0; i < 198; i++) {
-		if ((screen + 2)->getBlockS(i) == Square2::BlockStage::TeleportOn) {
-			*(teleportPosition + tele) = i;
-			*(teleportOn) = true;
-			tele++;
+	int teleportFlag = 0;
+	//
+	int trapNumber = (screen + 2)->getTrapNumber();
+	int* trapPosition = new int[trapNumber];
+	bool* trapOn = new bool[trapNumber];
+	int trapFlag = 0;
+	//
+	int slidingNumber = (screen + 2)->getSlidingNumber();
+	int* slidingPosition = new int[slidingNumber];
+	int slidingFlag = 0;
+	//
+	int plateNumber = (screen + 3)->getPlateNumber();
+	int* platePosition = new int[plateNumber];
+	Play::HelpClass* plateC = new Play::HelpClass[plateNumber];
+	int plateFlag = 0;
+	//
+	int doorNumber = (screen + 2)->getDoorNumber();
+	int* doorPosition = new int[doorNumber];
+	bool* doorOn = new bool[doorNumber];
+	int doorFlag = 0;
+	//
+	int shootingNumber = (screen + 2)->getShootingNumber();
+	int* shootingPosition = new int[shootingNumber];
+	int* shootingType = new int[shootingNumber];
+	bool* shootingOn = new bool[shootingNumber];
+	int shootingFlag = 0;
+	//
+	int laserNumber = (screen + 2)->getEmiterNumber();
+	int* laserPosition = new int[laserNumber];
+	int* laserType = new int[laserNumber];
+	bool* laserOn = new bool[laserNumber];
+	int laserFlag = 0;
+	//
+	int mirrorNumber = (screen + 2)->getMirrorNumber();
+	int* mirrorPosition = new int[mirrorNumber];
+	int* mirrorType = new int[mirrorNumber];
+	int mirrorFlag = 0;
+	//
+	int receiverNumber = (screen + 3)->getReceiverNumber();
+	int* receiverPosition = new int[receiverNumber];
+	int* receiverType = new int[receiverNumber];
+	Play::HelpClass* receiverC = new Play::HelpClass[receiverNumber];
+	int receiverFlag = 0;
+
+	//
+
+	for (int i = 19; i < 179; i++) {
+		//
+		if ((screen + 2)->getBlockS(i) == Square2::BlockStage::TeleportOff || (screen + 2)->getBlockS(i) == Square2::BlockStage::TeleportOn) {
+			*(teleportPosition + teleportFlag) = i;
+			if ((screen + 2)->getBlockS(i) == Square2::BlockStage::TeleportOff) *(teleportOn + teleportFlag) = false;
+			else *(teleportOn + teleportFlag) = true;
+			Color color = (screen + 4)->getColor(i, Screen::Click::Teleport);
+			for (int j = 19; j < 179; j++) {
+				if (j != i) {
+					if (color == (screen + 4)->getColor(j, Screen::Click::Teleport)) {
+						*(teleportPlace + teleportFlag) = j;
+					}
+				}
+			}
+			teleportFlag++;
 		}
-		else if ((screen + 2)->getBlockS(i) == Square2::BlockStage::TeleportOff) {
-			*(teleportPosition + tele) = i;
-			*(teleportOn) = false;
-			tele++;
+		//
+		if ((screen + 2)->getBlockS(i) == Square2::BlockStage::TrapOff || (screen + 2)->getBlockS(i) == Square2::BlockStage::TrapOn) {
+			*(trapPosition + trapFlag) = i;
+			if ((screen + 2)->getBlockS(i) == Square2::BlockStage::TrapOn) *(trapOn + trapFlag) = true;
+			else *(trapOn + trapFlag) = false;
+			trapFlag++;
+		}
+		//
+		if ((screen + 2)->getBlockS(i) == Square2::BlockStage::SlidingBlock) {
+			*(slidingPosition + slidingFlag) = i;
+			slidingFlag++;
+		}
+		//
+		if ((screen + 3)->getSwitchS(i) == Square2::SwitchStage::Plate) {
+			*(platePosition + plateFlag) = i;
+			Color color = (screen + 4)->getColor(i, Screen::Click::Device);
+			int nr = 0;
+			for (int j = 19; j < 179; j++) {
+				if (i != j && (screen + 4)->getColor(j, Screen::Device) == color) {
+					nr++;
+				}
+			}
+			(plateC + plateFlag)->setDeviceNumber(nr);
+			
+			nr = 0;
+
+			for (int j = 19; j < 179; j++) {
+				if (i != j && (screen + 4)->getColor(j, Screen::Device) == color) {
+
+					string name = "error";
+					bool on = true;
+					int aNr = 0;
+					int range = j;
+
+					if ((screen + 2)->getBlockS(j) == Square2::BlockStage::TeleportOn) {
+						on = false;
+						name = "teleport";
+					}
+					else if ((screen + 2)->getBlockS(j) == Square2::BlockStage::TeleportOff) {
+						on = true;
+						name = "teleport";
+					}
+					else if ((screen + 2)->getBlockS(j) == Square2::BlockStage::TrapOn) {
+						on = false;
+						name = "trap";
+					}
+					else if ((screen + 2)->getBlockS(j) == Square2::BlockStage::TrapOff) {
+						on = true;
+						name = "trap";
+					}
+					else if ((screen + 2)->getBlockS(j) == Square2::BlockStage::DoorOff) {
+						on = true;
+						name = "door";
+					}
+					else if ((screen + 2)->getBlockS(j) == Square2::BlockStage::DoorOn) {
+						on = false;
+						name = "door";
+					}
+					else if ((screen + 2)->getBlockS(j) == Square2::BlockStage::ShootingBlockOff) {
+						on = true;
+						name = "sblock";
+					}
+					else if ((screen + 2)->getBlockS(j) == Square2::BlockStage::ShootingBlockOn) {
+						on = false;
+						name = "sblock";
+					}
+					else if ((screen + 2)->getBlockS(j) == Square2::BlockStage::EmiterOff) {
+						on = true;
+						name = "lmachine";
+					}
+					else if ((screen + 2)->getBlockS(j) == Square2::BlockStage::EmiterOn) {
+						on = false;
+						name = "lmachine";
+					}
+
+					for (int k = 19; k < range; k++) {
+						if (name == "teleport") {
+							if ((screen + 2)->getBlockS(k) == Square2::BlockStage::TeleportOn || (screen + 2)->getBlockS(k) == Square2::BlockStage::TeleportOff) {
+								aNr++;
+							}
+						}
+						else if (name == "trap") {
+							if ((screen + 2)->getBlockS(k) == Square2::BlockStage::TrapOff || (screen + 2)->getBlockS(k) == Square2::BlockStage::TrapOn) {
+								aNr++;
+							}
+						}
+						else if (name == "door") {
+							if ((screen + 2)->getBlockS(k) == Square2::BlockStage::DoorOff || (screen + 2)->getBlockS(k) == Square2::BlockStage::DoorOn) {
+								aNr++;
+							}
+						}
+						else if (name == "sblock") {
+							if ((screen + 2)->getBlockS(k) == Square2::BlockStage::ShootingBlockOff || (screen + 2)->getBlockS(k) == Square2::BlockStage::ShootingBlockOn) {
+								aNr++;
+							}
+						}
+						else if (name == "lmachine") {
+							if ((screen + 2)->getBlockS(k) == Square2::BlockStage::EmiterOff || (screen + 2)->getBlockS(k) == Square2::BlockStage::EmiterOn) {
+								aNr++;
+							}
+						}
+					}
+
+					(plateC + plateFlag)->setDeviceName(nr, name);
+					(plateC + plateFlag)->setOn(nr, on);
+					(plateC + plateFlag)->setDeviceID(nr, aNr);
+					nr++;
+				}
+			}
+			plateFlag++;
+		}
+		//
+		if ((screen + 2)->getBlockS(i) == Square2::BlockStage::DoorOn || (screen + 2)->getBlockS(i) == Square2::BlockStage::DoorOff) {
+			*(doorPosition + doorFlag) = i;
+			if ((screen + 2)->getBlockS(i) == Square2::BlockStage::DoorOn)* (doorOn + doorFlag) = true;
+			else *(doorOn + doorFlag) = false;
+			doorFlag++;
+		}
+		//
+		if ((screen + 2)->getBlockS(i) == Square2::BlockStage::ShootingBlockOff || (screen + 2)->getBlockS(i) == Square2::BlockStage::ShootingBlockOn) {
+			*(shootingPosition + shootingFlag) = i;
+			*(shootingType + shootingFlag) = int((screen + 2)->getShootingType(i)) + 1;
+			if ((screen + 2)->getBlockS(i) == Square2::BlockStage::ShootingBlockOn)* (shootingOn + shootingFlag) = true;
+			else *(shootingOn + shootingFlag) = false;
+			shootingFlag++;
+		}
+		//
+		if ((screen + 2)->getBlockS(i) == Square2::BlockStage::EmiterOff || (screen + 2)->getBlockS(i) == Square2::BlockStage::EmiterOn) {
+			*(laserPosition + laserFlag) = i;
+			*(laserType + laserFlag) = int((screen + 2)->getLaserType(i)) + 1;
+			if ((screen + 2)->getBlockS(i) == Square2::BlockStage::EmiterOn)* (laserOn + laserFlag) = true;
+			else *(laserOn + laserFlag) = false;
+			laserFlag++;
+		}
+		//
+		if ((screen + 2)->getBlockS(i) == Square2::BlockStage::Mirror) {
+			*(mirrorPosition + mirrorFlag) = i;
+			*(mirrorType + mirrorFlag) = int((screen + 2)->getMirrorType(i)) + 1;
+			mirrorFlag++;
+		}
+		//
+		if ((screen + 3)->getSwitchS(i) == Square2::SwitchStage::Receiver) {
+			*(receiverPosition + receiverFlag) = i;
+			*(receiverType + receiverFlag) = int((screen + 3)->getReceiverType(i)) + 1;
+			Color color = (screen + 4)->getColor(i, Screen::Click::Device);
+			int nr = 0;
+			for (int j = 19; j < 179; j++) {
+				if (i != j && (screen + 4)->getColor(j, Screen::Device) == color) {
+					nr++;
+				}
+			}
+			(receiverC + receiverFlag)->setDeviceNumber(nr);
+			nr = 0;
+			for (int j = 19; j < 179; j++) {
+				if (i != j && (screen + 4)->getColor(j, Screen::Device) == color) {
+
+					string name = "error";
+					bool on = true;
+					int aNr = 0;
+					int range = j;
+
+					if ((screen + 2)->getBlockS(j) == Square2::BlockStage::TeleportOn) {
+						on = false;
+						name = "teleport";
+					}
+					else if ((screen + 2)->getBlockS(j) == Square2::BlockStage::TeleportOff) {
+						on = true;
+						name = "teleport";
+					}
+					else if ((screen + 2)->getBlockS(j) == Square2::BlockStage::TrapOn) {
+						on = false;
+						name = "trap";
+					}
+					else if ((screen + 2)->getBlockS(j) == Square2::BlockStage::TrapOff) {
+						on = true;
+						name = "trap";
+					}
+					else if ((screen + 2)->getBlockS(j) == Square2::BlockStage::DoorOff) {
+						on = true;
+						name = "door";
+					}
+					else if ((screen + 2)->getBlockS(j) == Square2::BlockStage::DoorOn) {
+						on = false;
+						name = "door";
+					}
+					else if ((screen + 2)->getBlockS(j) == Square2::BlockStage::ShootingBlockOff) {
+						on = true;
+						name = "sblock";
+					}
+					else if ((screen + 2)->getBlockS(j) == Square2::BlockStage::ShootingBlockOn) {
+						on = false;
+						name = "sblock";
+					}
+					else if ((screen + 2)->getBlockS(j) == Square2::BlockStage::EmiterOff) {
+						on = true;
+						name = "lmachine";
+					}
+					else if ((screen + 2)->getBlockS(j) == Square2::BlockStage::EmiterOn) {
+						on = false;
+						name = "lmachine";
+					}
+
+					for (int k = 19; k < range; k++) {
+						if (name == "teleport") {
+							if ((screen + 2)->getBlockS(k) == Square2::BlockStage::TeleportOn || (screen + 2)->getBlockS(k) == Square2::BlockStage::TeleportOff) {
+								aNr++;
+							}
+						}
+						else if (name == "trap") {
+							if ((screen + 2)->getBlockS(k) == Square2::BlockStage::TrapOff || (screen + 2)->getBlockS(k) == Square2::BlockStage::TrapOn) {
+								aNr++;
+							}
+						}
+						else if (name == "door") {
+							if ((screen + 2)->getBlockS(k) == Square2::BlockStage::DoorOff || (screen + 2)->getBlockS(k) == Square2::BlockStage::DoorOn) {
+								aNr++;
+							}
+						}
+						else if (name == "sblock") {
+							if ((screen + 2)->getBlockS(k) == Square2::BlockStage::ShootingBlockOff || (screen + 2)->getBlockS(k) == Square2::BlockStage::ShootingBlockOn) {
+								aNr++;
+							}
+						}
+						else if (name == "lmachine") {
+							if ((screen + 2)->getBlockS(k) == Square2::BlockStage::EmiterOff || (screen + 2)->getBlockS(k) == Square2::BlockStage::EmiterOn) {
+								aNr++;
+							}
+						}
+					}
+
+					(receiverC + receiverFlag)->setDeviceName(nr, name);
+					(receiverC + receiverFlag)->setOn(nr, on);
+					(receiverC + receiverFlag)->setDeviceID(nr, aNr);
+					nr++;
+				}
+			}
+			receiverFlag++;
+		}
+		//
+	}
+	
+	stream.open("New Levelb.txt", ios::out);
+
+	//startPosition  //winPosition
+	stream << (screen + 1)->getStartPosition() << endl << (screen + 1)->getWinPosition() << endl;
+
+	//Teleport
+	stream << teleportNumber << endl;
+	for (int i = 0; i < teleportNumber; i++) {
+		stream << *(teleportPosition + i) << endl;
+		stream << *(teleportPlace + i) << endl;
+		stream << *(teleportOn + i) << endl;
+	}
+
+	//Trap
+	stream << trapNumber << endl;
+	for (int i = 0; i < trapNumber; i++) {
+		stream << *(trapPosition + i) << endl;
+		stream << *(trapOn + i) << endl;
+	}
+
+	//SlidingBlock
+	stream << slidingNumber << endl;
+	for (int i = 0; i < slidingNumber; i++) {
+		stream << *(slidingPosition + i) << endl;
+	}
+
+	//Plate
+	stream << plateNumber << endl;
+	for (int i = 0; i < plateNumber; i++) {
+		stream << *(platePosition + i) << endl;
+		stream << (plateC + i)->getDeviceNumber() << endl;
+		for (int j = 0; j < (plateC + i)->getDeviceNumber(); j++) {
+			stream << (plateC + i)->getDeviceName(j) << endl;
+			stream << (plateC + i)->getDeviceID(j) << endl;
+			stream << (plateC + i)->getOn(j) << endl;
 		}
 	}
 
-	///////
-	/////// Zrobic to jedna petla
-	///////
+	//Door
+	stream << doorNumber << endl;
+	for (int i = 0; i < doorNumber; i++) {
+		stream << *(doorPosition + i) << endl;
+		stream << *(doorOn + i) << endl;
+	}
+
+	//ShootingBlock
+	stream << shootingNumber << endl;
+	for (int i = 0; i < shootingNumber; i++) {
+		stream << *(shootingPosition + i) << endl;
+		stream << *(shootingType + i) << endl;
+		stream << "1500" << endl;
+		stream << *(shootingOn + i) << endl;
+	}
+
+	//LaserMachine
+	stream << laserNumber << endl;
+	for (int i = 0; i < laserNumber; i++) {
+		stream << *(laserPosition + i) << endl;
+		stream << *(laserType + i) << endl;
+		stream << *(laserOn + i) << endl;
+	}
+
+	//Mirror
+	stream << mirrorNumber << endl;
+	for (int i = 0; i < mirrorNumber; i++) {
+		stream << *(mirrorPosition + i) << endl;
+		stream << *(mirrorType + i) << endl;
+	}
+
+	//LaserReceiver
+	stream << receiverNumber << endl;
+	for (int i = 0; i < receiverNumber; i++) {
+		stream << *(receiverPosition + i) << endl;
+		stream << *(receiverType + i) << endl;
+		stream << (receiverC + i)->getDeviceNumber() << endl;
+		for (int j = 0; j < (receiverC + i)->getDeviceNumber(); j++) {
+			stream << (receiverC + i)->getDeviceName(j) << endl;
+			stream << (receiverC + i)->getDeviceID(j) << endl;
+			stream << (receiverC + i)->getOn(j) << endl;
+		}
+	}
+
+	stream.close();
 }
 
 Editor::Editor(){
@@ -507,7 +858,7 @@ Editor::Type Editor::run(RenderWindow& window) {
 				}
 			}
 		}
-		else if (Mouse::isButtonPressed(Mouse::Right)) { ///////////////////////Do poprawy/////////////////////////////
+		else if (Mouse::isButtonPressed(Mouse::Right)) {
 			delayClock.restart();
 
 			Vector2i vec = Mouse::getPosition(window);
@@ -523,6 +874,7 @@ Editor::Type Editor::run(RenderWindow& window) {
 						if (color == Color::Transparent) {
 							(screen + 4)->setNewColor(number, Screen::Device);
 							(screen + 4)->setColor(17, (screen + 4)->getColor(number, Screen::Device), Screen::Device);
+							(screen + 4)->setColor(17, Color::Transparent, Screen::Teleport);
 						}
 						else {
 							(screen + 4)->setColor(17, color, Screen::Device);
@@ -534,6 +886,7 @@ Editor::Type Editor::run(RenderWindow& window) {
 						if (color == Color::Transparent) {
 							(screen + 4)->setNewColor(number, Screen::Teleport);
 							(screen + 4)->setColor(17, (screen + 4)->getColor(number, Screen::Teleport), Screen::Teleport);
+							(screen + 4)->setColor(17, Color::Transparent, Screen::Device);
 						}
 						else {
 							(screen + 4)->setColor(17, color, Screen::Teleport);
@@ -567,10 +920,11 @@ Editor::Type Editor::run(RenderWindow& window) {
 					clickType = Screen::Click::NoneC;
 				}
 			}
-		}
+		} 
 	}
 	else if (stage == Screen::Stage::SaveS) {
-
+		save();
+		return Type::Exit;
 	}
 
 	return Type::None;
@@ -606,9 +960,6 @@ void Editor::draw(RenderWindow& window) {
 		(screen + 3)->draw(window);
 		(screen + 4)->draw(window);
 		window.draw(stageCounter);
-	}
-	else if (stage == Screen::Stage::SaveS) {
-
 	}
 }
 

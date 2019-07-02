@@ -27,6 +27,8 @@ using namespace std;
 
 class Play{
 
+public:
+
 	class HelpClass {
 
 		int deviceNumber;
@@ -59,6 +61,8 @@ class Play{
 
 		~HelpClass();
 	};
+
+private:
 
 	MenuBar* menuBar;
 
