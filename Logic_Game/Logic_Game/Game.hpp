@@ -3,6 +3,7 @@
 #include <SFML\Window.hpp>
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
+#include <SFML\Audio.hpp>
 
 #include <string>
 #include <fstream>
@@ -53,6 +54,10 @@ class Game{
 	bool fpsCounter;
 
 	Clock delayClick;
+
+	SoundBuffer bufer;
+
+	Sound clickSound;
 
 public:
 

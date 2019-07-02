@@ -61,11 +61,8 @@ lmachine
 4
 1
 170
-5
-2
+5		
+1
 door
 1
-1
-teleport
-0
 1

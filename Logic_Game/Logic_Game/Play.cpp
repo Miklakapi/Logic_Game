@@ -581,10 +581,10 @@ int Play::run() {
 			if ((plateC + i)->getDeviceName(j) == "teleport") {
 
 				if ((plateC + i)->getOn(j) == true) {
-					teleports->setOpen((plateC + i)->getDeviceID(j), plates->isPressed(i));
+					teleports->setOpen((plateC + i)->getDeviceID(j) + 1, plates->isPressed(i));
 				}
 				else {
-					teleports->setOpen((plateC + i)->getDeviceID(j), !(plates->isPressed(i)));
+					teleports->setOpen((plateC + i)->getDeviceID(j) + 1, !(plates->isPressed(i)));
 				}
 			}
 			else if ((plateC + i)->getDeviceName(j) == "trap") {
@@ -629,10 +629,10 @@ int Play::run() {
 			if ((receiverC + i)->getDeviceName(j) == "teleport") {
 
 				if ((receiverC + i)->getOn(j) == true) {
-					teleports->setOpen((receiverC + i)->getDeviceID(j), receivers->getOn(i));
+					teleports->setOpen((receiverC + i)->getDeviceID(j) + 1, receivers->getOn(i));
 				}
 				else {
-					teleports->setOpen((receiverC + i)->getDeviceID(j), !(receivers->getOn(i)));
+					teleports->setOpen((receiverC + i)->getDeviceID(j) + 1, !(receivers->getOn(i)));
 				}
 			}
 			else if ((receiverC + i)->getDeviceName(j) == "trap") {

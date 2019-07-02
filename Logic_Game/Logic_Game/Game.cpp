@@ -39,6 +39,8 @@ Game::Game(RenderWindow& window){
 		if (line.at(2) == '0') fpsCounter = false;
 		else fpsCounter = true;
 	}
+	bufer.loadFromFile("Sound/click.ogg");
+	clickSound.setBuffer(bufer);
 	if (fpsCounter) FpsCounter = new FPS;
 	delayClick.restart();
 }
@@ -57,21 +59,28 @@ void Game::run(RenderWindow& window) {
 		else if (type1 == Menu::Play && delayClick.getElapsedTime().asSeconds() > 0.2) {
 			type = Type::InGame;
 			levelSelect = new LevelSelect;
+			if (sound) clickSound.play();
 		}
 		else if (type1 == Menu::Editor) {
 			type = Type::InEditor;
 			delete menu;
 			editor = new Editor;
+			if (sound) clickSound.play();
 		}
 		else if (type1 == Menu::Instruction) {
 			instruction = new Instruction;
 			type = Type::InInstruction;
+			if (sound) clickSound.play();
 		}
 		else if (type1 == Menu::Options) {
 			options = new Options(window);
 			type = Type::InOptions;
+			if (sound) clickSound.play();
 		}
-		else if (type1 == Menu::Exit && delayClick.getElapsedTime().asSeconds() > 0.2) exit(0);
+		else if (type1 == Menu::Exit && delayClick.getElapsedTime().asSeconds() > 0.2) {
+			if (sound) clickSound.play();
+			exit(0);
+		}
 	}
 	else if (type == Type::InGame) {
 		if (levelSelect->getType() != LevelSelect::Start) menu->run(window, false);
@@ -80,9 +89,11 @@ void Game::run(RenderWindow& window) {
 			type = Type::InMenu;
 			delete levelSelect;
 			delayClick.restart();
+			if (sound) clickSound.play();
 		}
 		else if (type1 == LevelSelect::Start) {
 			delete menu;
+			if (sound) clickSound.play(); 
 		}
 		else if (type1 == LevelSelect::Exit) {
 			type = Type::InMenu;
@@ -104,6 +115,7 @@ void Game::run(RenderWindow& window) {
 			delete instruction;
 			type = Type::InMenu;
 			delayClick.restart();
+			if (sound) clickSound.play();
 		}
 	}
 	else if (type == Type::InOptions) {
@@ -121,6 +133,7 @@ void Game::run(RenderWindow& window) {
 			}
 			delete options;
 			delayClick.restart();
+			if (sound) clickSound.play();
 		}
 	}
 

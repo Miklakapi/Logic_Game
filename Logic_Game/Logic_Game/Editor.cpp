@@ -12,7 +12,7 @@ void Editor::save() {
 		else {
 			stream << "-";
 		}
-		if (i % 17 == 0) stream << endl;
+		if ((i + 1) % 18 == 0) stream << endl;
 	}
 	stream.close();
 
